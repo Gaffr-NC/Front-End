@@ -9,10 +9,14 @@ export default class Login extends Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Please log in!</Text>
+        <Text>Log in or sign up!</Text>
         <Button
           title="LOGIN"
           onPress={this.logIn}
+        />
+        <Button
+          title="SIGN UP"
+          onPress={() => this.props.navigation.navigate("signUp")}
         />
       </View>
     );

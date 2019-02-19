@@ -7,29 +7,10 @@ import {
 } from "react-navigation";
 import HomeScreen from "./screens/Home";
 import SwipeScreen from "./screens/SwipeScreen";
-import Login from "./screens/Login";
+import Login from "./screens/LoginScreen";
 import Matches from "./screens/Matches";
 import Profile from "./screens/Profile";
-
-// const AppNavigator = createStackNavigator(
-//   {
-//     Home: HomeScreen,
-//     Swiper: SwipeScreen,
-//     Login: Login
-//   },
-//   {
-//     initialRouteName: "Login",
-//     defaultNavigationOptions: {
-//       headerStyle: {
-//         backgroundColor: "indianred"
-//       },
-//       headerTintColor: "#fff",
-//       headerTitleStyle: {
-//         fontWeight: "bold"
-//       }
-//     }
-//   }
-// );
+import SignUpScreen from "./screens/SignUpScreen";
 
 const AppStack = createMaterialTopTabNavigator(
   {
@@ -53,7 +34,7 @@ const AppStack = createMaterialTopTabNavigator(
   }
 );
 
-const AuthStack = createStackNavigator({ logIn: Login });
+const AuthStack = createStackNavigator({ logIn: Login, signUp: SignUpScreen });
 
 const AppContainer = createAppContainer(
   createSwitchNavigator(
