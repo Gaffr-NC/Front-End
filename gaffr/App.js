@@ -68,7 +68,7 @@ const AppContainer = createAppContainer(
       TenantApp: TenantAppStack,
       LandApp: LandAppStack,
     },
-    { initialRouteName: "Loading" }
+    { initialRouteName: "Auth" }
   )
 );
 

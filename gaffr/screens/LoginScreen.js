@@ -1,5 +1,16 @@
 import React, { Component } from "react";
 import { View, Text, Button } from "react-native";
+import firebase from 'firebase';
+
+// const config = {
+//   apiKey: "AIzaSyAT17FgnbY-cnJ9FZXLgF05LWxwJKbNQ-s",
+//   authDomain: "gaffr-fa935.firebaseapp.com",
+//   databaseURL: "https://gaffr-fa935.firebaseio.com",
+//   projectId: "gaffr-fa935",
+//   storageBucket: "gaffr-fa935.appspot.com",
+//   messagingSenderId: "446143175338"
+// };
+// firebase.initializeApp(config);
 
 export default class Login extends Component {
   static navigationOptions = {
