@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { View, Text, TextInput, StyleSheet, Button, Alert } from "react-native";
 import firebase from "firebase";
-// import config from '../config';
-
-// firebase.initializeApp(config);
 
 export default class SignUpScreen extends Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    confirmPassword: ""
   };
 
   static navigationOptions = {
@@ -23,7 +21,7 @@ export default class SignUpScreen extends Component {
           style={styles.inputs}
           label="email"
           placeholder="email..."
-          value={this.state.userInput}
+          value={this.state.email}
           onChangeText={text => this.setState({ email: text })}
           autoCapitalize="none"
         />
@@ -31,8 +29,17 @@ export default class SignUpScreen extends Component {
           style={styles.inputs}
           label="password"
           placeholder="password..."
-          value={this.state.userInput}
+          value={this.state.password}
           onChangeText={text => this.setState({ password: text })}
+          autoCapitalize="none"
+          secureTextEntry
+        />
+        <TextInput
+          style={styles.inputs}
+          label="confirm password"
+          placeholder=" confirm password..."
+          value={this.state.confirmPassword}
+          onChangeText={text => this.setState({ confirmPassword: text })}
           autoCapitalize="none"
           secureTextEntry
         />
@@ -42,22 +49,29 @@ export default class SignUpScreen extends Component {
   }
 
   handleSignUpPress = () => {
-    const { email, password } = this.state;
-    console.log(email, password);
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        this.props.navigation.navigate("TenantApp")
-        console.log(user, "UUUUSER", "Successful login");
-      })
-      .catch(err => {
-        if (err.code === "auth/weak-password") {
-          Alert.alert("Password must be at least 6 characters")
-        } else {
-          Alert.alert("Invalid email/password")
-        }
-      });
+    const { email, password, confirmPassword } = this.state;
+    if (password !== confirmPassword) {
+      Alert.alert("Passwords do not match");
+    } else {
+      console.log(email, password);
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(user => {
+          this.props.navigation.navigate("TenantApp");
+          console.log(user, "UUUUSER", "Successful login");
+        })
+        .catch(err => {
+          console.log(err.code);
+          if (err.code === "auth/weak-password") {
+            Alert.alert("Password must be at least 6 characters");
+          } else if (err.code === "auth/email-already-in-use") {
+            Alert.alert("Email already in use");
+          } else {
+            Alert.alert("Invalid email/password");
+          }
+        });
+    }
   };
 }
 
@@ -66,6 +80,6 @@ const styles = StyleSheet.create({
     backgroundColor: "powderblue",
     margin: 10,
     width: "90%",
-    padding: 10,
+    padding: 10
   }
 });
