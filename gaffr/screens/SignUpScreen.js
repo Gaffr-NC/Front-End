@@ -6,7 +6,9 @@ export default class SignUpScreen extends Component {
   state = {
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    name: "",
+    phoneNo: "",
   };
 
   static navigationOptions = {
@@ -37,11 +39,25 @@ export default class SignUpScreen extends Component {
         <TextInput
           style={styles.inputs}
           label="confirm password"
-          placeholder=" confirm password..."
+          placeholder="confirm password..."
           value={this.state.confirmPassword}
           onChangeText={text => this.setState({ confirmPassword: text })}
           autoCapitalize="none"
           secureTextEntry
+        />
+        <TextInput
+          style={styles.inputs}
+          label="name"
+          placeholder="name..."
+          value={this.state.name}
+          onChangeText={text => this.setState({ name: text })}
+        />
+        <TextInput
+          style={styles.inputs}
+          label="phoneNo"
+          placeholder="telephone number..."
+          value={this.state.phoneNo}
+          onChangeText={text => this.setState({ phoneNo: text })}
         />
         <Button title="SUBMIT" onPress={this.handleSignUpPress} />
       </View>
@@ -49,9 +65,13 @@ export default class SignUpScreen extends Component {
   }
 
   handleSignUpPress = () => {
-    const { email, password, confirmPassword } = this.state;
+    const { email, password, confirmPassword, name, phoneNo } = this.state;
     if (password !== confirmPassword) {
       Alert.alert("Passwords do not match");
+    } else if (!name) {
+      Alert.alert("Please enter your name");
+    } else if (!phoneNo) {
+      Alert.alert("Please enter your telephone number");
     } else {
       console.log(email, password);
       firebase
