@@ -11,8 +11,12 @@ export default class Login extends Component {
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>Log in or sign up!</Text>
         <Button
-          title="LOGIN"
-          onPress={this.logIn}
+          title="LOGIN (tenant)"
+          onPress={() => this.props.navigation.navigate("TenantApp")}
+        />
+        <Button
+          title="LOGIN (landlord)"
+          onPress={() => this.props.navigation.navigate("LandApp")}
         />
         <Button
           title="SIGN UP"
@@ -24,6 +28,6 @@ export default class Login extends Component {
 
   logIn = () => {
     console.log(this.props)
-    this.props.navigation.navigate("App")
+    this.props.navigation.navigate("TenantApp")
   }
 }

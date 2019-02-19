@@ -11,8 +11,9 @@ import Login from "./screens/LoginScreen";
 import Matches from "./screens/Matches";
 import Profile from "./screens/Profile";
 import SignUpScreen from "./screens/SignUpScreen";
+import PropertyScreen from "./screens/PropertyScreen";
 
-const AppStack = createMaterialTopTabNavigator(
+const TenantAppStack = createMaterialTopTabNavigator(
   {
     Profile: Profile,
     Swiper: SwipeScreen,
@@ -34,13 +35,36 @@ const AppStack = createMaterialTopTabNavigator(
   }
 );
 
+const LandAppStack = createMaterialTopTabNavigator(
+  {
+    Profile: Profile,
+    Properties: PropertyScreen,
+    Matches: Matches
+  },
+  {
+    initialRouteName: "Properties",
+    tabBarOptions: {
+      activeTintColor: "#fff",
+      inactiveTintColor: "#fff",
+      style: {
+        backgroundColor: "indianred",
+        marginTop: 24
+      },
+      indicatorStyle: {
+        backgroundColor: "grey"
+      }
+    }
+  }
+);
+
 const AuthStack = createStackNavigator({ logIn: Login, signUp: SignUpScreen });
 
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
-      App: AppStack,
-      Auth: AuthStack
+      TenantApp: TenantAppStack,
+      Auth: AuthStack,
+      LandApp: LandAppStack,
     },
     { initialRouteName: "Auth" }
   )
