@@ -12,6 +12,7 @@ import Matches from "./screens/Matches";
 import Profile from "./screens/Profile";
 import SignUpScreen from "./screens/SignUpScreen";
 import PropertyScreen from "./screens/PropertyScreen";
+import Loading from './screens/Loading';
 
 const TenantAppStack = createMaterialTopTabNavigator(
   {
@@ -62,11 +63,12 @@ const AuthStack = createStackNavigator({ logIn: Login, signUp: SignUpScreen });
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
-      TenantApp: TenantAppStack,
+      Loading: Loading,
       Auth: AuthStack,
+      TenantApp: TenantAppStack,
       LandApp: LandAppStack,
     },
-    { initialRouteName: "Auth" }
+    { initialRouteName: "Loading" }
   )
 );
 
