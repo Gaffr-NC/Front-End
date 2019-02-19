@@ -12,9 +12,14 @@ export default class Login extends Component {
         <Text>Please log in!</Text>
         <Button
           title="LOGIN"
-          onPress={() => this.props.navigation.navigate("Home")}
+          onPress={this.logIn}
         />
       </View>
     );
+  }
+
+  logIn = () => {
+    console.log(this.props)
+    this.props.navigation.navigate("App")
   }
 }

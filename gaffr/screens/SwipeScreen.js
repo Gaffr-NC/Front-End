@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text } from "react-native";
 
 export default class SwipeScreen extends Component {
   static navigationOptions = {
@@ -9,10 +9,6 @@ export default class SwipeScreen extends Component {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>Swipe Screen</Text>
-        <Button
-          title="Go Home"
-          onPress={() => this.props.navigation.navigate("Home")}
-        />
       </View>
     );
   }

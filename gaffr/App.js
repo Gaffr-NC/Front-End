@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Platform, StatusBar, StyleSheet } from "react-native";
 import {
   createStackNavigator,
   createAppContainer,
-  createMaterialTopTabNavigator
+  createMaterialTopTabNavigator,
+  createSwitchNavigator
 } from "react-navigation";
 import HomeScreen from "./screens/Home";
 import SwipeScreen from "./screens/SwipeScreen";
@@ -31,7 +31,7 @@ import Profile from "./screens/Profile";
 //   }
 // );
 
-const AppNavigator = createMaterialTopTabNavigator(
+const AppStack = createMaterialTopTabNavigator(
   {
     Profile: Profile,
     Swiper: SwipeScreen,
@@ -43,7 +43,8 @@ const AppNavigator = createMaterialTopTabNavigator(
       activeTintColor: "#fff",
       inactiveTintColor: "#fff",
       style: {
-        backgroundColor: "indianred"
+        backgroundColor: "indianred",
+        marginTop: 24
       },
       indicatorStyle: {
         backgroundColor: "grey"
@@ -52,14 +53,23 @@ const AppNavigator = createMaterialTopTabNavigator(
   }
 );
 
-const AppContainer = createAppContainer(AppNavigator);
+const AuthStack = createStackNavigator({ logIn: Login });
+
+const AppContainer = createAppContainer(
+  createSwitchNavigator(
+    {
+      App: AppStack,
+      Auth: AuthStack
+    },
+    { initialRouteName: "Auth" }
+  )
+);
 
 export default class App extends React.Component {
+  state = {
+    currentUser: null
+  };
   render() {
-    return <AppContainer style={styles.container} />;
+    return <AppContainer />
   }
 }
-
-const styles = StyleSheet.create({
-  container: { paddingTop: StatusBar.currentHeight }
-});
