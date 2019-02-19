@@ -13,6 +13,10 @@ import Profile from "./screens/Profile";
 import SignUpScreen from "./screens/SignUpScreen";
 import PropertyScreen from "./screens/PropertyScreen";
 import Loading from './screens/Loading';
+import firebase from 'firebase';
+import config from './config';
+
+firebase.initializeApp(config);
 
 const TenantAppStack = createMaterialTopTabNavigator(
   {
