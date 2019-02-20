@@ -4,7 +4,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import firebase from 'firebase';
 import { UserCredential } from '@firebase/auth-types';
 import { FirebaseError } from '@firebase/util';
-
+import { addUser } from '../utils';
 interface States {
   email: String;
   password: String;
@@ -71,7 +71,7 @@ export default class SignUpScreen extends Component<Props, States> {
           onChangeText={(text: String) => this.setState({ phoneNo: text })}
         />
         <Text>{this.props.navigation.getParam('userType', 'ERROR')}</Text>
-        <Button title="SUBMIT" onPress={this.handleSignUpPress} />
+        <Button title="SUBMIT" onPress={() => this.handleSignUpPress()} />
       </View>
     );
   }
@@ -90,6 +90,12 @@ export default class SignUpScreen extends Component<Props, States> {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then((user: UserCredential) => {
+          const id: string | null = user.user ? user.user.uid : 'ERRROR';
+          const userType: string = this.props.navigation.getParam(
+            'userType',
+            'ERROR'
+          );
+          addUser(id, { name, email, phone: phoneNo }, userType);
           this.props.navigation.navigate('userType', { email, name, phoneNo });
           console.log(user, 'UUUUSER', 'Successful login');
         })

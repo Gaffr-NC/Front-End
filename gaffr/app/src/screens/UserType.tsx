@@ -12,13 +12,13 @@ export default class UserTypeScreen extends Component<Props> {
         <Button
           title="I am a tenant"
           onPress={() =>
-            this.props.navigation.navigate('signUp', { userType: 'tenant' })
+            this.props.navigation.navigate('signUp', { userType: 'tenants' })
           }
         />
         <Button
           title="I am a landlord"
           onPress={() =>
-            this.props.navigation.navigate('signUp', { userType: 'landlord' })
+            this.props.navigation.navigate('signUp', { userType: 'landlords' })
           }
         />
       </View>

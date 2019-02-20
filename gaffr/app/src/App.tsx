@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as firebase from 'firebase';
-import { getUsers } from './utils';
 import {
   createStackNavigator,
   createAppContainer,
@@ -12,13 +10,12 @@ import SwipeScreen from './screens/SwipeScreen';
 import Login from './screens/LoginScreen';
 import Matches from './screens/Matches';
 import Profile from './screens/Profile';
-import SignUpScreen from './screens/SignUpScreen';
 import PropertyScreen from './screens/PropertyScreen';
 import Loading from './screens/Loading';
-import config from './config';
+
 import UserType from './screens/UserType';
 
-firebase.initializeApp(config);
+import SignUpScreen from './screens/SignUpScreen';
 
 interface User {
   id: String;
@@ -96,6 +93,7 @@ export default class App extends React.Component<States> {
   public state = {
     currentUser: null
   };
+
   render() {
     return <AppContainer />;
   }
