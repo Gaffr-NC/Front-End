@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, StyleSheet, Button, Alert } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import firebase from 'firebase';
+import { UserCredential } from '@firebase/auth-types';
+import { FirebaseError } from '@firebase/util';
 
 interface States {
   email: String;
@@ -87,11 +89,11 @@ export default class SignUpScreen extends Component<Props, States> {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then((user: any) => {
+        .then((user: UserCredential) => {
           this.props.navigation.navigate('userType', { email, name, phoneNo });
           console.log(user, 'UUUUSER', 'Successful login');
         })
-        .catch((err: any) => {
+        .catch((err: FirebaseError) => {
           console.log(err.code);
           if (err.code === 'auth/weak-password') {
             Alert.alert('Password must be at least 6 characters');

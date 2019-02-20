@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
-import firebase from 'firebase';
+import { UserCredential } from '@firebase/auth-types';
+import firebase, { FirebaseError } from 'firebase';
 
 interface States {
   email: String;
@@ -62,11 +63,11 @@ export default class Login extends Component<Props, States> {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((user: any) => {
+      .then((user: UserCredential) => {
         this.props.navigation.navigate('TenantApp');
         console.log(user, 'UUUUSER');
       })
-      .catch((err: any) => {
+      .catch((err: FirebaseError) => {
         console.log(err);
         Alert.alert('Invalid email/password');
       });
