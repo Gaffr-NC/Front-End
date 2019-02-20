@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { UserCredential } from '@firebase/auth-types';
+import { getUserById } from '../utils';
 import firebase, { FirebaseError } from 'firebase';
 
 interface States {
@@ -64,6 +65,18 @@ export default class Login extends Component<Props, States> {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((user: UserCredential) => {
+        if (user.user) {
+          const { uid } = user.user;
+          const { navigate } = this.props.navigation;
+          getUserById(uid, 'tenants')
+            .then((user: any) => {
+              // TODO : test that a tenant logs in correctly
+              navigate(user ? 'TenantApp' : 'LandApp');
+            })
+            .catch((error: any) => {
+              console.log(error);
+            });
+        }
         this.props.navigation.navigate('TenantApp');
         console.log(user, 'UUUUSER');
       })
