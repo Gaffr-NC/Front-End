@@ -1,4 +1,6 @@
-import firebase from 'firebase';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+const db = firebase.firestore();
 interface Property {
   bedrooms: number;
   city: string;
@@ -49,10 +51,7 @@ interface UpdatePreferences extends Preferences {
 }
 
 const getUsers = async (table: string) => {
-  const users: any = await firebase
-    .firestore()
-    .collection(table)
-    .get();
+  const users: any = await db.collection(table).get();
   return users.docs.map((user: any) => ({
     ...user.data(),
     id: user.id
@@ -60,16 +59,12 @@ const getUsers = async (table: string) => {
 };
 
 const getUserById = async (id: string, table: string) => {
-  const user: any = await firebase
-    .firestore()
-    .doc(`${table}/${id}`)
-    .get();
+  const user: any = await db.doc(`${table}/${id}`).get();
   return user.data();
 };
 
 const getMatchesByLandlord = async (landlordId: string) => {
-  const matches: any = await firebase
-    .firestore()
+  const matches: any = await db
     .collection('matches')
     .where('landlordId', '==', landlordId)
     .get();
@@ -80,8 +75,7 @@ const getMatchesByLandlord = async (landlordId: string) => {
 };
 
 const getMatchesByTenant = async (tenantId: string) => {
-  const matches: any = await firebase
-    .firestore()
+  const matches: any = await db
     .collection('matches')
     .where('tenantId', '==', tenantId)
     .get();
@@ -92,8 +86,7 @@ const getMatchesByTenant = async (tenantId: string) => {
 };
 
 const addUser = async (id: string, user: User, table: string) => {
-  const userRef: any = await firebase
-    .firestore()
+  const userRef: any = await db
     .collection(table)
     .doc(id)
     .set(user);
@@ -102,8 +95,7 @@ const addUser = async (id: string, user: User, table: string) => {
 };
 
 const addMatch = async (landlordId: string, tenantId: string) => {
-  await firebase
-    .firestore()
+  await db
     .collection('matches')
     .add({
       landlordId,
@@ -117,10 +109,7 @@ const addMatch = async (landlordId: string, tenantId: string) => {
 };
 
 const updateUserContact = async (id: string, user: string, table: string) => {
-  const userRef: any = await firebase
-    .firestore()
-    .collection(table)
-    .doc(id);
+  const userRef: any = await db.collection(table).doc(id);
   await userRef.update(user);
   return userRef.id;
 };
@@ -134,10 +123,7 @@ const updateProperty = async (id: string, property: UpdateProperty) => {
   keys.forEach((key, index) => {
     updatedObj[key] = values[index];
   });
-  const landlordRef = await firebase
-    .firestore()
-    .collection('landlords')
-    .doc(id);
+  const landlordRef = await db.collection('landlords').doc(id);
   await landlordRef.update(updatedObj);
   return landlordRef.id;
 };
@@ -154,25 +140,19 @@ const updatePreferences = async (
   keys.forEach((key, index) => {
     updatedObj[key] = values[index];
   });
-  const tenantRef = await firebase
-    .firestore()
-    .collection('tenants')
-    .doc(id);
+  const tenantRef = await db.collection('tenants').doc(id);
   await tenantRef.update(updatedObj);
   return tenantRef.id;
 };
 
 const blockMatch = async (matchId: string) => {
-  firebase
-    .firestore()
-    .collection('matches')
+  db.collection('matches')
     .doc(matchId)
     .update({ blocked: false });
 };
 
 const deleteUserById = async (id: string, table: string) => {
-  const value: any = await firebase
-    .firestore()
+  const value: any = await db
     .collection(table)
     .doc(id)
     .delete();

@@ -1,28 +1,27 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const firebase_1 = __importDefault(require("firebase"));
+const firebase = __importStar(require("firebase"));
+require("firebase/firestore");
+const db = firebase.firestore();
 const getUsers = async (table) => {
-    const users = await firebase_1.default
-        .firestore()
-        .collection(table)
-        .get();
+    const users = await db.collection(table).get();
     return users.docs.map((user) => (Object.assign({}, user.data(), { id: user.id })));
 };
 exports.getUsers = getUsers;
 const getUserById = async (id, table) => {
-    const user = await firebase_1.default
-        .firestore()
-        .doc(`${table}/${id}`)
-        .get();
+    const user = await db.doc(`${table}/${id}`).get();
     return user.data();
 };
 exports.getUserById = getUserById;
 const getMatchesByLandlord = async (landlordId) => {
-    const matches = await firebase_1.default
-        .firestore()
+    const matches = await db
         .collection('matches')
         .where('landlordId', '==', landlordId)
         .get();
@@ -30,8 +29,7 @@ const getMatchesByLandlord = async (landlordId) => {
 };
 exports.getMatchesByLandlord = getMatchesByLandlord;
 const getMatchesByTenant = async (tenantId) => {
-    const matches = await firebase_1.default
-        .firestore()
+    const matches = await db
         .collection('matches')
         .where('tenantId', '==', tenantId)
         .get();
@@ -39,8 +37,7 @@ const getMatchesByTenant = async (tenantId) => {
 };
 exports.getMatchesByTenant = getMatchesByTenant;
 const addUser = async (id, user, table) => {
-    const userRef = await firebase_1.default
-        .firestore()
+    const userRef = await db
         .collection(table)
         .doc(id)
         .set(user);
@@ -49,8 +46,7 @@ const addUser = async (id, user, table) => {
 };
 exports.addUser = addUser;
 const addMatch = async (landlordId, tenantId) => {
-    await firebase_1.default
-        .firestore()
+    await db
         .collection('matches')
         .add({
         landlordId,
@@ -64,10 +60,7 @@ const addMatch = async (landlordId, tenantId) => {
 };
 exports.addMatch = addMatch;
 const updateUserContact = async (id, user, table) => {
-    const userRef = await firebase_1.default
-        .firestore()
-        .collection(table)
-        .doc(id);
+    const userRef = await db.collection(table).doc(id);
     await userRef.update(user);
     return userRef.id;
 };
@@ -79,10 +72,7 @@ const updateProperty = async (id, property) => {
     keys.forEach((key, index) => {
         updatedObj[key] = values[index];
     });
-    const landlordRef = await firebase_1.default
-        .firestore()
-        .collection('landlords')
-        .doc(id);
+    const landlordRef = await db.collection('landlords').doc(id);
     await landlordRef.update(updatedObj);
     return landlordRef.id;
 };
@@ -94,25 +84,19 @@ const updatePreferences = async (id, preferences) => {
     keys.forEach((key, index) => {
         updatedObj[key] = values[index];
     });
-    const tenantRef = await firebase_1.default
-        .firestore()
-        .collection('tenants')
-        .doc(id);
+    const tenantRef = await db.collection('tenants').doc(id);
     await tenantRef.update(updatedObj);
     return tenantRef.id;
 };
 exports.updatePreferences = updatePreferences;
 const blockMatch = async (matchId) => {
-    firebase_1.default
-        .firestore()
-        .collection('matches')
+    db.collection('matches')
         .doc(matchId)
         .update({ blocked: false });
 };
 exports.blockMatch = blockMatch;
 const deleteUserById = async (id, table) => {
-    const value = await firebase_1.default
-        .firestore()
+    const value = await db
         .collection(table)
         .doc(id)
         .delete();
