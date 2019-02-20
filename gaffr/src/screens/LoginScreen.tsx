@@ -30,14 +30,14 @@ export default class Login extends Component<Props, States> {
           style={styles.inputs}
           placeholder="email..."
           value={this.state.email}
-          onChangeText={text => this.setState({ email: text })}
+          onChangeText={(text: String) => this.setState({ email: text })}
           autoCapitalize="none"
         />
         <TextInput
           style={styles.inputs}
           placeholder="password..."
           value={this.state.password}
-          onChangeText={text => this.setState({ password: text })}
+          onChangeText={(text: String) => this.setState({ password: text })}
           autoCapitalize="none"
           secureTextEntry
         />
