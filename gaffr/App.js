@@ -12,6 +12,12 @@ import Matches from "./screens/Matches";
 import Profile from "./screens/Profile";
 import SignUpScreen from "./screens/SignUpScreen";
 import PropertyScreen from "./screens/PropertyScreen";
+import Loading from './screens/Loading';
+import firebase from 'firebase';
+import config from './config';
+import UserType from './screens/UserType';
+
+firebase.initializeApp(config);
 
 const TenantAppStack = createMaterialTopTabNavigator(
   {
@@ -57,13 +63,14 @@ const LandAppStack = createMaterialTopTabNavigator(
   }
 );
 
-const AuthStack = createStackNavigator({ logIn: Login, signUp: SignUpScreen });
+const AuthStack = createStackNavigator({ logIn: Login, signUp: SignUpScreen, userType: UserType });
 
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
-      TenantApp: TenantAppStack,
+      Loading: Loading,
       Auth: AuthStack,
+      TenantApp: TenantAppStack,
       LandApp: LandAppStack,
     },
     { initialRouteName: "Auth" }
