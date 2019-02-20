@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
 const firebase = __importStar(require("firebase"));
+// import {}
 const react_navigation_1 = require("react-navigation");
 const SwipeScreen_1 = __importDefault(require("./screens/SwipeScreen"));
 const LoginScreen_1 = __importDefault(require("./screens/LoginScreen"));
