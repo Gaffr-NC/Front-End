@@ -59,6 +59,7 @@ export default class SignUpScreen extends Component {
           value={this.state.phoneNo}
           onChangeText={text => this.setState({ phoneNo: text })}
         />
+        <Text>{this.props.navigation.getParam("userType", "ERROR")}</Text>
         <Button title="SUBMIT" onPress={this.handleSignUpPress} />
       </View>
     );
@@ -78,7 +79,7 @@ export default class SignUpScreen extends Component {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(user => {
-          this.props.navigation.navigate("TenantApp");
+          this.props.navigation.navigate("userType", { email, name, phoneNo });
           console.log(user, "UUUUSER", "Successful login");
         })
         .catch(err => {

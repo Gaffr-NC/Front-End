@@ -39,7 +39,7 @@ export default class Login extends Component {
         />
         <Button
           title="SIGN UP"
-          onPress={() => this.props.navigation.navigate("signUp")}
+          onPress={() => this.props.navigation.navigate("userType")}
         />
       </View>
     );

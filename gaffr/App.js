@@ -15,6 +15,7 @@ import PropertyScreen from "./screens/PropertyScreen";
 import Loading from './screens/Loading';
 import firebase from 'firebase';
 import config from './config';
+import UserType from './screens/UserType';
 
 firebase.initializeApp(config);
 
@@ -62,7 +63,7 @@ const LandAppStack = createMaterialTopTabNavigator(
   }
 );
 
-const AuthStack = createStackNavigator({ logIn: Login, signUp: SignUpScreen });
+const AuthStack = createStackNavigator({ logIn: Login, signUp: SignUpScreen, userType: UserType });
 
 const AppContainer = createAppContainer(
   createSwitchNavigator(
