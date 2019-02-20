@@ -44,8 +44,8 @@ class Login extends react_1.Component {
     render() {
         return (react_1.default.createElement(react_native_1.View, { style: { flex: 1, alignItems: 'center', justifyContent: 'center' } },
             react_1.default.createElement(react_native_1.Text, null, "Log in or sign up!"),
-            react_1.default.createElement(react_native_1.TextInput, { style: styles.inputs, placeholder: "email...", value: this.state.email, onChangeText: text => this.setState({ email: text }), autoCapitalize: "none" }),
-            react_1.default.createElement(react_native_1.TextInput, { style: styles.inputs, placeholder: "password...", value: this.state.password, onChangeText: text => this.setState({ password: text }), autoCapitalize: "none", secureTextEntry: true }),
+            react_1.default.createElement(react_native_1.TextInput, { style: styles.inputs, placeholder: "email...", value: this.state.email, onChangeText: (text) => this.setState({ email: text }), autoCapitalize: "none" }),
+            react_1.default.createElement(react_native_1.TextInput, { style: styles.inputs, placeholder: "password...", value: this.state.password, onChangeText: (text) => this.setState({ password: text }), autoCapitalize: "none", secureTextEntry: true }),
             react_1.default.createElement(react_native_1.Button, { title: "LOG IN", onPress: this.handleLogInPress }),
             react_1.default.createElement(react_native_1.Button, { title: "SIGN UP", onPress: () => this.props.navigation.navigate('userType') })));
     }
