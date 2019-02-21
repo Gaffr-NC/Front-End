@@ -38,6 +38,7 @@ const TenantAppStack = createMaterialTopTabNavigator(
   },
   {
     initialRouteName: 'Swiper',
+    swipeEnabled: false,
     tabBarOptions: {
       activeTintColor: '#fff',
       inactiveTintColor: '#fff',
@@ -88,7 +89,7 @@ const AppContainer = createAppContainer(
       TenantApp: TenantAppStack,
       LandApp: LandAppStack
     },
-    { initialRouteName: 'Auth' }
+    { initialRouteName: 'TenantApp' }
   )
 );
 
