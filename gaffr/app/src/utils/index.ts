@@ -13,8 +13,8 @@ interface Property {
   city: string;
   images: string[];
   price: number;
-  petsAllowed: boolean;
   propertyType: string;
+  petsAllowed: boolean;
   smokingAllowed: boolean;
 }
 

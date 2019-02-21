@@ -73,13 +73,13 @@ export default class Login extends Component<Props, States> {
             uid,
             'tenants'
           );
-          if (tenant) navigate('TenantApp');
+          if (tenant) navigate('TenantApp', { uid });
           else {
             const landlord: DocumentData | undefined = await getUserById(
               uid,
               'landlords'
             );
-            if (landlord) navigate('LandApp');
+            if (landlord) navigate('LandApp', { uid });
           }
         }
         this.props.navigation.navigate('TenantApp');

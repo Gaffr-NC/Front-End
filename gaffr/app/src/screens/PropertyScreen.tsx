@@ -1,15 +1,25 @@
-import React, { Component } from "react";
-import { View, Text } from "react-native";
+import React, { Component } from 'react';
+import { View, Text, Button } from 'react-native';
+import { getUserById } from '../utils';
 
 export default class PropertyScreen extends Component {
   static navigationOptions = {
-    title: "Properties"
+    title: 'Properties'
   };
+
+  async componentDidMount() {
+    // const {uid} = this.props.n
+    // const user = await getUserById()
+  }
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Properties!</Text>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Property!</Text>
+        {/* <Button 
+          title="Hello button"
+          onPress=
+        /> */}
       </View>
     );
   }
