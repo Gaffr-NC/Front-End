@@ -197,6 +197,7 @@ export default class PropertyScreen extends Component<Props, States> {
             {images &&
               images.map((img: string) => (
                 <Image
+                  key={img}
                   source={{ uri: img }}
                   style={{ height: 50, width: 50 }}
                 />

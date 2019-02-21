@@ -96,7 +96,7 @@ export default class SignUpScreen extends Component<Props, States> {
           );
           addUser(uid, { name, email, phone: phoneNo }, userType);
           this.props.navigation.navigate(
-            userType === 'tenants' ? 'TenantApp' : 'LandApp',
+            userType === 'tenants' ? 'TenantApp' : 'Properties',
             { uid }
           );
         })
