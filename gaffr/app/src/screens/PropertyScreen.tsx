@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import firebase from 'firebase';
 import {
   View,
   Text,
@@ -6,8 +7,13 @@ import {
   TextInput,
   Picker,
   Alert,
-  StyleSheet
+  StyleSheet,
+  StatusBar,
+  Image,
+  ScrollView
 } from 'react-native';
+import uuid from 'uuid';
+import { ImagePicker, Permissions } from 'expo';
 import { getUserById } from '../utils';
 import { NavigationScreenProp } from 'react-navigation';
 import { updateProperty } from '../utils';
@@ -23,6 +29,8 @@ interface Props {
 }
 
 interface States {
+  image?: string;
+  uploading?: boolean;
   user: User | undefined;
   bedrooms: number;
   city: string;
@@ -32,11 +40,11 @@ interface States {
   propertyType: string;
   petsAllowed: boolean;
   smokingAllowed: boolean;
-  [key: string]: any;
 }
 
 export default class PropertyScreen extends Component<Props, States> {
   public state = {
+    image: 'abcdef',
     user: undefined,
     bedrooms: 1,
     city: 'the moon',
@@ -56,7 +64,6 @@ export default class PropertyScreen extends Component<Props, States> {
       bedrooms,
       city,
       images,
-      currentImage,
       price,
       propertyType,
       petsAllowed,
@@ -65,8 +72,7 @@ export default class PropertyScreen extends Component<Props, States> {
     const array = Object.entries({
       city,
       images,
-      price,
-      currentImage
+      price
     });
     array.forEach(
       property => !property[1] && Alert.alert(`Invalid ${property[0]}`)
@@ -88,13 +94,88 @@ export default class PropertyScreen extends Component<Props, States> {
     const uid = this.props.navigation.getParam('uid', 'ERROR');
     console.log('this is the uid mate', uid);
     const user: User | undefined = await getUserById(uid, 'landlords');
+    if (user && !user.property) {
+      await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      await Permissions.askAsync(Permissions.CAMERA);
+    }
     this.setState({ user });
   }
+
+  _takePhoto = async () => {
+    const pickerResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3]
+    });
+    this._handleImagePicked(pickerResult);
+  };
+
+  _pickImage = async () => {
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3]
+    });
+    this._handleImagePicked(pickerResult);
+  };
+
+  _handleImagePicked = async (pickerResult: ImagePicker.ImageResult) => {
+    try {
+      this.setState({ uploading: true });
+      if (!pickerResult.cancelled) {
+        const uploadUrl = await this.uploadImageAsync(pickerResult.uri);
+        this.setState({ image: uploadUrl });
+      }
+    } catch (e) {
+      console.log(e);
+      Alert.alert('Upload failed, sorry :(');
+    } finally {
+      this.setState({ uploading: false });
+    }
+  };
+
+  uploadImageAsync = async (uri: string) => {
+    // Why are we using XMLHttpRequest? See:
+    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+    const blob: any = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function(e) {
+        console.log(e);
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      xhr.send(null);
+    });
+
+    const ref = firebase
+      .storage()
+      .ref()
+      .child(uuid.v4());
+    const snapshot = await ref.put(blob);
+
+    // We're done with the blob, close and release it
+    blob.close();
+
+    const url = await snapshot.ref.getDownloadURL();
+    const { images } = this.state;
+    this.setState({ images: [...images, url] });
+    console.log(url);
+    //TODO send url to database / registration state
+    // !
+    // ?
+    // *
+
+    return url;
+  };
 
   render() {
     const user = this.state.user;
     if (!user) return <Text>Loading...</Text>;
     const {
+      image,
+      images,
       bedrooms,
       city,
       smokingAllowed,
@@ -105,7 +186,7 @@ export default class PropertyScreen extends Component<Props, States> {
     } = this.state;
     const userWithProperty: UserWithProperty = user;
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <ScrollView style={{ flex: 1 }}>
         <Text>Property!</Text>
         {userWithProperty.property ? (
           // property profile
@@ -113,6 +194,13 @@ export default class PropertyScreen extends Component<Props, States> {
         ) : (
           // property form
           <View>
+            {images &&
+              images.map((img: string) => (
+                <Image
+                  source={{ uri: img }}
+                  style={{ height: 50, width: 50 }}
+                />
+              ))}
             <TextInput
               placeholder="price..."
               style={styles.inputs}
@@ -175,12 +263,40 @@ export default class PropertyScreen extends Component<Props, States> {
             </Picker>
 
             <Button
+              onPress={this._pickImage}
+              title="Pick an image from camera roll"
+            />
+
+            <Button onPress={this._takePhoto} title="Take a photo" />
+            <Button
               title="get me a house!"
               onPress={() => this.handleHouse(userWithProperty)}
             />
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {image ? null : (
+                <Text
+                  style={{
+                    fontSize: 20,
+                    marginBottom: 20,
+                    textAlign: 'center',
+                    marginHorizontal: 15
+                  }}
+                >
+                  Example: Upload ImagePicker result
+                </Text>
+              )}
+
+              <StatusBar barStyle="default" />
+            </View>
           </View>
         )}
-      </View>
+      </ScrollView>
     );
   }
 }
