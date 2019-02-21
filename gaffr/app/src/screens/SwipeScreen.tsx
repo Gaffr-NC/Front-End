@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { Constants } from 'expo';
 
 export default class Exemple extends Component {
@@ -15,10 +15,21 @@ export default class Exemple extends Component {
     };
   }
 
-  renderCard = card => {
+  renderCard = () => {
     return (
       <View style={styles.card}>
-        <Text style={styles.text}>{card}</Text>
+        <Image
+          style={styles.image}
+          source={{
+            uri:
+              'https://images.unsplash.com/photo-1529408632839-a54952c491e5?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjU3MDIwfQ'
+          }}
+        />
+        <View>
+          <Text style={styles.text}>property type</Text>
+          <Text style={styles.text}>bedrooms</Text>
+          <Text style={styles.text}>price</Text>
+        </View>
       </View>
     );
   };
@@ -27,16 +38,6 @@ export default class Exemple extends Component {
     this.setState({
       swipedAllCards: true
     });
-  };
-
-  swipeBack = () => {
-    if (!this.state.isSwipingBack) {
-      this.setIsSwipingBack(true, () => {
-        this.swiper.swipeBack(() => {
-          this.setIsSwipingBack(false);
-        });
-      });
-    }
   };
 
   setIsSwipingBack = (isSwipingBack, cb) => {
@@ -70,37 +71,18 @@ export default class Exemple extends Component {
           onSwipedAll={this.onSwipedAllCards}
           showSecondCard={true}
           overlayLabels={{
-            bottom: {
-              title: 'BLEAH',
-              swipeColor: '#9262C2',
-              backgroundOpacity: '0.75',
-              fontColor: '#FFF'
-            },
             left: {
               title: 'NOPE',
-              swipeColor: '#FF6C6C',
-              backgroundOpacity: '0.75',
-              fontColor: '#FFF'
+              backgroundOpacity: '0.75'
             },
             right: {
               title: 'LIKE',
-              swipeColor: '#4CCC93',
-              backgroundOpacity: '0.75',
-              fontColor: '#FFF'
-            },
-            top: {
-              title: 'SUPER LIKE',
-              swipeColor: '#4EB8B7',
-              backgroundOpacity: '0.75',
-              fontColor: '#FFF'
+              backgroundOpacity: '0.75'
             }
           }}
           animateOverlayLabelsOpacity
           animateCardOpacity
-        >
-          <Button onPress={this.swipeBack} title="Swipe Back" />
-          <Button onPress={this.jumpTo} title="Jump to last index" />
-        </Swiper>
+        />
       </View>
     );
   }
@@ -108,24 +90,26 @@ export default class Exemple extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Constants.statusBarHeight,
-    flex: 1,
-    backgroundColor: '#F5FCFF'
+    // paddingTop: Constants.statusBarHeight,
+    backgroundColor: '#ffffff'
+    // flex: 1
   },
-  swiper: {
-    paddingTop: Constants.statusBarHeight
-  },
+
   card: {
     flex: 1,
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: '#E8E8E8',
+    borderColor: '#0000000',
     justifyContent: 'center',
-    backgroundColor: 'white'
+    backgroundColor: '#ffffff'
   },
   text: {
     textAlign: 'center',
     fontSize: 50,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    color: '#b3b9bd'
+  },
+  image: {
+    flex: 1
   }
 });
