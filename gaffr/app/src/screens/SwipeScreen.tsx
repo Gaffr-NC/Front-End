@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { Constants } from 'expo';
+import { FontAwesome } from '@expo/vector-icons';
+
+// const bedIcon = parseIconFromClassName('fas fa-bed');
 
 export default class Exemple extends Component {
   constructor(props) {
@@ -26,9 +28,15 @@ export default class Exemple extends Component {
           }}
         />
         <View>
-          <Text style={styles.text}>property type</Text>
-          <Text style={styles.text}>bedrooms</Text>
-          <Text style={styles.text}>price</Text>
+          <Text style={styles.text}>
+            <FontAwesome name="bed" size={50} />
+          </Text>
+          <Text style={styles.text}>
+            <FontAwesome name="home" size={50} />
+          </Text>
+          <Text style={styles.text}>
+            <FontAwesome name="euro" size={50} />
+          </Text>
         </View>
       </View>
     );
@@ -90,9 +98,7 @@ export default class Exemple extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    // paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ffffff'
-    // flex: 1
   },
 
   card: {
