@@ -85,25 +85,22 @@ export default class SignUpScreen extends Component<Props, States> {
     } else if (!phoneNo) {
       Alert.alert('Please enter your telephone number');
     } else {
-      console.log(email, password);
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then((user: UserCredential) => {
-          const id: string | null = user.user ? user.user.uid : 'ERRROR';
+          const uid: string | null = user.user ? user.user.uid : 'ERRROR';
           const userType: string = this.props.navigation.getParam(
             'userType',
             'ERROR'
           );
-          addUser(id, { name, email, phone: phoneNo }, userType);
+          addUser(uid, { name, email, phone: phoneNo }, userType);
           this.props.navigation.navigate(
-            userType === 'tenants' ? 'TenantApp' : 'LandApp',
-            { email, name, phoneNo }
+            userType === 'tenants' ? 'TenantApp' : 'Properties',
+            { uid }
           );
-          console.log(user, 'UUUUSER', 'Successful login');
         })
         .catch((err: FirebaseError) => {
-          console.log(err.code);
           if (err.code === 'auth/weak-password') {
             Alert.alert('Password must be at least 6 characters');
           } else if (err.code === 'auth/email-already-in-use') {

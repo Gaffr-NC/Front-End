@@ -53,15 +53,8 @@ export default class Login extends Component<Props, States> {
     );
   }
 
-  logIn = () => {
-    console.log(this.props);
-    this.props.navigation.navigate('TenantApp');
-  };
-
   handleLogInPress = () => {
-    console.log('PRESSED LOG IN');
     const { email, password } = this.state;
-    console.log(email, password);
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -73,20 +66,18 @@ export default class Login extends Component<Props, States> {
             uid,
             'tenants'
           );
-          if (tenant) navigate('TenantApp');
+          if (tenant) navigate('TenantApp', { uid });
           else {
             const landlord: DocumentData | undefined = await getUserById(
               uid,
               'landlords'
             );
-            if (landlord) navigate('LandApp');
+            console.log(uid);
+            if (landlord) navigate('Properties', { uid });
           }
         }
-        this.props.navigation.navigate('TenantApp');
-        console.log(user, 'UUUUSER');
       })
       .catch((err: FirebaseError) => {
-        console.log(err);
         Alert.alert('Invalid email/password');
       });
   };

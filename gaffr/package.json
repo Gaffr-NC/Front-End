@@ -28,15 +28,18 @@
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
+    "@types/expo": "^32.0.2",
     "@types/jest": "^24.0.6",
     "@types/react": "^16.8.4",
     "@types/react-native": "^0.57.37",
     "@types/react-navigation": "^3.0.3",
+    "@types/uuid": "^3.4.4",
     "expo": "^32.0.0",
     "firebase": "^5.8.3",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "react-navigation": "^3.0.9"
+    "react-navigation": "^3.0.9",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "jest-expo": "^32.0.0",
