@@ -96,7 +96,10 @@ export default class SignUpScreen extends Component<Props, States> {
             'ERROR'
           );
           addUser(id, { name, email, phone: phoneNo }, userType);
-          this.props.navigation.navigate('userType', { email, name, phoneNo });
+          this.props.navigation.navigate(
+            userType === 'tenants' ? 'TenantApp' : 'LandApp',
+            { email, name, phoneNo }
+          );
           console.log(user, 'UUUUSER', 'Successful login');
         })
         .catch((err: FirebaseError) => {

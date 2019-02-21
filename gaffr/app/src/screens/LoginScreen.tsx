@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { UserCredential } from '@firebase/auth-types';
+import { getUserById } from '../utils';
 import firebase, { FirebaseError } from 'firebase';
+import { DocumentData } from '@firebase/firestore-types';
 
 interface States {
   email: String;
@@ -63,7 +65,23 @@ export default class Login extends Component<Props, States> {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((user: UserCredential) => {
+      .then(async (user: UserCredential) => {
+        if (user.user) {
+          const { uid } = user.user;
+          const { navigate } = this.props.navigation;
+          const tenant: DocumentData | undefined = await getUserById(
+            uid,
+            'tenants'
+          );
+          if (tenant) navigate('TenantApp');
+          else {
+            const landlord: DocumentData | undefined = await getUserById(
+              uid,
+              'landlords'
+            );
+            if (landlord) navigate('LandApp');
+          }
+        }
         this.props.navigation.navigate('TenantApp');
         console.log(user, 'UUUUSER');
       })
