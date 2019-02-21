@@ -53,13 +53,14 @@ interface Match {
 interface UpdatePreferences {
   bedrooms?: number;
   city?: string;
+  images?: string[];
   petsAllowed?: boolean;
   maxPrice?: number;
   minPrice?: number;
   price?: number;
   propertyType?: string;
   smokingAllowed?: boolean;
-  [key: string]: number | string | boolean | undefined;
+  [key: string]: number | string | boolean | undefined | string[];
 }
 
 const getUsers = async (table: string) => {
@@ -126,13 +127,16 @@ const updateUserContact = async (id: string, user: User, table: string) => {
   return userRef.id;
 };
 
-const updateProperty = async (id: string, property: UpdatePreferences) => {
+const updateProperty = async (id: string, property: Property) => {
   const keys: string[] = Object.keys(property).map(
     (key: string) => `property.${key}`
   );
-  const values: (string | number | boolean | undefined)[] = Object.values(
-    property
-  );
+  const values: (
+    | string
+    | number
+    | boolean
+    | undefined
+    | string[])[] = Object.values(property);
   const updatedObj: UpdatePreferences = {};
   keys.forEach((key, index) => {
     updatedObj[key] = values[index];
@@ -151,9 +155,12 @@ const updatePreferences = async (
   const keys: string[] = Object.keys(preferences).map(
     key => `preferences.${key}`
   );
-  const values: (string | number | boolean | undefined)[] = Object.values(
-    preferences
-  );
+  const values: (
+    | string
+    | number
+    | boolean
+    | undefined
+    | string[])[] = Object.values(preferences);
   const updatedObj: UpdatePreferences = {};
   keys.forEach((key, index) => {
     updatedObj[key] = values[index];

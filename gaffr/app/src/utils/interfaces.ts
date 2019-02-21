@@ -48,12 +48,13 @@ interface UpdatePreferences {
   bedrooms?: number;
   city?: string;
   petsAllowed?: boolean;
+  images?: string[];
   maxPrice?: number;
   minPrice?: number;
   price?: number;
   propertyType?: string;
   smokingAllowed?: boolean;
-  [key: string]: number | string | boolean | undefined;
+  [key: string]: number | string | boolean | undefined | string[];
 }
 export {
   UpdatePreferences,
