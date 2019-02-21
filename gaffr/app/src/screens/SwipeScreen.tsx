@@ -7,12 +7,11 @@ export default class Exemple extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cards: ['1', '2', '3'],
+      cards: ['1', '2', '3', '4', '5', '6'],
       swipedAllCards: false,
       swipeDirection: '',
       isSwipingBack: false,
-      cardIndex: 0,
-      horizontalSwipe: 'false'
+      cardIndex: 0
     };
   }
 
@@ -62,12 +61,14 @@ export default class Exemple extends Component {
             this.swiper = swiper;
           }}
           onSwiped={this.onSwiped}
+          stackSize={6}
+          verticalSwipe={false}
           cards={this.state.cards}
           cardIndex={this.state.cardIndex}
           cardVerticalMargin={80}
           renderCard={this.renderCard}
           onSwipedAll={this.onSwipedAllCards}
-          showSecondCard={false}
+          showSecondCard={true}
           overlayLabels={{
             bottom: {
               title: 'BLEAH',
