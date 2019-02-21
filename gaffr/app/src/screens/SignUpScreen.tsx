@@ -85,7 +85,6 @@ export default class SignUpScreen extends Component<Props, States> {
     } else if (!phoneNo) {
       Alert.alert('Please enter your telephone number');
     } else {
-      console.log(email, password);
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
@@ -100,10 +99,8 @@ export default class SignUpScreen extends Component<Props, States> {
             userType === 'tenants' ? 'TenantApp' : 'LandApp',
             { uid }
           );
-          console.log(user, 'UUUUSER', 'Successful login');
         })
         .catch((err: FirebaseError) => {
-          console.log(err.code);
           if (err.code === 'auth/weak-password') {
             Alert.alert('Password must be at least 6 characters');
           } else if (err.code === 'auth/email-already-in-use') {

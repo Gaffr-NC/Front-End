@@ -72,7 +72,7 @@ const getUsers = async (table: string) => {
 
 const getUserById = async (id: string, table: string) => {
   const user: DocumentSnapshot = await db.doc(`${table}/${id}`).get();
-  return user.data();
+  return user.data() as User | undefined;
 };
 
 const getMatchesByLandlord = async (landlordId: string) => {
