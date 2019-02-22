@@ -182,14 +182,20 @@ export default class PropertyScreen extends Component<Props, States> {
       currentImage
     } = this.state;
     const userWithProperty: UserWithProperty = user;
+    console.log(userWithProperty.property.images[0]);
     return (
-      <ScrollView style={{ flex: 1 }}>
-        <Text>Property!</Text>
+      <ScrollView style={{ flex: 1, alignItems: 'center' }}>
+        <Text>Your property!</Text>
         {userWithProperty.property ? (
           // property profile
           <View>
             <Text>{`Hello, ${userWithProperty.name}`}</Text>
-            <Image source={{ uri: userWithProperty.property.images[0] }} />
+            {userWithProperty.property.images.map(img => (
+              <Image
+                source={{ uri: img }}
+                style={{ height: 200, width: 200 }}
+              />
+            ))}
           </View>
         ) : (
           // property form
