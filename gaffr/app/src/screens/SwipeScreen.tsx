@@ -1,51 +1,64 @@
-import React, { Component } from 'react';
-import Swiper from 'react-native-deck-swiper';
-import { StyleSheet, View, Text, Image } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import React, { Component } from "react";
+import Swiper from "react-native-deck-swiper";
+import { StyleSheet, View, Text, Image } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import { getUsers } from "../utils/index";
 
 // const bedIcon = parseIconFromClassName('fas fa-bed');
 
-export default class Exemple extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cards: ['1', '2', '3', '4', '5', '6'],
-      swipedAllCards: false,
-      swipeDirection: '',
-      isSwipingBack: false,
-      cardIndex: 0
-    };
-  }
+export default class Example extends Component {
+  state = {
+    cards: [],
+    swipedAllCards: false,
+    swipeDirection: "",
+    isSwipingBack: false,
+    cardIndex: 0
+  };
 
-  renderCard = () => {
+  componentDidMount = async () => {
+    const landlords = await getUsers("landlords");
+    this.setState({ cards: landlords.filter(landlord => landlord.property) });
+  };
+
+  renderCard = cardData => {
     return (
-      <View style={styles.card}>
-        <Image
-          style={styles.image}
-          source={{
-            uri:
-              'https://images.unsplash.com/photo-1529408632839-a54952c491e5?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjU3MDIwfQ'
-          }}
-        />
-        <View>
-          <Text style={styles.text}>
-            <FontAwesome name="bed" size={50} />
-          </Text>
-          <Text style={styles.text}>
-            <FontAwesome name="home" size={50} />
-          </Text>
-          <Text style={styles.text}>
-            <FontAwesome name="euro" size={50} />
-          </Text>
+      cardData && (
+        <View style={styles.card}>
+          <Image
+            style={styles.image}
+            source={{
+              uri: cardData.property.images[0]
+            }}
+          />
+          <View style={styles.textBox}>
+            <Text style={styles.text}>
+              <FontAwesome name="home" size={50} />{" "}
+              {this.Capitalize(cardData.property.propertyType)}
+            </Text>
+            <Text style={styles.text}>
+              <FontAwesome name="bed" size={50} /> {cardData.property.bedrooms}
+            </Text>
+            <Text style={styles.text}>
+              <FontAwesome name="gbp" size={50} /> {cardData.property.price}
+            </Text>
+          </View>
         </View>
-      </View>
+      )
     );
+  };
+
+  onClickCard = () => {
+    console.log("the card has been clicked");
   };
 
   onSwipedAllCards = () => {
     this.setState({
       swipedAllCards: true
     });
+  };
+
+  Capitalize = str => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   setIsSwipingBack = (isSwipingBack, cb) => {
@@ -80,16 +93,17 @@ export default class Exemple extends Component {
           showSecondCard={true}
           overlayLabels={{
             left: {
-              title: 'NOPE',
-              backgroundOpacity: '0.75'
+              title: "NOPE",
+              backgroundOpacity: "0.75"
             },
             right: {
-              title: 'LIKE',
-              backgroundOpacity: '0.75'
+              title: "LIKE",
+              backgroundOpacity: "0.75"
             }
           }}
           animateOverlayLabelsOpacity
           animateCardOpacity
+          onTapCard={() => this.onClickCard()}
         />
       </View>
     );
@@ -98,22 +112,27 @@ export default class Exemple extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff'
+    backgroundColor: "#f9f4f5",
+    color: "#f9f4f5"
   },
-
+  textBox: {
+    flex: 0.5,
+    justifyContent: "flex-start",
+    height: 50,
+    alingItems: "flex-start"
+  },
   card: {
     flex: 1,
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: '#0000000',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff'
+    borderColor: "#0000000",
+    backgroundColor: "#dcd1e8"
   },
   text: {
-    textAlign: 'center',
-    fontSize: 50,
-    backgroundColor: 'transparent',
-    color: '#b3b9bd'
+    marginLeft: 20,
+    fontSize: 30,
+    backgroundColor: "transparent",
+    color: "#000000"
   },
   image: {
     flex: 1
