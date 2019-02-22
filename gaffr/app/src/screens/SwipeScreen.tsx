@@ -2,43 +2,47 @@ import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { getUsers } from '../utils/index';
 
 // const bedIcon = parseIconFromClassName('fas fa-bed');
 
-export default class Exemple extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cards: ['1', '2', '3', '4', '5', '6'],
-      swipedAllCards: false,
-      swipeDirection: '',
-      isSwipingBack: false,
-      cardIndex: 0
-    };
-  }
+export default class Example extends Component {
+  state = {
+    cards: [],
+    swipedAllCards: false,
+    swipeDirection: '',
+    isSwipingBack: false,
+    cardIndex: 0
+  };
 
-  renderCard = () => {
+  componentDidMount = async () => {
+    const landlords = await getUsers('landlords');
+    this.setState({ cards: landlords.filter(landlord => landlord.property) });
+  };
+
+  renderCard = cardData => {
     return (
-      <View style={styles.card}>
-        <Image
-          style={styles.image}
-          source={{
-            uri:
-              'https://images.unsplash.com/photo-1529408632839-a54952c491e5?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjU3MDIwfQ'
-          }}
-        />
-        <View>
-          <Text style={styles.text}>
-            <FontAwesome name="bed" size={50} />
-          </Text>
-          <Text style={styles.text}>
-            <FontAwesome name="home" size={50} />
-          </Text>
-          <Text style={styles.text}>
-            <FontAwesome name="euro" size={50} />
-          </Text>
+      cardData && (
+        <View style={styles.card}>
+          <Image
+            style={styles.image}
+            source={{
+              uri: cardData.property.images[0]
+            }}
+          />
+          <View>
+            <Text style={styles.text}>
+              <FontAwesome name="bed" size={50} />
+            </Text>
+            <Text style={styles.text}>
+              <FontAwesome name="home" size={50} />
+            </Text>
+            <Text style={styles.text}>
+              <FontAwesome name="euro" size={50} />
+            </Text>
+          </View>
         </View>
-      </View>
+      )
     );
   };
 
