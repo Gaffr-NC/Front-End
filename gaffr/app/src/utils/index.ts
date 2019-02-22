@@ -101,9 +101,6 @@ const getSuitableLandlords = async (preferences: Preferences) => {
       .where('property.price', '>=', minPrice || 0)
       .where('property.price', '<=', maxPrice || Infinity);
   }
-  if (bedrooms) {
-    landlords = landlords.where('property.bedrooms', '>=', bedrooms);
-  }
   if (city) {
     landlords = landlords.where('property.city', '==', city);
   }
@@ -111,10 +108,17 @@ const getSuitableLandlords = async (preferences: Preferences) => {
     landlords = landlords.where('property.propertyType', '==', propertyType);
   }
   landlords = await landlords.get();
-  return landlords.docs.map((landlord: DocumentSnapshot) => ({
+  landlords = landlords.docs.map((landlord: DocumentSnapshot) => ({
     ...landlord.data(),
     id: landlord.id
   }));
+  if (bedrooms) {
+    landlords = landlords.filter(
+      (landlord: User) =>
+        landlord.property && landlord.property.bedrooms >= bedrooms
+    );
+  }
+  return landlords;
 };
 
 const getMatchesByLandlord = async (landlordId: string) => {
@@ -230,6 +234,7 @@ export {
   getUserById,
   getMatchesByLandlord,
   getMatchesByTenant,
+  getSuitableLandlords,
   addUser,
   addMatch,
   updateUserContact,
