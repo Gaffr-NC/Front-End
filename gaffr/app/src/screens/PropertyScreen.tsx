@@ -48,7 +48,7 @@ export default class PropertyScreen extends Component<Props, States> {
     user: undefined,
     bedrooms: 1,
     city: 'the moon',
-    images: ['http://example.com/img.jpg'],
+    images: [],
     currentImage: '',
     price: 350,
     propertyType: 'house',

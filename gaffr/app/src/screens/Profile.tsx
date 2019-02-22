@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, AsyncStorage } from 'react-native';
 import { User } from '../utils/interfaces';
 import { getUserById } from '../utils';
 
@@ -12,8 +12,9 @@ export default class Profile extends Component {
   };
 
   async componentDidMount() {
-    const id = '0PMhHlUuq6lCP2N3VC1S';
-    const user = await getUserById(id, 'landlords');
+    const uid = await AsyncStorage.getItem('uid');
+    const userType = await AsyncStorage.getItem('userType');
+    const user = await getUserById(uid ? uid : '', userType ? userType : '');
     this.setState({ user });
     //fetch user data
   }
@@ -23,9 +24,7 @@ export default class Profile extends Component {
     if (user) {
       const thisUser: User = user;
       return (
-        <ScrollView
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-        >
+        <ScrollView>
           <View
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
           >
@@ -50,13 +49,12 @@ export default class Profile extends Component {
                 <Text>
                   {thisUser.property.petsAllowed
                     ? 'Pets allowed.'
-                    : 'Pets not allowed'}{' '}
+                    : 'Pets not allowed'}
                 </Text>
                 <Text>
-                  {' '}
                   {thisUser.property.smokingAllowed
                     ? 'Smoking allowed.'
-                    : 'Smoking not allowed'}{' '}
+                    : 'Smoking not allowed'}
                 </Text>
                 {thisUser.property.images.map(img => (
                   <Image
@@ -75,7 +73,7 @@ export default class Profile extends Component {
         <View
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
-          <Text>Loading profilne</Text>
+          <Text>Loading profile</Text>
         </View>
       );
     }
