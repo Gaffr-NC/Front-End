@@ -1,13 +1,20 @@
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import 'firebase/firestore';
+import {
+  QuerySnapshot,
+  DocumentSnapshot,
+  DocumentReference
+} from '@firebase/firestore-types';
+import config from '../config';
+firebase.initializeApp(config);
 const db = firebase.firestore();
 interface Property {
   bedrooms: number;
   city: string;
   images: string[];
   price: number;
-  petsAllowed: boolean;
   propertyType: string;
+  petsAllowed: boolean;
   smokingAllowed: boolean;
 }
 
@@ -35,58 +42,64 @@ interface ChatMessage {
   timestamp: string | Date;
 }
 interface Match {
+  id: string;
   landlordId: string;
   tenantId: string;
   chatHistory?: ChatMessage[];
   blocked: boolean;
 }
-interface UpdateProperty extends Property {
-  [key: string]: any;
-  values: number;
-}
 
-interface UpdatePreferences extends Preferences {
-  [key: string]: any;
-  values: number;
+// This interface is for both landlords and tenants
+interface UpdatePreferences {
+  bedrooms?: number;
+  city?: string;
+  images?: string[];
+  petsAllowed?: boolean;
+  maxPrice?: number;
+  minPrice?: number;
+  price?: number;
+  propertyType?: string;
+  smokingAllowed?: boolean;
+  [key: string]: number | string | boolean | undefined | string[];
 }
 
 const getUsers = async (table: string) => {
-  const users: any = await db.collection(table).get();
-  return users.docs.map((user: any) => ({
+  const users: QuerySnapshot = await db.collection(table).get();
+  return users.docs.map((user: DocumentSnapshot) => ({
     ...user.data(),
     id: user.id
   })) as User[];
 };
 
 const getUserById = async (id: string, table: string) => {
-  const user: any = await db.doc(`${table}/${id}`).get();
-  return user.data();
+  const user: DocumentSnapshot = await db.doc(`${table}/${id}`).get();
+  return user.data() as User | undefined;
 };
 
 const getMatchesByLandlord = async (landlordId: string) => {
-  const matches: any = await db
+  const matches: QuerySnapshot = await db
     .collection('matches')
     .where('landlordId', '==', landlordId)
     .get();
-  return matches.docs.map((match: any) => ({
+  return matches.docs.map((match: DocumentSnapshot) => ({
     ...match.data(),
     id: match.id
   })) as Match[];
 };
 
 const getMatchesByTenant = async (tenantId: string) => {
-  const matches: any = await db
+  const matches: QuerySnapshot = await db
     .collection('matches')
     .where('tenantId', '==', tenantId)
     .get();
-  return matches.docs.map((match: any) => ({
+  return matches.docs.map((match: DocumentSnapshot) => ({
     ...match.data(),
     id: match.id
   })) as Match[];
 };
 
 const addUser = async (id: string, user: User, table: string) => {
-  const userRef: any = await db
+  const userRef: void = await db
     .collection(table)
     .doc(id)
     .set(user);
@@ -103,27 +116,34 @@ const addMatch = async (landlordId: string, tenantId: string) => {
       chatHistory: [],
       blocked: false
     })
-    .then((ref: any) => {
+    .then((ref: DocumentReference) => {
       console.log('match made, id: ', ref.id);
     });
 };
 
-const updateUserContact = async (id: string, user: string, table: string) => {
-  const userRef: any = await db.collection(table).doc(id);
+const updateUserContact = async (id: string, user: User, table: string) => {
+  const userRef: DocumentReference = await db.collection(table).doc(id);
   await userRef.update(user);
   return userRef.id;
 };
 
-const updateProperty = async (id: string, property: UpdateProperty) => {
-  const keys: any[] = Object.keys(property).map(
+const updateProperty = async (id: string, property: Property) => {
+  const keys: string[] = Object.keys(property).map(
     (key: string) => `property.${key}`
   );
-  const values: any[] = Object.values(property);
-  const updatedObj: any = {};
+  const values: (
+    | string
+    | number
+    | boolean
+    | undefined
+    | string[])[] = Object.values(property);
+  const updatedObj: UpdatePreferences = {};
   keys.forEach((key, index) => {
     updatedObj[key] = values[index];
   });
-  const landlordRef = await db.collection('landlords').doc(id);
+  const landlordRef: DocumentReference = await db
+    .collection('landlords')
+    .doc(id);
   await landlordRef.update(updatedObj);
   return landlordRef.id;
 };
@@ -135,8 +155,13 @@ const updatePreferences = async (
   const keys: string[] = Object.keys(preferences).map(
     key => `preferences.${key}`
   );
-  const values: any[] = Object.values(preferences);
-  const updatedObj: any = {};
+  const values: (
+    | string
+    | number
+    | boolean
+    | undefined
+    | string[])[] = Object.values(preferences);
+  const updatedObj: UpdatePreferences = {};
   keys.forEach((key, index) => {
     updatedObj[key] = values[index];
   });
@@ -148,15 +173,15 @@ const updatePreferences = async (
 const blockMatch = async (matchId: string) => {
   db.collection('matches')
     .doc(matchId)
-    .update({ blocked: false });
+    .update({ blocked: true });
 };
 
 const deleteUserById = async (id: string, table: string) => {
-  const value: any = await db
+  await db
     .collection(table)
     .doc(id)
     .delete();
-  console.log(value);
+  console.log(`deleted user ${id} from ${table}}`);
 };
 
 export {

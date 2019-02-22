@@ -4,7 +4,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import firebase from 'firebase';
 import { UserCredential } from '@firebase/auth-types';
 import { FirebaseError } from '@firebase/util';
-
+import { addUser } from '../utils';
 interface States {
   email: String;
   password: String;
@@ -71,7 +71,7 @@ export default class SignUpScreen extends Component<Props, States> {
           onChangeText={(text: String) => this.setState({ phoneNo: text })}
         />
         <Text>{this.props.navigation.getParam('userType', 'ERROR')}</Text>
-        <Button title="SUBMIT" onPress={this.handleSignUpPress} />
+        <Button title="SUBMIT" onPress={() => this.handleSignUpPress()} />
       </View>
     );
   }
@@ -85,16 +85,22 @@ export default class SignUpScreen extends Component<Props, States> {
     } else if (!phoneNo) {
       Alert.alert('Please enter your telephone number');
     } else {
-      console.log(email, password);
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then((user: UserCredential) => {
-          this.props.navigation.navigate('userType', { email, name, phoneNo });
-          console.log(user, 'UUUUSER', 'Successful login');
+          const uid: string | null = user.user ? user.user.uid : 'ERRROR';
+          const userType: string = this.props.navigation.getParam(
+            'userType',
+            'ERROR'
+          );
+          addUser(uid, { name, email, phone: phoneNo }, userType);
+          this.props.navigation.navigate(
+            userType === 'tenants' ? 'TenantApp' : 'Properties',
+            { uid }
+          );
         })
         .catch((err: FirebaseError) => {
-          console.log(err.code);
           if (err.code === 'auth/weak-password') {
             Alert.alert('Password must be at least 6 characters');
           } else if (err.code === 'auth/email-already-in-use') {

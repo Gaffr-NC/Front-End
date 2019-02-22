@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { UserCredential } from '@firebase/auth-types';
+import { getUserById } from '../utils';
 import firebase, { FirebaseError } from 'firebase';
+import { DocumentData } from '@firebase/firestore-types';
 
 interface States {
   email: String;
@@ -51,24 +53,31 @@ export default class Login extends Component<Props, States> {
     );
   }
 
-  logIn = () => {
-    console.log(this.props);
-    this.props.navigation.navigate('TenantApp');
-  };
-
   handleLogInPress = () => {
-    console.log('PRESSED LOG IN');
     const { email, password } = this.state;
-    console.log(email, password);
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((user: UserCredential) => {
-        this.props.navigation.navigate('TenantApp');
-        console.log(user, 'UUUUSER');
+      .then(async (user: UserCredential) => {
+        if (user.user) {
+          const { uid } = user.user;
+          const { navigate } = this.props.navigation;
+          const tenant: DocumentData | undefined = await getUserById(
+            uid,
+            'tenants'
+          );
+          if (tenant) navigate('TenantApp', { uid });
+          else {
+            const landlord: DocumentData | undefined = await getUserById(
+              uid,
+              'landlords'
+            );
+            console.log(uid);
+            if (landlord) navigate('Properties', { uid });
+          }
+        }
       })
       .catch((err: FirebaseError) => {
-        console.log(err);
         Alert.alert('Invalid email/password');
       });
   };
