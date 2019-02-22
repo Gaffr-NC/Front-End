@@ -92,7 +92,6 @@ export default class PropertyScreen extends Component<Props, States> {
   }
   async componentDidMount() {
     const uid = this.props.navigation.getParam('uid', 'ERROR');
-    console.log('this is the uid mate', uid);
     const user: User | undefined = await getUserById(uid, 'landlords');
     if (user && !user.property) {
       await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -125,7 +124,6 @@ export default class PropertyScreen extends Component<Props, States> {
         this.setState({ image: uploadUrl });
       }
     } catch (e) {
-      console.log(e);
       Alert.alert('Upload failed, sorry :(');
     } finally {
       this.setState({ uploading: false });
@@ -141,7 +139,6 @@ export default class PropertyScreen extends Component<Props, States> {
         resolve(xhr.response);
       };
       xhr.onerror = function(e) {
-        console.log(e);
         reject(new TypeError('Network request failed'));
       };
       xhr.responseType = 'blob';
@@ -161,7 +158,6 @@ export default class PropertyScreen extends Component<Props, States> {
     const url = await snapshot.ref.getDownloadURL();
     const { images } = this.state;
     this.setState({ images: [...images, url] });
-    console.log(url);
     //TODO send url to database / registration state
     // !
     // ?
@@ -172,6 +168,7 @@ export default class PropertyScreen extends Component<Props, States> {
 
   render() {
     const user = this.state.user;
+    console.log(user);
     if (!user) return <Text>Loading...</Text>;
     const {
       image,
@@ -190,7 +187,10 @@ export default class PropertyScreen extends Component<Props, States> {
         <Text>Property!</Text>
         {userWithProperty.property ? (
           // property profile
-          <Text>Hello mr landlord you've got a house</Text>
+          <View>
+            <Text>{`Hello, ${userWithProperty.name}`}</Text>
+            <Image source={{ uri: userWithProperty.property.images[0] }} />
+          </View>
         ) : (
           // property form
           <View>

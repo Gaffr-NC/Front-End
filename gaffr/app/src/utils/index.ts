@@ -77,7 +77,7 @@ const getUserById = async (id: string, table: string) => {
 };
 
 // TODO: THIS
-const getSuitableLandlords = async preferences => {
+const getSuitableLandlords = async (preferences: Preferences) => {
   console.log(preferences);
   const {
     smokingAllowed,
@@ -89,7 +89,7 @@ const getSuitableLandlords = async preferences => {
     propertyType
   } = preferences;
 
-  let landlords = await admin.firestore().collection('landlords');
+  let landlords: any = await db.collection('landlords');
   if (smokingAllowed) {
     landlords = landlords.where('property.smokingAllowed', '==', true);
   }
@@ -111,7 +111,7 @@ const getSuitableLandlords = async preferences => {
     landlords = landlords.where('property.propertyType', '==', propertyType);
   }
   landlords = await landlords.get();
-  return landlords.docs.map(landlord => ({
+  return landlords.docs.map((landlord: DocumentSnapshot) => ({
     ...landlord.data(),
     id: landlord.id
   }));
