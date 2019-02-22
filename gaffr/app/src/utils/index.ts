@@ -76,6 +76,47 @@ const getUserById = async (id: string, table: string) => {
   return user.data() as User | undefined;
 };
 
+// TODO: THIS
+const getSuitableLandlords = async preferences => {
+  console.log(preferences);
+  const {
+    smokingAllowed,
+    petsAllowed,
+    minPrice,
+    maxPrice,
+    city,
+    bedrooms,
+    propertyType
+  } = preferences;
+
+  let landlords = await admin.firestore().collection('landlords');
+  if (smokingAllowed) {
+    landlords = landlords.where('property.smokingAllowed', '==', true);
+  }
+  if (petsAllowed) {
+    landlords = landlords.where('property.petsAllowed', '==', true);
+  }
+  if (minPrice || maxPrice) {
+    landlords = landlords
+      .where('property.price', '>=', minPrice || 0)
+      .where('property.price', '<=', maxPrice || Infinity);
+  }
+  if (bedrooms) {
+    landlords = landlords.where('property.bedrooms', '>=', bedrooms);
+  }
+  if (city) {
+    landlords = landlords.where('property.city', '==', city);
+  }
+  if (propertyType) {
+    landlords = landlords.where('property.propertyType', '==', propertyType);
+  }
+  landlords = await landlords.get();
+  return landlords.docs.map(landlord => ({
+    ...landlord.data(),
+    id: landlord.id
+  }));
+};
+
 const getMatchesByLandlord = async (landlordId: string) => {
   const matches: QuerySnapshot = await db
     .collection('matches')

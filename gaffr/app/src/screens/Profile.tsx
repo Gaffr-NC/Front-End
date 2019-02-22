@@ -14,9 +14,8 @@ export default class Profile extends Component {
   async componentDidMount() {
     const uid = await AsyncStorage.getItem('uid');
     const userType = await AsyncStorage.getItem('userType');
-    const user = await getUserById(uid ? uid : '', userType ? userType : '');
+    const user = uid && userType ? await getUserById(uid, userType) : undefined;
     this.setState({ user });
-    //fetch user data
   }
 
   render() {
