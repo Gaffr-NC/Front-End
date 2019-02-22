@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerPort": 19000,
+  "packagerPort": 19004,
+  "packagerPid": 11995,
+  "expoServerNgrokUrl": "https://jt-fht.anonymous.gaffr.exp.direct",
+  "packagerNgrokUrl": "https://packager.jt-fht.anonymous.gaffr.exp.direct",
+  "ngrokPid": 12041
 }
