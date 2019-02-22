@@ -115,7 +115,7 @@ export default class SignUpScreen extends Component<Props, States> {
 
 const styles = StyleSheet.create({
   inputs: {
-    backgroundColor: 'powderblue',
+    backgroundColor: 'white',
     margin: 10,
     width: '90%',
     padding: 10

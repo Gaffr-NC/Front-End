@@ -36,13 +36,17 @@
     "@types/uuid": "^3.4.4",
     "expo": "^32.0.0",
     "firebase": "^5.8.3",
+    "link": "^0.1.5",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-fontawesome": "^6.0.1",
+    "react-native-view-overflow": "0.0.4",
     "react-navigation": "^3.0.9",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
     "jest-expo": "^32.0.0",
+    "react-native-deck-swiper": "^1.6.6",
     "ts-jest": "^24.0.0",
     "tslint": "^5.12.1",
     "tslint-config-airbnb": "^5.11.1",

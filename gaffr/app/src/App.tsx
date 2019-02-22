@@ -35,6 +35,7 @@ const TenantAppStack = createMaterialTopTabNavigator(
   },
   {
     initialRouteName: 'Swiper',
+    swipeEnabled: false,
     tabBarOptions: {
       activeTintColor: '#fff',
       inactiveTintColor: '#fff',
