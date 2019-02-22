@@ -40,7 +40,7 @@ const TenantAppStack = createMaterialTopTabNavigator(
       activeTintColor: '#fff',
       inactiveTintColor: '#fff',
       style: {
-        backgroundColor: 'indianred',
+        backgroundColor: '#502f4c',
         marginTop: 24
       },
       indicatorStyle: {
@@ -62,7 +62,7 @@ const LandAppStack = createMaterialTopTabNavigator(
       activeTintColor: '#fff',
       inactiveTintColor: '#fff',
       style: {
-        backgroundColor: 'indianred',
+        backgroundColor: '#502f4c',
         marginTop: 24
       },
       indicatorStyle: {

@@ -30,15 +30,16 @@ export default class Example extends Component {
               uri: cardData.property.images[0]
             }}
           />
-          <View>
+          <View style={styles.textBox}>
             <Text style={styles.text}>
-              <FontAwesome name="bed" size={50} />
+              <FontAwesome name="home" size={50} />{' '}
+              {this.Capitalize(cardData.property.propertyType)}
             </Text>
             <Text style={styles.text}>
-              <FontAwesome name="home" size={50} />
+              <FontAwesome name="bed" size={50} /> {cardData.property.bedrooms}
             </Text>
             <Text style={styles.text}>
-              <FontAwesome name="euro" size={50} />
+              <FontAwesome name="gbp" size={50} /> {cardData.property.price}
             </Text>
           </View>
         </View>
@@ -46,10 +47,18 @@ export default class Example extends Component {
     );
   };
 
+  onClickCard = () => {
+    console.log('the card has been clicked');
+  };
+
   onSwipedAllCards = () => {
     this.setState({
       swipedAllCards: true
     });
+  };
+
+  Capitalize = str => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   setIsSwipingBack = (isSwipingBack, cb) => {
@@ -94,6 +103,7 @@ export default class Example extends Component {
           }}
           animateOverlayLabelsOpacity
           animateCardOpacity
+          onPress={this.onClickCard()}
         />
       </View>
     );
@@ -102,22 +112,27 @@ export default class Example extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff'
+    backgroundColor: '#f9f4f5',
+    color: '#f9f4f5'
   },
-
+  textBox: {
+    flex: 0.5,
+    justifyContent: 'flex-start',
+    height: 50,
+    alingItems: 'flex-start'
+  },
   card: {
     flex: 1,
     borderRadius: 4,
     borderWidth: 2,
     borderColor: '#0000000',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#dcd1e8'
   },
   text: {
-    textAlign: 'center',
-    fontSize: 50,
+    marginLeft: 20,
+    fontSize: 30,
     backgroundColor: 'transparent',
-    color: '#b3b9bd'
+    color: '#000000'
   },
   image: {
     flex: 1
