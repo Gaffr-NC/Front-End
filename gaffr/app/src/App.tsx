@@ -58,6 +58,7 @@ const LandAppStack = createMaterialTopTabNavigator(
   },
   {
     initialRouteName: 'Properties',
+    swipeEnabled: false,
     tabBarOptions: {
       activeTintColor: '#fff',
       inactiveTintColor: '#fff',
@@ -77,18 +78,19 @@ const AuthStack = createStackNavigator({
   signUp: SignUpScreen,
   userType: UserType
 });
-
-const AppContainer = createAppContainer(
-  createSwitchNavigator(
-    {
-      Loading: Loading,
-      Auth: AuthStack,
-      TenantApp: TenantAppStack,
-      LandApp: LandAppStack
+const SwitchNav = createSwitchNavigator(
+  {
+    Loading: Loading,
+    Auth: AuthStack,
+    TenantApp: {
+      screen: TenantAppStack
     },
-    { initialRouteName: 'Auth' }
-  )
+    LandApp: LandAppStack
+  },
+  { initialRouteName: 'Auth' }
 );
+
+const AppContainer = createAppContainer(SwitchNav);
 
 export default class App extends React.Component<States> {
   public state = {

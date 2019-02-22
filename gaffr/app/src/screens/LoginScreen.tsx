@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  TextInput,
+  StyleSheet,
+  Alert,
+  AsyncStorage
+} from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { UserCredential } from '@firebase/auth-types';
 import { getUserById } from '../utils';
@@ -66,14 +74,21 @@ export default class Login extends Component<Props, States> {
             uid,
             'tenants'
           );
-          if (tenant) navigate('TenantApp', { uid });
-          else {
+          if (tenant) {
+            await AsyncStorage.setItem('uid', uid);
+            await AsyncStorage.setItem('userType', 'tenants');
+            navigate('TenantApp', { uid });
+          } else {
             const landlord: DocumentData | undefined = await getUserById(
               uid,
               'landlords'
             );
             console.log(uid);
-            if (landlord) navigate('Properties', { uid });
+            if (landlord) {
+              await AsyncStorage.setItem('uid', uid);
+              await AsyncStorage.setItem('userType', 'landlords');
+              navigate('Properties', { uid });
+            }
           }
         }
       })
