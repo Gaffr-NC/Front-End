@@ -23,6 +23,7 @@ import {
   UserWithProperty,
   UpdatePreferences
 } from '../utils/interfaces';
+import ImageUploader from '../components/ImageUploader';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -100,70 +101,9 @@ export default class PropertyScreen extends Component<Props, States> {
     this.setState({ user });
   }
 
-  _takePhoto = async () => {
-    const pickerResult = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3]
-    });
-    this._handleImagePicked(pickerResult);
-  };
-
-  _pickImage = async () => {
-    const pickerResult = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3]
-    });
-    this._handleImagePicked(pickerResult);
-  };
-
-  _handleImagePicked = async (pickerResult: ImagePicker.ImageResult) => {
-    try {
-      this.setState({ uploading: true });
-      if (!pickerResult.cancelled) {
-        const uploadUrl = await this.uploadImageAsync(pickerResult.uri);
-        this.setState({ image: uploadUrl });
-      }
-    } catch (e) {
-      Alert.alert('Upload failed, sorry :(');
-    } finally {
-      this.setState({ uploading: false });
-    }
-  };
-
-  uploadImageAsync = async (uri: string) => {
-    // Why are we using XMLHttpRequest? See:
-    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-    const blob: any = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = function() {
-        resolve(xhr.response);
-      };
-      xhr.onerror = function(e) {
-        reject(new TypeError('Network request failed'));
-      };
-      xhr.responseType = 'blob';
-      xhr.open('GET', uri, true);
-      xhr.send(null);
-    });
-
-    const ref = firebase
-      .storage()
-      .ref()
-      .child(uuid.v4());
-    const snapshot = await ref.put(blob);
-
-    // We're done with the blob, close and release it
-    blob.close();
-
-    const url = await snapshot.ref.getDownloadURL();
+  addImage = (image: string) => {
     const { images } = this.state;
-    this.setState({ images: [...images, url] });
-    //TODO send url to database / registration state
-    // !
-    // ?
-    // *
-
-    return url;
+    this.setState({ images: [...images, image] });
   };
 
   render() {
@@ -182,21 +122,12 @@ export default class PropertyScreen extends Component<Props, States> {
       currentImage
     } = this.state;
     const userWithProperty: UserWithProperty = user;
-    console.log(userWithProperty.property.images[0]);
     return (
       <ScrollView style={{ flex: 1, alignItems: 'center' }}>
         <Text>Your property!</Text>
         {userWithProperty.property ? (
           // property profile
-          <View>
-            <Text>{`Hello, ${userWithProperty.name}`}</Text>
-            {userWithProperty.property.images.map(img => (
-              <Image
-                source={{ uri: img }}
-                style={{ height: 200, width: 200 }}
-              />
-            ))}
-          </View>
+          <Text>{`Hello, ${userWithProperty.name}`}</Text>
         ) : (
           // property form
           <View>
@@ -269,12 +200,7 @@ export default class PropertyScreen extends Component<Props, States> {
               <Picker.Item value={false} label="no" />
             </Picker>
 
-            <Button
-              onPress={this._pickImage}
-              title="Pick an image from camera roll"
-            />
-
-            <Button onPress={this._takePhoto} title="Take a photo" />
+            <ImageUploader addImage={this.addImage} />
             <Button
               title="get me a house!"
               onPress={() => this.handleHouse(userWithProperty)}
