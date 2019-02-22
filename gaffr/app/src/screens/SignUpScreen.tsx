@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, Button, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Button,
+  Alert,
+  AsyncStorage
+} from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import firebase from 'firebase';
 import { UserCredential } from '@firebase/auth-types';
@@ -88,13 +96,15 @@ export default class SignUpScreen extends Component<Props, States> {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then((user: UserCredential) => {
+        .then(async (user: UserCredential) => {
           const uid: string | null = user.user ? user.user.uid : 'ERRROR';
           const userType: string = this.props.navigation.getParam(
             'userType',
             'ERROR'
           );
           addUser(uid, { name, email, phone: phoneNo }, userType);
+          await AsyncStorage.setItem('uid', uid);
+          await AsyncStorage.setItem('userType', userType);
           this.props.navigation.navigate(
             userType === 'tenants' ? 'TenantApp' : 'Properties',
             { uid }
