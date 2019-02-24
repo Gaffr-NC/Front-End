@@ -16,6 +16,7 @@ import Loading from './screens/Loading';
 import UserType from './screens/UserType';
 
 import SignUpScreen from './screens/SignUpScreen';
+import Chat from './screens/Chat';
 
 interface User {
   id: String;
@@ -31,7 +32,7 @@ const TenantAppStack = createMaterialTopTabNavigator(
   {
     Profile: Profile,
     Swiper: SwipeScreen,
-    Matches: Matches
+    Matches: Chat
   },
   {
     initialRouteName: 'Swiper',
