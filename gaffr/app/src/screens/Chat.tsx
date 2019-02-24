@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Button,
+  ScrollView
+} from 'react-native';
 import { getMatchById, liveListen, sendChatMessage } from '../utils';
 import { DocumentSnapshot } from '@firebase/firestore-types';
 import { ChatMessage } from '../utils/interfaces';
@@ -37,20 +44,14 @@ export default class Chat extends Component {
     // send to firebase, update chathistory with message
   };
   render() {
-    const sampleChat = [
-      { speaker: 'landlord', message: 'hello friend', timestamp: Date.now() },
-      { speaker: 'tenant', message: 'hello friend', timestamp: Date.now() },
-      { speaker: 'landlord', message: 'hello friend', timestamp: Date.now() },
-      { speaker: 'tenant', message: 'hello friend', timestamp: Date.now() }
-    ];
     const { message, chatHistory } = this.state;
     return (
-      <View>
+      <ScrollView style={{ flex: 1 }}>
         {chatHistory.map(message => (
-          <>
+          <View key={message.timestamp}>
             <Text>{message.speaker}</Text>
             <Text>{message.message}</Text>
-          </>
+          </View>
         ))}
         <TextInput
           placeholder="type your message..."
@@ -58,7 +59,7 @@ export default class Chat extends Component {
           onChangeText={(text: String) => this.setState({ message: text })}
         />
         <Button title="Send" onPress={() => this.sendMessage()} />
-      </View>
+      </ScrollView>
     );
   }
 }
