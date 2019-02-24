@@ -34,21 +34,23 @@ export default class Chat extends Component {
   sendMessage = async () => {
     const { message } = this.state;
     // const { id, userType } = this.props;
-    const id = '13JfwO1SNvwMLeGg1Wph';
-    const chatMessage: ChatMessage = {
-      message,
-      speaker: 'tenants',
-      timestamp: Date.now().toLocaleString()
-    };
-    sendChatMessage(id, chatMessage);
-    // send to firebase, update chathistory with message
+    if (message) {
+      const id = '13JfwO1SNvwMLeGg1Wph';
+      const chatMessage: ChatMessage = {
+        message,
+        speaker: 'tenants',
+        timestamp: Date.now().toLocaleString()
+      };
+      sendChatMessage(id, chatMessage);
+      this.setState({ message: '' });
+    }
   };
   render() {
     const { message, chatHistory } = this.state;
     return (
       <ScrollView style={{ flex: 1 }}>
-        {chatHistory.map(message => (
-          <View key={message.timestamp}>
+        {chatHistory.map((message: ChatMessage) => (
+          <View key={message.timestamp.toString()}>
             <Text>{message.speaker}</Text>
             <Text>{message.message}</Text>
           </View>
