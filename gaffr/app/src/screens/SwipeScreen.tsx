@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Swiper from "react-native-deck-swiper";
-import { StyleSheet, View, Text, Image } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import { getUsers } from "../utils/index";
+import React, { Component } from 'react';
+import Swiper from 'react-native-deck-swiper';
+import { StyleSheet, View, Text, Image } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { getUsers } from '../utils/index';
 
 // const bedIcon = parseIconFromClassName('fas fa-bed');
 
@@ -10,17 +10,17 @@ export default class Example extends Component {
   state = {
     cards: [],
     swipedAllCards: false,
-    swipeDirection: "",
+    swipeDirection: '',
     isSwipingBack: false,
     cardIndex: 0
   };
 
   componentDidMount = async () => {
-    const landlords = await getUsers("landlords");
+    const landlords = await getUsers('landlords');
     this.setState({ cards: landlords.filter(landlord => landlord.property) });
   };
 
-  renderCard = cardData => {
+  renderCard = (cardData: any) => {
     return (
       cardData && (
         <View style={styles.card}>
@@ -32,7 +32,7 @@ export default class Example extends Component {
           />
           <View style={styles.textBox}>
             <Text style={styles.text}>
-              <FontAwesome name="home" size={50} />{" "}
+              <FontAwesome name="home" size={50} />{' '}
               {this.Capitalize(cardData.property.propertyType)}
             </Text>
             <Text style={styles.text}>
@@ -48,7 +48,7 @@ export default class Example extends Component {
   };
 
   onClickCard = () => {
-    console.log("the card has been clicked");
+    console.log('the card has been clicked');
   };
 
   onSwipedAllCards = () => {
@@ -57,11 +57,11 @@ export default class Example extends Component {
     });
   };
 
-  Capitalize = str => {
+  Capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
-  setIsSwipingBack = (isSwipingBack, cb) => {
+  setIsSwipingBack = (isSwipingBack: any, cb: any) => {
     this.setState(
       {
         isSwipingBack: isSwipingBack
@@ -82,7 +82,6 @@ export default class Example extends Component {
           ref={swiper => {
             this.swiper = swiper;
           }}
-          onSwiped={this.onSwiped}
           stackSize={6}
           verticalSwipe={false}
           cards={this.state.cards}
@@ -93,12 +92,12 @@ export default class Example extends Component {
           showSecondCard={true}
           overlayLabels={{
             left: {
-              title: "NOPE",
-              backgroundOpacity: "0.75"
+              title: 'NOPE',
+              backgroundOpacity: '0.75'
             },
             right: {
-              title: "LIKE",
-              backgroundOpacity: "0.75"
+              title: 'LIKE',
+              backgroundOpacity: '0.75'
             }
           }}
           animateOverlayLabelsOpacity
@@ -112,29 +111,30 @@ export default class Example extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#f9f4f5",
-    color: "#f9f4f5"
+    backgroundColor: '#f9f4f5',
+    color: '#f9f4f5'
   },
   textBox: {
     flex: 0.5,
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
     height: 50,
-    alingItems: "flex-start"
+    alignItems: 'flex-start'
   },
   card: {
     flex: 1,
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: "#0000000",
-    backgroundColor: "#dcd1e8"
+    borderColor: '#000000',
+    backgroundColor: '#dcd1e8'
   },
   text: {
     marginLeft: 20,
     fontSize: 30,
-    backgroundColor: "transparent",
-    color: "#000000"
+    backgroundColor: 'transparent',
+    color: '#000000'
   },
   image: {
     flex: 1
-  }
+  },
+  swiper: {}
 });
