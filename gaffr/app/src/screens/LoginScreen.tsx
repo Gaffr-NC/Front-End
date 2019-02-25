@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Alert,
   AsyncStorage,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from "react-native";
 import { NavigationScreenProp } from "react-navigation";
 import { UserCredential } from "@firebase/auth-types";
@@ -37,8 +38,11 @@ export default class Login extends Component<Props, States> {
     return (
       <View style={styles.loginContainer}>
         <View style={styles.headerContainer}>
-          <Text>LOGO SHOULD BE HERE!!!</Text>
-          <Text>It's time to move forward, and it's time to move in.</Text>
+          <Image
+            style={styles.logo}
+            source={require(__dirname + '/../images/gaffr-logo.png')}
+          />
+          <Text style={styles.headerText}>gaffr</Text>
         </View>
 
         <View style={styles.formContainer}>
@@ -61,7 +65,9 @@ export default class Login extends Component<Props, States> {
             style={styles.loginButton}
             onPress={this.handleLogInPress}
           >
-            <Text>LOG IN</Text>
+            <Text style={{ alignSelf: "center", color: "#ffffff" }}>
+              LOG IN
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -71,7 +77,9 @@ export default class Login extends Component<Props, States> {
             style={styles.signupButton}
             onPress={() => this.props.navigation.navigate("userType")}
           >
-            <Text>SIGN UP</Text>
+            <Text style={{ alignSelf: "center", color: "#ffffff" }}>
+              SIGN UP
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -120,42 +128,59 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 30,
+    padding: 20,
     margin: 0,
     color: "#0B4F6C",
-    backgroundColor: "#FBFBFF"
+    backgroundColor: "#dcd1e8"
   },
   headerContainer: {
-    padding: 0,
-    margin: 0,
-    fontSize: 40
+    width: "100%",
+    padding: 70,
+    margin: 0
   },
+  logo: {
+    height: 100
+  },
+  headerText: {
+    fontSize: 80
+  },
+
   formContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
     padding: 0,
     margin: 0
   },
   loginForm: {
-    margin: 10,
+    margin: 5,
     width: "90%",
-    padding: 10,
-    backgroundColor: "#757575"
+    padding: 5,
+    backgroundColor: "#f9f4f5",
+    borderRadius: 10
   },
   loginButton: {
-    backgroundColor: "#20BF55",
-    margin: 0,
-    width: "4clear0%",
-    padding: 10,
+    backgroundColor: "#502F4C",
+    color: "#ffffff",
+    margin: 5,
+    width: "90%",
+    padding: 5,
     borderRadius: 10
   },
   signupContainer: {
-    padding: 30,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    padding: 70,
     margin: 0
   },
   signupButton: {
-    backgroundColor: "#20BF55",
+    backgroundColor: "#502F4C",
     margin: 0,
-    width: "40%",
-    padding: 10,
+    width: "55%",
+    padding: 20,
     borderRadius: 10
   }
 });
