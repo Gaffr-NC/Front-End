@@ -11,6 +11,8 @@ import { getMatchById, liveListen, sendChatMessage } from '../utils';
 import { DocumentSnapshot } from '@firebase/firestore-types';
 import { ChatMessage, Match } from '../utils/interfaces';
 import { NavigationScreenProp } from 'react-navigation';
+import { FontAwesome } from '@expo/vector-icons';
+
 
 interface Props {
   match: Match;
@@ -62,9 +64,9 @@ export default class Chat extends Component<Props> {
           placeholder="type your message..."
           value={message}
           onChangeText={(text: String) => this.setState({ message: text })}
-          style={{ width: '70%'}}
+          style={styles.messageInput}
         />
-        <TouchableOpacity onPress={() => this.sendMessage()} style={styles.sendButton}><Text>Send</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.sendMessage()} style={styles.sendButton}><Text>Send</Text><FontAwesome name='arrow-up'/></TouchableOpacity>
         </View>
       </ScrollView>
     );
@@ -99,6 +101,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end'
+  },
+  messageInput: {
+    width: '70%',
+    padding: 5,
   },
   sendButton: {
     backgroundColor: 'powderblue',
