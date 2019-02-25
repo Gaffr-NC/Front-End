@@ -1,22 +1,22 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   createStackNavigator,
   createAppContainer,
   createMaterialTopTabNavigator,
   createSwitchNavigator
-} from "react-navigation";
+} from 'react-navigation';
 
-import SwipeScreen from "./screens/SwipeScreen";
-import Login from "./screens/LoginScreen";
-import Matches from "./screens/Matches";
-import Profile from "./screens/Profile";
-import PropertyScreen from "./screens/PropertyScreen";
-import Loading from "./screens/Loading";
+import SwipeScreen from './screens/SwipeScreen';
+import Login from './screens/LoginScreen';
+import Matches from './screens/Matches';
+import Profile from './screens/Profile';
+import PropertyScreen from './screens/PropertyScreen';
+import Loading from './screens/Loading';
 
-import UserType from "./screens/UserType";
+import UserType from './screens/UserType';
 
-import SignUpScreen from "./screens/SignUpScreen";
-import Chat from "./screens/Chat";
+import SignUpScreen from './screens/SignUpScreen';
+import Chat from './screens/Chat';
 
 interface User {
   id: String;
@@ -34,7 +34,7 @@ const MatchStack = createStackNavigator(
     Chat: Chat
   },
   {
-    initialRouteName: "Matches"
+    initialRouteName: 'Matches'
   }
 );
 
@@ -45,17 +45,17 @@ const TenantAppStack = createMaterialTopTabNavigator(
     Matches: MatchStack
   },
   {
-    initialRouteName: "Swiper",
+    initialRouteName: 'Swiper',
     swipeEnabled: false,
     tabBarOptions: {
-      activeTintColor: "#fff",
-      inactiveTintColor: "#fff",
+      activeTintColor: '#fff',
+      inactiveTintColor: '#fff',
       style: {
-        backgroundColor: "#502f4c",
+        backgroundColor: '#502f4c',
         marginTop: 24
       },
       indicatorStyle: {
-        backgroundColor: "grey"
+        backgroundColor: 'grey'
       }
     }
   }
@@ -65,20 +65,20 @@ const LandAppStack = createMaterialTopTabNavigator(
   {
     Profile: Profile,
     Properties: PropertyScreen,
-    Matches: Matches
+    Matches: MatchStack
   },
   {
-    initialRouteName: "Properties",
+    initialRouteName: 'Properties',
     swipeEnabled: false,
     tabBarOptions: {
-      activeTintColor: "#fff",
-      inactiveTintColor: "#fff",
+      activeTintColor: '#fff',
+      inactiveTintColor: '#fff',
       style: {
-        backgroundColor: "#502f4c",
+        backgroundColor: '#502f4c',
         marginTop: 24
       },
       indicatorStyle: {
-        backgroundColor: "grey"
+        backgroundColor: 'grey'
       }
     }
   }
@@ -98,7 +98,7 @@ const SwitchNav = createSwitchNavigator(
     },
     LandApp: LandAppStack
   },
-  { initialRouteName: "Auth" }
+  { initialRouteName: 'Auth' }
 );
 
 const AppContainer = createAppContainer(SwitchNav);
