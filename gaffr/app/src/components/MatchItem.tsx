@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { getUserById } from '../utils';
 import { Match, User } from '../utils/interfaces';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 interface States {
   user: User | null;
@@ -28,7 +28,16 @@ export default class MatchItem extends Component<Props, States> {
     const { user } = this.state;
     if (user) {
       const thisUser: User = user;
-      return <View>{user ? <Text>{thisUser.name}</Text> : null}</View>;
+      return (
+        <View>
+          {user ? (
+            <TouchableOpacity>
+              {/* navigate to relevant match chat / profile?  */}
+              <Text>{thisUser.name}</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
+      );
     }
     return <Text>Loading user...</Text>;
   }

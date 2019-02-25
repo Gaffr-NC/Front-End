@@ -33,11 +33,9 @@ export default class Matches extends Component {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>Matches!</Text>
-        {matches.length
-          ? matches.map((match: Match) => (
-              <MatchItem userType={userType} match={match} />
-            ))
-          : null}
+        {matches.map((match: Match) => (
+          <MatchItem userType={userType} match={match} />
+        ))}
       </View>
     );
   }
