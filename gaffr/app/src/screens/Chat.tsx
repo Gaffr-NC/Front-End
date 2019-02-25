@@ -10,7 +10,7 @@ import {
 import { getMatchById, liveListen, sendChatMessage } from "../utils";
 import { DocumentSnapshot } from "@firebase/firestore-types";
 import { ChatMessage, Match } from "../utils/interfaces";
-import { NavigationScreenProp } from "react-navigation";
+import { NavigationScreenProp, NavigationComponent } from "react-navigation";
 import { FontAwesome } from "@expo/vector-icons";
 
 interface Props {
@@ -26,7 +26,7 @@ export default class Chat extends Component<Props> {
     message: "",
   };
 
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions = ({ navigation }:NavigationComponent) => {
     return {
       title: navigation.getParam('name', 'error - no user')
     }
@@ -130,9 +130,10 @@ const styles = StyleSheet.create({
   },
   messageInput: {
     width: "80%",
-    padding: 5,
+    padding: 12,
     position: "absolute",
-    bottom: 0
+    bottom: 0,
+    left: 0,
   },
   sendButton: {
     backgroundColor: "powderblue",
