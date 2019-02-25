@@ -16,14 +16,21 @@ import { FontAwesome } from "@expo/vector-icons";
 interface Props {
   match: Match;
   userType: string;
+  name: string;
   navigation: NavigationScreenProp<any, any>;
 }
 
 export default class Chat extends Component<Props> {
   state = {
     chatHistory: [],
-    message: ""
+    message: "",
   };
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('name', 'error - no user')
+    }
+  }
   async componentDidMount() {
     const match = JSON.parse(this.props.navigation.getParam("match", "ERROR"));
     liveListen("matches", match.id, (doc: DocumentSnapshot) => {
