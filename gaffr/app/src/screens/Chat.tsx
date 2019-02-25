@@ -59,7 +59,7 @@ export default class Chat extends Component<Props> {
     const userType = this.props.navigation.getParam("userType", "ERROR");
     return (
       <View style={{ flex: 1 }}>
-        <ScrollView style={{ flex: 1 }}>
+        { chatHistory[0] ? <ScrollView style={{ flex: 1 }}>
           {chatHistory.map((message: ChatMessage) => (
             <View
               key={message.timestamp.toString()}
@@ -79,7 +79,7 @@ export default class Chat extends Component<Props> {
               </Text>
             </View>
           ))}
-        </ScrollView>
+        </ScrollView> : <Text style={{ flex:1, textAlign: 'center', textAlignVertical: 'center'}}>Begin the conversation!</Text>}
         <View style={styles.inputBar}>
           <TextInput
             placeholder="type your message..."
