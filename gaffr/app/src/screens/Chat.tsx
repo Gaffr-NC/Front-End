@@ -24,16 +24,13 @@ export default class Chat extends Component<Props> {
     message: '',
   };
   async componentDidMount() {
-    console.log('HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
     const match = JSON.parse(this.props.navigation.getParam('match', 'ERROR'));
-    console.log(match, '< --- match');
     liveListen('matches', match.id, (doc: DocumentSnapshot) => {
       const matchData = doc.data();
       this.setState({
         chatHistory: matchData ? matchData.chatHistory : []
       });
     });
-    console.log("LISTTETETNEINTINGGG")
   }
   sendMessage = async () => {
     const { message } = this.state;
@@ -50,7 +47,6 @@ export default class Chat extends Component<Props> {
     }
   };
   render() {
-    console.log("RENDDEEEEEEREREDEREDERED")
     const { message, chatHistory } = this.state;
     return (
       <ScrollView style={{ flex: 1 }}>
