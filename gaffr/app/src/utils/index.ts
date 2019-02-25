@@ -8,6 +8,7 @@ import {
 import config from '../config';
 firebase.initializeApp(config);
 const db = firebase.firestore();
+
 interface Property {
   bedrooms: number;
   city: string;
@@ -16,6 +17,7 @@ interface Property {
   propertyType: string;
   petsAllowed: boolean;
   smokingAllowed: boolean;
+  description: string;
 }
 
 interface Preferences {
@@ -60,6 +62,7 @@ interface UpdatePreferences {
   price?: number;
   propertyType?: string;
   smokingAllowed?: boolean;
+  description: string;
   [key: string]: number | string | boolean | undefined | string[];
 }
 

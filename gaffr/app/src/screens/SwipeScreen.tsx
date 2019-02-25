@@ -3,16 +3,23 @@ import Swiper from 'react-native-deck-swiper';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { getUsers } from '../utils/index';
+import { NavigationScreenProp } from 'react-navigation';
 
-// const bedIcon = parseIconFromClassName('fas fa-bed');
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
+}
 
-export default class SwipeScreen extends Component {
+export default class SwipeScreen extends Component<Props> {
   state = {
     cards: [],
     swipedAllCards: false,
     swipeDirection: '',
     isSwipingBack: false,
     cardIndex: 0
+  };
+
+  static navigationOptions: {
+    header: { visible: false };
   };
 
   componentDidMount = async () => {
@@ -48,7 +55,8 @@ export default class SwipeScreen extends Component {
   };
 
   onClickCard = () => {
-    console.log('the card has been clicked');
+    this.props.navigation.navigate('PropertyProfile');
+    console.log('TAPPED!');
   };
 
   onSwipedAllCards = () => {

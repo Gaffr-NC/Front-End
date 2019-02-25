@@ -17,6 +17,7 @@ import UserType from './screens/UserType';
 
 import SignUpScreen from './screens/SignUpScreen';
 import Chat from './screens/Chat';
+import PropertyProfile from './screens/PropertyProfile';
 
 interface User {
   id: String;
@@ -28,10 +29,18 @@ interface States {
   currentUser: User | null;
 }
 
+const SwiperStack = createStackNavigator(
+  {
+    SwipeScreen: SwipeScreen,
+    PropertyProfile: PropertyProfile
+  },
+  { initialRouteName: 'SwipeScreen', headerMode: 'none' }
+);
+
 const TenantAppStack = createMaterialTopTabNavigator(
   {
     Profile: Profile,
-    Swiper: SwipeScreen,
+    Swiper: SwiperStack,
     Matches: Chat
   },
   {
