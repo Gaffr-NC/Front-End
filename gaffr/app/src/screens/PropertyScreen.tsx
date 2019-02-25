@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import firebase from 'firebase';
+import React, { Component } from "react";
+import firebase from "firebase";
 import {
   View,
   Text,
@@ -11,19 +11,19 @@ import {
   StatusBar,
   Image,
   ScrollView
-} from 'react-native';
-import uuid from 'uuid';
-import { ImagePicker, Permissions } from 'expo';
-import { getUserById } from '../utils';
-import { NavigationScreenProp } from 'react-navigation';
-import { updateProperty } from '../utils';
+} from "react-native";
+import uuid from "uuid";
+import { ImagePicker, Permissions } from "expo";
+import { getUserById } from "../utils";
+import { NavigationScreenProp } from "react-navigation";
+import { updateProperty } from "../utils";
 import {
   User,
   Property,
   UserWithProperty,
   UpdatePreferences
-} from '../utils/interfaces';
-import ImageUploader from '../components/ImageUploader';
+} from "../utils/interfaces";
+import ImageUploader from "../components/ImageUploader";
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -45,20 +45,20 @@ interface States {
 
 export default class PropertyScreen extends Component<Props, States> {
   public state = {
-    image: 'abcdef',
+    image: "abcdef",
     user: undefined,
     bedrooms: 1,
-    city: 'the moon',
+    city: "the moon",
     images: [],
-    currentImage: '',
+    currentImage: "",
     price: 350,
-    propertyType: 'house',
+    propertyType: "house",
     petsAllowed: false,
     smokingAllowed: false
   };
 
   static navigationOptions = {
-    title: 'Properties'
+    title: "Properties"
   };
   async handleHouse(user: UserWithProperty) {
     const {
@@ -87,13 +87,13 @@ export default class PropertyScreen extends Component<Props, States> {
       petsAllowed,
       smokingAllowed
     };
-    const uid = this.props.navigation.getParam('uid', 'ERROR');
+    const uid = this.props.navigation.getParam("uid", "ERROR");
     updateProperty(uid, property);
     this.setState({ user: { ...user, property } });
   }
   async componentDidMount() {
-    const uid = this.props.navigation.getParam('uid', 'ERROR');
-    const user: User | undefined = await getUserById(uid, 'landlords');
+    const uid = this.props.navigation.getParam("uid", "ERROR");
+    const user: User | undefined = await getUserById(uid, "landlords");
     if (user && !user.property) {
       await Permissions.askAsync(Permissions.CAMERA_ROLL);
       await Permissions.askAsync(Permissions.CAMERA);
@@ -123,7 +123,7 @@ export default class PropertyScreen extends Component<Props, States> {
     } = this.state;
     const userWithProperty: UserWithProperty = user;
     return (
-      <ScrollView style={{ flex: 1, alignItems: 'center' }}>
+      <ScrollView style={{ flex: 1, alignItems: "center" }}>
         <Text>Your property!</Text>
         {userWithProperty.property ? (
           // property profile
@@ -208,8 +208,8 @@ export default class PropertyScreen extends Component<Props, States> {
             <View
               style={{
                 flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center'
+                alignItems: "center",
+                justifyContent: "center"
               }}
             >
               {image ? null : (
@@ -217,7 +217,7 @@ export default class PropertyScreen extends Component<Props, States> {
                   style={{
                     fontSize: 20,
                     marginBottom: 20,
-                    textAlign: 'center',
+                    textAlign: "center",
                     marginHorizontal: 15
                   }}
                 >
@@ -235,7 +235,7 @@ export default class PropertyScreen extends Component<Props, States> {
 }
 const styles = StyleSheet.create({
   inputs: {
-    backgroundColor: 'powderblue',
+    backgroundColor: "powderblue",
     margin: 10,
     width: 150,
     padding: 10

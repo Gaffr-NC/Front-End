@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -7,12 +7,12 @@ import {
   Button,
   Alert,
   AsyncStorage
-} from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
-import firebase from 'firebase';
-import { UserCredential } from '@firebase/auth-types';
-import { FirebaseError } from '@firebase/util';
-import { addUser } from '../utils';
+} from "react-native";
+import { NavigationScreenProp } from "react-navigation";
+import firebase from "firebase";
+import { UserCredential } from "@firebase/auth-types";
+import { FirebaseError } from "@firebase/util";
+import { addUser } from "../utils";
 interface States {
   email: String;
   password: String;
@@ -26,20 +26,20 @@ interface Props {
 
 export default class SignUpScreen extends Component<Props, States> {
   state = {
-    email: '',
-    password: '',
-    confirmPassword: '',
-    name: '',
-    phoneNo: ''
+    email: "",
+    password: "",
+    confirmPassword: "",
+    name: "",
+    phoneNo: ""
   };
 
   static navigationOptions = {
-    title: 'Sign Up'
+    title: "Sign Up"
   };
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>Sign up!</Text>
         <TextInput
           style={styles.inputs}
@@ -78,7 +78,7 @@ export default class SignUpScreen extends Component<Props, States> {
           value={this.state.phoneNo}
           onChangeText={(text: String) => this.setState({ phoneNo: text })}
         />
-        <Text>{this.props.navigation.getParam('userType', 'ERROR')}</Text>
+        <Text>{this.props.navigation.getParam("userType", "ERROR")}</Text>
         <Button title="SUBMIT" onPress={() => this.handleSignUpPress()} />
       </View>
     );
@@ -87,36 +87,36 @@ export default class SignUpScreen extends Component<Props, States> {
   handleSignUpPress = () => {
     const { email, password, confirmPassword, name, phoneNo } = this.state;
     if (password !== confirmPassword) {
-      Alert.alert('Passwords do not match');
+      Alert.alert("Passwords do not match");
     } else if (!name) {
-      Alert.alert('Please enter your name');
+      Alert.alert("Please enter your name");
     } else if (!phoneNo) {
-      Alert.alert('Please enter your telephone number');
+      Alert.alert("Please enter your telephone number");
     } else {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(async (user: UserCredential) => {
-          const uid: string | null = user.user ? user.user.uid : 'ERRROR';
+          const uid: string | null = user.user ? user.user.uid : "ERRROR";
           const userType: string = this.props.navigation.getParam(
-            'userType',
-            'ERROR'
+            "userType",
+            "ERROR"
           );
           addUser(uid, { name, email, phone: phoneNo }, userType);
-          await AsyncStorage.setItem('uid', uid);
-          await AsyncStorage.setItem('userType', userType);
+          await AsyncStorage.setItem("uid", uid);
+          await AsyncStorage.setItem("userType", userType);
           this.props.navigation.navigate(
-            userType === 'tenants' ? 'TenantApp' : 'Properties',
+            userType === "tenants" ? "TenantApp" : "Properties",
             { uid }
           );
         })
         .catch((err: FirebaseError) => {
-          if (err.code === 'auth/weak-password') {
-            Alert.alert('Password must be at least 6 characters');
-          } else if (err.code === 'auth/email-already-in-use') {
-            Alert.alert('Email already in use');
+          if (err.code === "auth/weak-password") {
+            Alert.alert("Password must be at least 6 characters");
+          } else if (err.code === "auth/email-already-in-use") {
+            Alert.alert("Email already in use");
           } else {
-            Alert.alert('Invalid email/password');
+            Alert.alert("Invalid email/password");
           }
         });
     }
@@ -125,9 +125,9 @@ export default class SignUpScreen extends Component<Props, States> {
 
 const styles = StyleSheet.create({
   inputs: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     margin: 10,
-    width: '90%',
+    width: "90%",
     padding: 10
   }
 });
