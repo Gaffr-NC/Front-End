@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, AsyncStorage } from 'react-native';
+import { View, Text, AsyncStorage, ScrollView } from 'react-native';
 import {
   getMatchesByTenant,
   getMatchesByLandlord,
@@ -31,12 +31,12 @@ export default class Matches extends Component {
   render() {
     const { userType, matches } = this.state;
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <ScrollView style={{ flex: 1}}>
         <Text>Matches!</Text>
         {matches.map((match: Match) => (
           <MatchItem userType={userType} match={match} />
         ))}
-      </View>
+      </ScrollView>
     );
   }
 }

@@ -122,7 +122,7 @@ export default class PropertyScreen extends Component<Props, States> {
     } = this.state;
     const userWithProperty: UserWithProperty = user;
     return (
-      <ScrollView style={{ flex: 1, alignItems: 'center' }}>
+      <ScrollView style={{ flex: 1 }}>
         <Text>Your property!</Text>
         {userWithProperty.property ? (
           // property profile

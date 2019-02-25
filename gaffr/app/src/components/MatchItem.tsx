@@ -13,7 +13,7 @@ interface Props {
   navigation?: NavigationScreenProp<any, any>;
 }
 
-class MatchItem extends Component<Props, States> {
+class MatchItem extends Component<any, States> {
   state = {
     user: null
   };
@@ -29,7 +29,6 @@ class MatchItem extends Component<Props, States> {
   render() {
     const { user } = this.state;
     const { navigation, match, userType } = this.props;
-    console.log(navigation, "NAVI")
     if (user) {
       const matchedUser: User = user;
       return (
@@ -39,7 +38,7 @@ class MatchItem extends Component<Props, States> {
               style={{ height: 80 }}
               onPress={() =>
                 navigation.navigate("Chat", {
-                  match,
+                  match: JSON.stringify(match),
                   userType,
                   name: matchedUser.name
                 })

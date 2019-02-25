@@ -9,43 +9,48 @@ import {
 } from 'react-native';
 import { getMatchById, liveListen, sendChatMessage } from '../utils';
 import { DocumentSnapshot } from '@firebase/firestore-types';
-import { ChatMessage } from '../utils/interfaces';
+import { ChatMessage, Match } from '../utils/interfaces';
+import { NavigationScreenProp } from 'react-navigation';
 
-export default class Chat extends Component {
+interface Props {
+  match: Match;
+  userType: string;
+  navigation: NavigationScreenProp<any, any>;
+}
+
+export default class Chat extends Component<Props> {
   state = {
     chatHistory: [],
-    message: ''
+    message: '',
   };
   async componentDidMount() {
-    // const {id, userType} = this.props
-    const id = '13JfwO1SNvwMLeGg1Wph';
-    const match = await getMatchById(id);
-    this.setState({ match });
-    liveListen('matches', id, (doc: DocumentSnapshot) => {
+    console.log('HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+    const match = JSON.parse(this.props.navigation.getParam('match', 'ERROR'));
+    console.log(match, '< --- match');
+    liveListen('matches', match.id, (doc: DocumentSnapshot) => {
       const matchData = doc.data();
       this.setState({
-        match: matchData,
         chatHistory: matchData ? matchData.chatHistory : []
       });
     });
-    // get match by props
-    // set state with matches
+    console.log("LISTTETETNEINTINGGG")
   }
   sendMessage = async () => {
     const { message } = this.state;
-    // const { id, userType } = this.props;
+    const match = JSON.parse(this.props.navigation.getParam('match', 'ERROR'));
+    const userType = this.props.navigation.getParam('userType', 'ERROR');
     if (message) {
-      const id = '13JfwO1SNvwMLeGg1Wph';
       const chatMessage: ChatMessage = {
         message,
-        speaker: 'tenants',
+        speaker: userType,
         timestamp: Date.now().toLocaleString()
       };
-      sendChatMessage(id, chatMessage);
+      sendChatMessage(match.id, chatMessage);
       this.setState({ message: '' });
     }
   };
   render() {
+    console.log("RENDDEEEEEEREREDEREDERED")
     const { message, chatHistory } = this.state;
     return (
       <ScrollView style={{ flex: 1 }}>
