@@ -6,7 +6,7 @@ import { getUsers } from '../utils/index';
 
 // const bedIcon = parseIconFromClassName('fas fa-bed');
 
-export default class Example extends Component {
+export default class SwipeScreen extends Component {
   state = {
     cards: [],
     swipedAllCards: false,
@@ -79,7 +79,7 @@ export default class Example extends Component {
       <View style={styles.container}>
         <Swiper
           style={styles.swiper}
-          ref={swiper => {
+          ref={(swiper: any) => {
             this.swiper = swiper;
           }}
           stackSize={6}

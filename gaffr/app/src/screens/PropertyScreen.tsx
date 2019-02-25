@@ -108,7 +108,6 @@ export default class PropertyScreen extends Component<Props, States> {
 
   render() {
     const user = this.state.user;
-    console.log(user);
     if (!user) return <Text>Loading...</Text>;
     const {
       image,
@@ -221,7 +220,7 @@ export default class PropertyScreen extends Component<Props, States> {
                     marginHorizontal: 15
                   }}
                 >
-                  Example: Upload ImagePicker result
+                  Upload ImagePicker result
                 </Text>
               )}
 
