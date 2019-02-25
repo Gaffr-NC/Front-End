@@ -241,5 +241,12 @@ const styles = StyleSheet.create({
     margin: 0,
     color: "#0B4F6C",
     backgroundColor: "#dcd1e8"
+  },
+  inputs: {
+    margin: 5,
+    width: "90%",
+    padding: 5,
+    backgroundColor: "#f9f4f5",
+    borderRadius: 10
   }
 });
