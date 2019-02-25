@@ -1,0 +1,181 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests LoginScreen against snapshot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#dcd1e8",
+      "color": "#0B4F6C",
+      "flex": 1,
+      "justifyContent": "center",
+      "margin": 0,
+      "padding": 20,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "margin": 0,
+        "padding": 20,
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "https://i.imgur.com/NH0xhhe.png",
+        }
+      }
+      style={
+        Object {
+          "alignItems": "center",
+          "height": 200,
+          "width": 200,
+        }
+      }
+    />
+    <Text
+      style={
+        Object {
+          "alignItems": "center",
+          "fontSize": 12,
+          "padding": 0,
+        }
+      }
+    >
+      It's time to move forward, and it's time to move in...
+    </Text>
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "margin": 0,
+        "padding": 0,
+        "width": "100%",
+      }
+    }
+  >
+    <TextInput
+      allowFontScaling={true}
+      autoCapitalize="none"
+      onChangeText={[Function]}
+      placeholder="Email Address"
+      style={
+        Object {
+          "backgroundColor": "#f9f4f5",
+          "borderRadius": 10,
+          "margin": 5,
+          "padding": 5,
+          "width": "90%",
+        }
+      }
+      underlineColorAndroid="transparent"
+      value=""
+    />
+    <TextInput
+      allowFontScaling={true}
+      autoCapitalize="none"
+      onChangeText={[Function]}
+      placeholder="Password"
+      secureTextEntry={true}
+      style={
+        Object {
+          "backgroundColor": "#f9f4f5",
+          "borderRadius": 10,
+          "margin": 5,
+          "padding": 5,
+          "width": "90%",
+        }
+      }
+      underlineColorAndroid="transparent"
+      value=""
+    />
+    <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#502F4C",
+          "borderRadius": 10,
+          "color": "#ffffff",
+          "margin": 5,
+          "opacity": 1,
+          "padding": 5,
+          "width": "90%",
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "alignSelf": "center",
+            "color": "#ffffff",
+          }
+        }
+      >
+        LOG IN
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "margin": 0,
+        "padding": 70,
+        "width": "100%",
+      }
+    }
+  >
+    <Text>
+      New user?
+    </Text>
+    <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#502F4C",
+          "borderRadius": 10,
+          "margin": 0,
+          "opacity": 1,
+          "padding": 20,
+          "width": "55%",
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "alignSelf": "center",
+            "color": "#ffffff",
+          }
+        }
+      >
+        SIGN UP
+      </Text>
+    </View>
+  </View>
+</View>
+`;

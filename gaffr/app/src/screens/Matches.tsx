@@ -20,11 +20,11 @@ export default class Matches extends Component {
   async componentDidMount() {
     const uid = await AsyncStorage.getItem('uid');
     const userType = await AsyncStorage.getItem('userType');
-    const matches =
-      uid &&
-      (userType === 'tenants'
+    const matches = uid
+      ? userType === 'tenants'
         ? await getMatchesByTenant(uid)
-        : await getMatchesByLandlord(uid));
+        : await getMatchesByLandlord(uid)
+      : [];
     this.setState({ matches, userType });
   }
 
@@ -33,9 +33,10 @@ export default class Matches extends Component {
     return (
       <ScrollView style={{ flex: 1 }}>
         <Text>Matches!</Text>
-        {matches.map((match: Match) => (
-          <MatchItem userType={userType} match={match} key={match.id} />
-        ))}
+        {matches &&
+          matches.map((match: Match) => (
+            <MatchItem userType={userType} match={match} key={match.id} />
+          ))}
       </ScrollView>
     );
   }
