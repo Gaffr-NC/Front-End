@@ -5,7 +5,12 @@ import { NavigationScreenProp } from "react-navigation";
 interface Props {
   navigation: NavigationScreenProp<any, any>;
 }
+
 export default class UserTypeScreen extends Component<Props> {
+  static navigationOptions = {
+    title: "Select Account Type"
+  };
+
   render() {
     return (
       <View style={styles.buttonContainer}>
@@ -16,7 +21,7 @@ export default class UserTypeScreen extends Component<Props> {
             this.props.navigation.navigate("signUp", { userType: "tenants" })
           }
         >
-          <Text>TENANT</Text>
+          <Text style={{ alignSelf: "center", color: "#ffffff" }}>TENANT</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.landlordButton}
@@ -24,9 +29,10 @@ export default class UserTypeScreen extends Component<Props> {
             this.props.navigation.navigate("signUp", { userType: "landlords" })
           }
         >
-          <Text>LANDLORD</Text>
+          <Text style={{ alignSelf: "center", color: "#ffffff" }}>
+            LANDLORD
+          </Text>
         </TouchableOpacity>
-        />
       </View>
     );
   }
@@ -44,18 +50,16 @@ const styles = StyleSheet.create({
   },
   tenantButton: {
     backgroundColor: "#502F4C",
-    color: "#ffffff",
-    margin: 5,
-    width: "90%",
-    padding: 5,
+    margin: 10,
+    width: "55%",
+    padding: 20,
     borderRadius: 10
   },
   landlordButton: {
     backgroundColor: "#502F4C",
-    color: "#ffffff",
-    margin: 5,
-    width: "90%",
-    padding: 5,
+    margin: 10,
+    width: "55%",
+    padding: 20,
     borderRadius: 10
   }
 });

@@ -40,8 +40,21 @@ export default class SignUpScreen extends Component<Props, States> {
   render() {
     return (
       <View style={styles.signupContainer}>
-        <Text>Please fill in your details to sign up.</Text>
+        <View style={styles.headerText}>
+          <Text>
+            You have selected a{" "}
+            {this.props.navigation.getParam("userType", "ERROR")} account.
+          </Text>
+          <Text>(To change account type, you can go back!)</Text>
+          <Text>Fill in your details below to sign up.</Text>
+        </View>
         <View style={styles.signupForm}>
+          <TextInput
+            style={styles.input}
+            placeholder="Full Name"
+            value={this.state.name}
+            onChangeText={(text: String) => this.setState({ name: text })}
+          />
           <TextInput
             style={styles.input}
             placeholder="Email Address"
@@ -69,22 +82,17 @@ export default class SignUpScreen extends Component<Props, States> {
           />
           <TextInput
             style={styles.input}
-            placeholder="Full Name"
-            value={this.state.name}
-            onChangeText={(text: String) => this.setState({ name: text })}
-          />
-          <TextInput
-            style={styles.input}
             placeholder="Phone Number"
             value={this.state.phoneNo}
             onChangeText={(text: String) => this.setState({ phoneNo: text })}
           />
-          <Text>{this.props.navigation.getParam("userType", "ERROR")}</Text>
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() => this.handleSignUpPress()}
           >
-            <Text>SUBMIT</Text>
+            <Text style={{ alignSelf: "center", color: "#ffffff" }}>
+              SUBMIT
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -104,7 +112,7 @@ export default class SignUpScreen extends Component<Props, States> {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(async (user: UserCredential) => {
-          const uid: string | null = user.user ? user.user.uid : "ERRROR";
+          const uid: string | null = user.user ? user.user.uid : "ERROR";
           const userType: string = this.props.navigation.getParam(
             "userType",
             "ERROR"
@@ -139,6 +147,13 @@ const styles = StyleSheet.create({
     margin: 0,
     color: "#0B4F6C",
     backgroundColor: "#dcd1e8"
+  },
+  headerText: {
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 0,
+    padding: 10,
+    alignSelf: "center"
   },
   signupForm: {
     flex: 1,
