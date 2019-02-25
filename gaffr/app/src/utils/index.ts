@@ -247,6 +247,8 @@ const sendChatMessage = async (matchId: string, message: ChatMessage) => {
   });
 };
 
+const trimMessage = (message: string) => message.length > 40 ? `${message.slice(0, 40)}...` : message;
+
 export {
   getUsers,
   getUserById,
@@ -262,5 +264,6 @@ export {
   blockMatch,
   deleteUserById,
   liveListen,
-  sendChatMessage
+  sendChatMessage,
+  trimMessage
 };

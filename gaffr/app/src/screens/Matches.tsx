@@ -14,8 +14,8 @@ export default class Matches extends Component {
     userType: ''
   };
   static navigationOptions = {
-    title: 'Matches'
-  };
+    header: null,
+  }
 
   async componentDidMount() {
     const uid = await AsyncStorage.getItem('uid');
@@ -32,7 +32,6 @@ export default class Matches extends Component {
     const { userType, matches } = this.state;
     return (
       <ScrollView style={{ flex: 1}}>
-        <Text>Matches!</Text>
         {matches.map((match: Match) => (
           <MatchItem userType={userType} match={match} key={match.id} />
         ))}

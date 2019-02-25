@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { getUserById } from "../utils";
+import { getUserById, trimMessage } from "../utils";
 import { Match, User } from "../utils/interfaces";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { NavigationScreenProp, withNavigation } from "react-navigation";
+import { FontAwesome } from "@expo/vector-icons";
 
 interface States {
   user: User | null;
@@ -29,13 +30,16 @@ class MatchItem extends Component<any, States> {
   render() {
     const { user } = this.state;
     const { navigation, match, userType } = this.props;
+    const lastMessage = match.chatHistory.length ? match.chatHistory[match.chatHistory.length - 1].message : 'Begin the conversation!';
+    const lastUser = match.chatHistory.length ? match.chatHistory[match.chatHistory.length - 1].speaker : '';
+    const messagePreview =  trimMessage(lastMessage);
     if (user) {
       const matchedUser: User = user;
       return (
         <View>
           {user ? (
             <TouchableOpacity
-              style={{ height: 80 }}
+              style={styles.item}
               onPress={() =>
                 navigation.navigate("Chat", {
                   match: JSON.stringify(match),
@@ -44,8 +48,8 @@ class MatchItem extends Component<any, States> {
                 })
               }
             >
-              {/* navigate to relevant match chat / profile?  */}
-              <Text>{matchedUser.name}</Text>
+              <Text style={styles.text}>{matchedUser.name}</Text>
+            <Text style={styles.message}>{lastUser === userType && <FontAwesome name="reply" size={15} style={styles.arrow}/>}{messagePreview}</Text>
             </TouchableOpacity>
           ) : null}
         </View>
@@ -54,5 +58,25 @@ class MatchItem extends Component<any, States> {
     return <Text>Loading user...</Text>;
   }
 }
+
+const styles = StyleSheet.create({
+  item: {
+    height: 80,
+    borderColor: '#502f4c',
+    borderWidth: 2,
+    margin: 5,
+    borderRadius: 10,
+  },
+  text: {
+    textAlignVertical: 'center',
+    padding: 12,
+  },
+  message: {
+    color: 'lightgray',
+    padding: 12,
+    marginBottom: 5
+  },
+  arrow: { marginRight: 5 }
+})
 
 export default withNavigation(MatchItem)
