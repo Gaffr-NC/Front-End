@@ -61,27 +61,11 @@ export default class SwipeScreen extends Component {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
-  setIsSwipingBack = (isSwipingBack: any, cb: any) => {
-    this.setState(
-      {
-        isSwipingBack: isSwipingBack
-      },
-      cb
-    );
-  };
-
-  jumpTo = () => {
-    this.swiper.jumpToCardIndex(2);
-  };
-
   render() {
     return (
       <View style={styles.container}>
         <Swiper
           style={styles.swiper}
-          ref={(swiper: any) => {
-            this.swiper = swiper;
-          }}
           stackSize={6}
           verticalSwipe={false}
           cards={this.state.cards}
