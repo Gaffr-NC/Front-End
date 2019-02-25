@@ -66,7 +66,7 @@ export default class Chat extends Component<Props> {
           onChangeText={(text: String) => this.setState({ message: text })}
           style={styles.messageInput}
         />
-        <TouchableOpacity onPress={() => this.sendMessage()} style={styles.sendButton}><Text>Send</Text><FontAwesome name='arrow-up'/></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.sendMessage()} style={styles.sendButton}><FontAwesome name='arrow-up' size={30}/></TouchableOpacity>
         </View>
       </ScrollView>
     );
@@ -103,16 +103,17 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   messageInput: {
-    width: '70%',
+    width: '80%',
     padding: 5,
   },
   sendButton: {
     backgroundColor: 'powderblue',
     padding: 12,
-    borderRadius: 20,
-    width: '30%',
+    borderRadius: 50,
+    width: '20%',
     borderColor: 'steelblue',
     borderWidth: 3,
+    alignContent: 'center'
   }
 })
 
