@@ -34,7 +34,7 @@ export default class Matches extends Component {
       <ScrollView style={{ flex: 1}}>
         <Text>Matches!</Text>
         {matches.map((match: Match) => (
-          <MatchItem userType={userType} match={match} />
+          <MatchItem userType={userType} match={match} key={match.id} />
         ))}
       </ScrollView>
     );

@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19004,
-  "packagerPid": 5520,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "packagerPort": 19003,
+  "packagerPid": 13280,
+  "expoServerNgrokUrl": "https://gn-29a.anonymous.gaffr.exp.direct",
+  "packagerNgrokUrl": "https://packager.gn-29a.anonymous.gaffr.exp.direct",
+  "ngrokPid": 13326
 }
