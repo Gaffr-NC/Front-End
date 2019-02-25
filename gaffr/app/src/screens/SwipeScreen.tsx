@@ -57,7 +57,14 @@ export default class SwipeScreen extends Component<Props> {
   onClickCard = (cardIndex: number) => {
     const card = this.state.cards[cardIndex];
     this.props.navigation.navigate('PropertyProfile', {
-      images: card.property.images
+      images: card.property.images,
+      area: card.property.city,
+      price: card.property.price,
+      propertyType: card.property.propertyType,
+      description: card.property.description,
+      bedrooms: card.property.bedrooms,
+      smokingAllowed: card.property.smokingAllowed,
+      petsAllowed: card.property.petsAllowed
     });
   };
 
