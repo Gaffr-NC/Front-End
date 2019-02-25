@@ -40,9 +40,11 @@ export default class Login extends Component<Props, States> {
         <View style={styles.headerContainer}>
           <Image
             style={styles.logo}
-            source={require(__dirname + '/../images/gaffr-logo.png')}
+            source={{ uri: "https://i.imgur.com/NH0xhhe.png" }}
           />
-          <Text style={styles.headerText}>gaffr</Text>
+          <Text style={styles.headerText}>
+            It's time to move forward, and it's time to move in...
+          </Text>
         </View>
 
         <View style={styles.formContainer}>
@@ -134,17 +136,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#dcd1e8"
   },
   headerContainer: {
+    alignItems: "center",
     width: "100%",
-    padding: 70,
+    padding: 20,
     margin: 0
   },
   logo: {
-    height: 100
+    alignItems: "center",
+    height: 200,
+    width: 200
   },
   headerText: {
-    fontSize: 80
+    alignItems: "center",
+    fontSize: 12,
+    padding: 0
   },
-
   formContainer: {
     flex: 1,
     justifyContent: "center",

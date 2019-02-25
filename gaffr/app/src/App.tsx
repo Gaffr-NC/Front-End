@@ -15,12 +15,8 @@ import Loading from "./screens/Loading";
 
 import UserType from "./screens/UserType";
 
-<<<<<<< HEAD
-import SignUpScreen from "./screens/SignUpScreen";
-=======
 import SignUpScreen from './screens/SignUpScreen';
 import Chat from './screens/Chat';
->>>>>>> a4c325f3527b77b836b9c5f200e0aa7555684b51
 
 interface User {
   id: String;
