@@ -76,7 +76,12 @@ const getUserById = async (id: string, table: string) => {
   return user.data() as User | undefined;
 };
 
-// TODO: THIS
+const getMatchById = async (id: string) => {
+  const match: DocumentSnapshot = await db.doc(`matches/${id}`).get();
+  return match.data() as Match | undefined;
+};
+
+// TODO: THIS - filtering with multiple inequalities
 const getSuitableLandlords = async (preferences: Preferences) => {
   console.log(preferences);
   const {
@@ -229,9 +234,23 @@ const deleteUserById = async (id: string, table: string) => {
   console.log(`deleted user ${id} from ${table}}`);
 };
 
+const liveListen = async (table: string, id: string, cb: Function) => {
+  db.collection(table)
+    .doc(id)
+    .onSnapshot(doc => cb(doc));
+};
+
+const sendChatMessage = async (matchId: string, message: ChatMessage) => {
+  const matchRef = await db.collection('matches').doc(matchId);
+  matchRef.update({
+    chatHistory: firebase.firestore.FieldValue.arrayUnion(message)
+  });
+};
+
 export {
   getUsers,
   getUserById,
+  getMatchById,
   getMatchesByLandlord,
   getMatchesByTenant,
   getSuitableLandlords,
@@ -241,5 +260,7 @@ export {
   updateProperty,
   updatePreferences,
   blockMatch,
-  deleteUserById
+  deleteUserById,
+  liveListen,
+  sendChatMessage
 };
