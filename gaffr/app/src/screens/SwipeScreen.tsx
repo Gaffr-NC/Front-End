@@ -54,9 +54,11 @@ export default class SwipeScreen extends Component<Props> {
     );
   };
 
-  onClickCard = () => {
-    this.props.navigation.navigate('PropertyProfile');
-    console.log('TAPPED!');
+  onClickCard = (cardIndex: number) => {
+    const card = this.state.cards[cardIndex];
+    this.props.navigation.navigate('PropertyProfile', {
+      images: card.property.images
+    });
   };
 
   onSwipedAllCards = () => {
@@ -94,7 +96,7 @@ export default class SwipeScreen extends Component<Props> {
           }}
           animateOverlayLabelsOpacity
           animateCardOpacity
-          onTapCard={() => this.onClickCard()}
+          onTapCard={(cardIndex: number) => this.onClickCard(cardIndex)}
         />
       </View>
     );
