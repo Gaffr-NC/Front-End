@@ -37,11 +37,21 @@ const SwiperStack = createStackNavigator(
   { initialRouteName: 'SwipeScreen', headerMode: 'none' }
 );
 
+const MatchStack = createStackNavigator(
+  {
+    Matches: Matches,
+    Chat: Chat
+  },
+  {
+    initialRouteName: 'Matches'
+  }
+);
+
 const TenantAppStack = createMaterialTopTabNavigator(
   {
     Profile: Profile,
     Swiper: SwiperStack,
-    Matches: Chat
+    Matches: MatchStack
   },
   {
     initialRouteName: 'Swiper',
@@ -64,7 +74,7 @@ const LandAppStack = createMaterialTopTabNavigator(
   {
     Profile: Profile,
     Properties: PropertyScreen,
-    Matches: Matches
+    Matches: MatchStack
   },
   {
     initialRouteName: 'Properties',

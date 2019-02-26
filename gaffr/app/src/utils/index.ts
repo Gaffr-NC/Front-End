@@ -86,7 +86,6 @@ const getMatchById = async (id: string) => {
 
 // TODO: THIS - filtering with multiple inequalities
 const getSuitableLandlords = async (preferences: Preferences) => {
-  console.log(preferences);
   const {
     smokingAllowed,
     petsAllowed,
@@ -156,7 +155,6 @@ const addUser = async (id: string, user: User, table: string) => {
     .collection(table)
     .doc(id)
     .set(user);
-  console.log(`added user to ${table} with id: ${id}`);
   return userRef;
 };
 
@@ -169,9 +167,7 @@ const addMatch = async (landlordId: string, tenantId: string) => {
       chatHistory: [],
       blocked: false
     })
-    .then((ref: DocumentReference) => {
-      console.log('match made, id: ', ref.id);
-    });
+    .then((ref: DocumentReference) => {});
 };
 
 const updateUserContact = async (id: string, user: User, table: string) => {
@@ -234,7 +230,6 @@ const deleteUserById = async (id: string, table: string) => {
     .collection(table)
     .doc(id)
     .delete();
-  console.log(`deleted user ${id} from ${table}}`);
 };
 
 const liveListen = async (table: string, id: string, cb: Function) => {
@@ -249,6 +244,9 @@ const sendChatMessage = async (matchId: string, message: ChatMessage) => {
     chatHistory: firebase.firestore.FieldValue.arrayUnion(message)
   });
 };
+
+const trimMessage = (message: string) =>
+  message.length > 40 ? `${message.slice(0, 40)}...` : message;
 
 export {
   getUsers,
@@ -265,5 +263,6 @@ export {
   blockMatch,
   deleteUserById,
   liveListen,
-  sendChatMessage
+  sendChatMessage,
+  trimMessage
 };

@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, AsyncStorage } from 'react-native';
-import { User } from '../utils/interfaces';
-import { getUserById } from '../utils';
+import React, { Component } from "react";
+import { View, Text, Image, ScrollView, AsyncStorage } from "react-native";
+import { User } from "../utils/interfaces";
+import { getUserById } from "../utils";
 
 export default class Profile extends Component {
   state = {
     user: null
   };
   static navigationOptions = {
-    title: 'Profile'
+    title: "Profile"
   };
 
   async componentDidMount() {
-    const uid = await AsyncStorage.getItem('uid');
-    const userType = await AsyncStorage.getItem('userType');
+    const uid = await AsyncStorage.getItem("uid");
+    const userType = await AsyncStorage.getItem("userType");
     const user = uid && userType ? await getUserById(uid, userType) : undefined;
     this.setState({ user });
   }
@@ -25,7 +25,7 @@ export default class Profile extends Component {
       return (
         <ScrollView>
           <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
           >
             <Text>Profile!</Text>
             <Text>Name: {thisUser.name}</Text>
@@ -47,13 +47,13 @@ export default class Profile extends Component {
                 <Text> Property type: {thisUser.property.propertyType}</Text>
                 <Text>
                   {thisUser.property.petsAllowed
-                    ? 'Pets allowed.'
-                    : 'Pets not allowed'}
+                    ? "Pets allowed."
+                    : "Pets not allowed"}
                 </Text>
                 <Text>
                   {thisUser.property.smokingAllowed
-                    ? 'Smoking allowed.'
-                    : 'Smoking not allowed'}
+                    ? "Smoking allowed."
+                    : "Smoking not allowed"}
                 </Text>
                 {thisUser.property.images.map(img => (
                   <Image
@@ -70,7 +70,7 @@ export default class Profile extends Component {
     } else {
       return (
         <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
         >
           <Text>Loading profile</Text>
         </View>

@@ -1,0 +1,254 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests SwipeScreen against snapshot 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#f9f4f5",
+      "color": "#f9f4f5",
+    }
+  }
+>
+  <View
+    pointerEvents="auto"
+    style={
+      Array [
+        Object {
+          "alignItems": "stretch",
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        Object {
+          "backgroundColor": "#4FD0E9",
+          "marginBottom": 0,
+          "marginTop": 0,
+        },
+        Object {},
+      ]
+    }
+  >
+    <View
+      pointerEvents="box-none"
+      style={
+        Array [
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "zIndex": -6,
+          },
+        ]
+      }
+    />
+    <View
+      onMoveShouldSetResponder={[Function]}
+      onMoveShouldSetResponderCapture={[Function]}
+      onResponderEnd={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderReject={[Function]}
+      onResponderRelease={[Function]}
+      onResponderStart={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      onStartShouldSetResponderCapture={[Function]}
+      style={
+        Object {
+          "flex": 1,
+          "height": 1174,
+          "left": 20,
+          "opacity": 1,
+          "position": "absolute",
+          "top": 80,
+          "transform": Array [
+            Object {
+              "translateX": 0,
+            },
+            Object {
+              "translateY": 0,
+            },
+            Object {
+              "rotate": "0deg",
+            },
+          ],
+          "width": 710,
+          "zIndex": 1,
+        }
+      }
+    />
+    <View
+      onMoveShouldSetResponder={[Function]}
+      onMoveShouldSetResponderCapture={[Function]}
+      onResponderEnd={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderReject={[Function]}
+      onResponderRelease={[Function]}
+      onResponderStart={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      onStartShouldSetResponderCapture={[Function]}
+      style={
+        Object {
+          "flex": 1,
+          "height": 1174,
+          "left": 20,
+          "position": "absolute",
+          "top": 80,
+          "transform": Array [
+            Object {
+              "scale": 0.97,
+            },
+            Object {
+              "translateY": 10,
+            },
+          ],
+          "width": 710,
+          "zIndex": -1,
+        }
+      }
+    />
+    <View
+      onMoveShouldSetResponder={[Function]}
+      onMoveShouldSetResponderCapture={[Function]}
+      onResponderEnd={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderReject={[Function]}
+      onResponderRelease={[Function]}
+      onResponderStart={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      onStartShouldSetResponderCapture={[Function]}
+      style={
+        Object {
+          "flex": 1,
+          "height": 1174,
+          "left": 20,
+          "position": "absolute",
+          "top": 80,
+          "transform": Array [
+            Object {
+              "scale": 0.9400000000000001,
+            },
+            Object {
+              "translateY": 20,
+            },
+          ],
+          "width": 710,
+          "zIndex": -2,
+        }
+      }
+    />
+    <View
+      onMoveShouldSetResponder={[Function]}
+      onMoveShouldSetResponderCapture={[Function]}
+      onResponderEnd={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderReject={[Function]}
+      onResponderRelease={[Function]}
+      onResponderStart={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      onStartShouldSetResponderCapture={[Function]}
+      style={
+        Object {
+          "flex": 1,
+          "height": 1174,
+          "left": 20,
+          "position": "absolute",
+          "top": 80,
+          "transform": Array [
+            Object {
+              "scale": 0.91,
+            },
+            Object {
+              "translateY": 30,
+            },
+          ],
+          "width": 710,
+          "zIndex": -3,
+        }
+      }
+    />
+    <View
+      onMoveShouldSetResponder={[Function]}
+      onMoveShouldSetResponderCapture={[Function]}
+      onResponderEnd={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderReject={[Function]}
+      onResponderRelease={[Function]}
+      onResponderStart={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      onStartShouldSetResponderCapture={[Function]}
+      style={
+        Object {
+          "flex": 1,
+          "height": 1174,
+          "left": 20,
+          "position": "absolute",
+          "top": 80,
+          "transform": Array [
+            Object {
+              "scale": 0.88,
+            },
+            Object {
+              "translateY": 40,
+            },
+          ],
+          "width": 710,
+          "zIndex": -4,
+        }
+      }
+    />
+    <View
+      onMoveShouldSetResponder={[Function]}
+      onMoveShouldSetResponderCapture={[Function]}
+      onResponderEnd={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderReject={[Function]}
+      onResponderRelease={[Function]}
+      onResponderStart={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      onStartShouldSetResponderCapture={[Function]}
+      style={
+        Object {
+          "flex": 1,
+          "height": 1174,
+          "left": 20,
+          "position": "absolute",
+          "top": 80,
+          "transform": Array [
+            Object {
+              "scale": 0.85,
+            },
+            Object {
+              "translateY": 50,
+            },
+          ],
+          "width": 710,
+          "zIndex": -5,
+        }
+      }
+    />
+  </View>
+</View>
+`;

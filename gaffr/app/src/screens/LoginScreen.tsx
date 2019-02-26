@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   View,
   Text,
-  Button,
   TextInput,
   StyleSheet,
   Alert,
-  AsyncStorage
-} from 'react-native';
-import { NavigationScreenProp } from 'react-navigation';
-import { UserCredential } from '@firebase/auth-types';
-import { getUserById } from '../utils';
-import firebase, { FirebaseError } from 'firebase';
-import { DocumentData } from '@firebase/firestore-types';
+  AsyncStorage,
+  TouchableOpacity,
+  Image
+} from "react-native";
+import { NavigationScreenProp } from "react-navigation";
+import { UserCredential } from "@firebase/auth-types";
+import { getUserById } from "../utils";
+import firebase, { FirebaseError } from "firebase";
+import { DocumentData } from "@firebase/firestore-types";
 
 interface States {
   email: String;
@@ -25,38 +26,64 @@ interface Props {
 
 export default class Login extends Component<Props, States> {
   public state = {
-    email: '',
-    password: ''
+    email: "",
+    password: ""
   };
 
   static navigationOptions = {
-    title: 'Log-In'
+    title: "Welcome"
   };
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Log in or sign up!</Text>
-        <TextInput
-          style={styles.inputs}
-          placeholder="email..."
-          value={this.state.email}
-          onChangeText={(text: String) => this.setState({ email: text })}
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.inputs}
-          placeholder="password..."
-          value={this.state.password}
-          onChangeText={(text: String) => this.setState({ password: text })}
-          autoCapitalize="none"
-          secureTextEntry
-        />
-        <Button title="LOG IN" onPress={this.handleLogInPress} />
-        <Button
-          title="SIGN UP"
-          onPress={() => this.props.navigation.navigate('userType')}
-        />
+      <View style={styles.loginContainer}>
+        <View style={styles.headerContainer}>
+          <Image
+            style={styles.logo}
+            source={{ uri: "https://i.imgur.com/NH0xhhe.png" }}
+          />
+          <Text style={styles.headerText}>
+            It's time to move forward, and it's time to move in...
+          </Text>
+        </View>
+
+        <View style={styles.formContainer}>
+          <TextInput
+            style={styles.loginForm}
+            placeholder="Email Address"
+            value={this.state.email}
+            onChangeText={(text: String) => this.setState({ email: text })}
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.loginForm}
+            placeholder="Password"
+            value={this.state.password}
+            onChangeText={(text: String) => this.setState({ password: text })}
+            autoCapitalize="none"
+            secureTextEntry
+          />
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={this.handleLogInPress}
+          >
+            <Text style={{ alignSelf: "center", color: "#ffffff" }}>
+              LOG IN
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.signupContainer}>
+          <Text>New user?</Text>
+          <TouchableOpacity
+            style={styles.signupButton}
+            onPress={() => this.props.navigation.navigate("userType")}
+          >
+            <Text style={{ alignSelf: "center", color: "#ffffff" }}>
+              SIGN UP
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -72,37 +99,93 @@ export default class Login extends Component<Props, States> {
           const { navigate } = this.props.navigation;
           const tenant: DocumentData | undefined = await getUserById(
             uid,
-            'tenants'
+            "tenants"
           );
           if (tenant) {
-            await AsyncStorage.setItem('uid', uid);
-            await AsyncStorage.setItem('userType', 'tenants');
-            navigate('TenantApp', { uid });
+            await AsyncStorage.setItem("uid", uid);
+            await AsyncStorage.setItem("userType", "tenants");
+            navigate("TenantApp", { uid });
           } else {
             const landlord: DocumentData | undefined = await getUserById(
               uid,
-              'landlords'
+              "landlords"
             );
-            console.log(uid);
             if (landlord) {
-              await AsyncStorage.setItem('uid', uid);
-              await AsyncStorage.setItem('userType', 'landlords');
-              navigate('Properties', { uid });
+              await AsyncStorage.setItem("uid", uid);
+              await AsyncStorage.setItem("userType", "landlords");
+              navigate("Properties", { uid });
             }
           }
         }
       })
       .catch((err: FirebaseError) => {
-        Alert.alert('Invalid email/password');
+        Alert.alert("Invalid email/password");
       });
   };
 }
 
 const styles = StyleSheet.create({
-  inputs: {
-    backgroundColor: 'white',
-    margin: 10,
-    width: '90%',
-    padding: 10
+  loginContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    margin: 0,
+    color: "#0B4F6C",
+    backgroundColor: "#dcd1e8"
+  },
+  headerContainer: {
+    alignItems: "center",
+    width: "100%",
+    padding: 20,
+    margin: 0
+  },
+  logo: {
+    alignItems: "center",
+    height: 200,
+    width: 200
+  },
+  headerText: {
+    alignItems: "center",
+    fontSize: 12,
+    padding: 0
+  },
+  formContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    padding: 0,
+    margin: 0
+  },
+  loginForm: {
+    margin: 5,
+    width: "90%",
+    padding: 5,
+    backgroundColor: "#f9f4f5",
+    borderRadius: 10
+  },
+  loginButton: {
+    backgroundColor: "#502F4C",
+    color: "#ffffff",
+    margin: 5,
+    width: "90%",
+    padding: 5,
+    borderRadius: 10
+  },
+  signupContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    padding: 70,
+    margin: 0
+  },
+  signupButton: {
+    backgroundColor: "#502F4C",
+    margin: 0,
+    width: "55%",
+    padding: 20,
+    borderRadius: 10
   }
 });
