@@ -5,7 +5,8 @@ import {
   getMatchesByLandlord,
   getUserById,
   liveListen,
-  liveListenMatchesTenant
+  liveListenMatchesTenant,
+  liveListenMatchesLandlord
 } from '../utils';
 import { Match } from '../utils/interfaces';
 import MatchItem from '../components/MatchItem';
@@ -34,12 +35,21 @@ export default class Matches extends Component {
       : [];
     this.setState({ matches, userType });
     if (uid) {
-      liveListenMatchesTenant(uid, (doc: QuerySnapshot) => {
-        const matches: DocumentData[] = [];
-        doc.forEach(match => matches.push({ ...match.data(), id: match.id }));
-        console.log(matches);
-        this.setState({ matches });
-      });
+      if (userType === 'tenants') {
+        liveListenMatchesTenant(uid, (doc: QuerySnapshot) => {
+          const matches: DocumentData[] = [];
+          doc.forEach(match => matches.push({ ...match.data(), id: match.id }));
+          console.log(matches);
+          this.setState({ matches });
+        });
+      } else {
+        liveListenMatchesLandlord(uid, (doc: QuerySnapshot) => {
+          const matches: DocumentData[] = [];
+          doc.forEach(match => matches.push({ ...match.data(), id: match.id }));
+          console.log(matches);
+          this.setState({ matches });
+        });
+      }
     }
   }
 

@@ -246,6 +246,14 @@ const liveListenMatchesTenant = async (
     .where('tenantId', '==', uid)
     .onSnapshot((doc: QuerySnapshot) => cb(doc));
 };
+const liveListenMatchesLandlord = async (
+  uid: string,
+  cb: Function
+): Promise<void> => {
+  db.collection('matches')
+    .where('landlordId', '==', uid)
+    .onSnapshot((doc: QuerySnapshot) => cb(doc));
+};
 const sendChatMessage = async (matchId: string, message: ChatMessage) => {
   const matchRef = await db.collection('matches').doc(matchId);
   matchRef.update({
@@ -272,6 +280,7 @@ export {
   deleteUserById,
   liveListen,
   liveListenMatchesTenant,
+  liveListenMatchesLandlord,
   sendChatMessage,
   trimMessage
 };
