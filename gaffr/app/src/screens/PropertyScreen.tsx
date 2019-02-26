@@ -5,38 +5,32 @@ import {
   Text,
   Button,
   TextInput,
-  Picker,
   Alert,
   StyleSheet,
   StatusBar,
   Image,
   ScrollView,
-  AsyncStorage
+  AsyncStorage,
+  TouchableOpacity
 } from 'react-native';
 import { Permissions } from 'expo';
 import { getUserById } from '../utils';
 import { NavigationScreenProp } from 'react-navigation';
 import { updateProperty } from '../utils';
-import {
-  User,
-  Property,
-  UserWithProperty,
-  UpdatePreferences
-} from '../utils/interfaces';
+import { User, Property, UserWithProperty } from '../utils/interfaces';
 import ImageUploader from '../components/ImageUploader';
+import { ButtonGroup } from 'react-native-elements';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
 }
 
 interface States {
-  image?: string;
   uploading?: boolean;
   user: User | undefined;
   bedrooms: number;
   city: string;
   images: string[];
-  currentImage: string;
   description: string;
   price: number;
   propertyType: string;
@@ -46,15 +40,13 @@ interface States {
 
 export default class PropertyScreen extends Component<Props, States> {
   public state = {
-    image: 'abcdef',
     user: undefined,
     bedrooms: 1,
     city: 'the moon',
     images: [],
-    currentImage: '',
     price: 350,
     description: '',
-    propertyType: 'house',
+    propertyType: 'House',
     petsAllowed: false,
     smokingAllowed: false
   };
@@ -118,11 +110,19 @@ export default class PropertyScreen extends Component<Props, States> {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  updateSmoking = (selectedIndex: number) => {
+    this.setState({ smokingAllowed: selectedIndex ? true : false });
+    console.log(this.state.smokingAllowed);
+  };
+  updatePets = (selectedIndex: number) => {
+    this.setState({ petsAllowed: selectedIndex ? true : false });
+    console.log(this.state.petsAllowed);
+  };
+
   render() {
     const user = this.state.user;
     if (!user) return <Text>Loading...</Text>;
     const {
-      image,
       images,
       bedrooms,
       city,
@@ -130,14 +130,14 @@ export default class PropertyScreen extends Component<Props, States> {
       petsAllowed,
       price,
       propertyType,
-      description,
-      currentImage
+      description
     } = this.state;
+    const propertyTypes = ['House', 'Apartment', 'Bungalow', 'Flat'];
     const userWithProperty: UserWithProperty = user;
-    return (
-      <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center' }}>
-        {userWithProperty.property ? (
-          // property profile
+    if (userWithProperty.property)
+      return (
+        // property profile
+        <View style={styles.propertyContainer}>
           <ScrollView contentContainerStyle={styles.landlordProperty}>
             <Text style={{ fontWeight: 'bold' }}>Your Gaff </Text>
             <Text>City: {userWithProperty.property.city} </Text>
@@ -168,117 +168,164 @@ export default class PropertyScreen extends Component<Props, States> {
               ))}
             </View>
           </ScrollView>
-        ) : (
-          // property form
-          <View>
-            {images &&
-              images.map((img: string) => (
-                <Image
-                  key={img}
-                  source={{ uri: img }}
-                  style={{ height: 50, width: 50 }}
-                />
-              ))}
-            <TextInput
-              placeholder="price..."
-              style={styles.inputs}
-              value={String(price)}
-              onChangeText={(text: string) =>
-                this.setState({ price: parseInt(text) ? parseInt(text) : 0 })
-              }
-            />
-            <TextInput
-              placeholder="bedrooms..."
-              style={styles.inputs}
-              value={String(bedrooms)}
-              onChangeText={(text: string) =>
-                this.setState({ bedrooms: parseInt(text) ? parseInt(text) : 0 })
-              }
-            />
-            <TextInput
-              placeholder="description..."
-              style={styles.inputs}
-              value={String(description)}
-              onChangeText={(text: string) =>
-                this.setState({ description: text })
-              }
-            />
-            <TextInput
-              placeholder="city"
-              style={styles.inputs}
-              value={city}
-              onChangeText={(text: string) => this.setState({ city: text })}
-            />
-            <TextInput
-              placeholder="property type"
-              style={styles.inputs}
-              value={propertyType}
-              onChangeText={(text: string) =>
-                this.setState({ propertyType: text })
-              }
-            />
-            <TextInput
-              placeholder="image url"
-              style={styles.inputs}
-              value={currentImage}
-              onChangeText={(text: string) =>
-                this.setState({ currentImage: text })
-              }
-            />
-            <Text>Smoking allowed: </Text>
-            <Picker
-              selectedValue={smokingAllowed}
-              onValueChange={(value: boolean) =>
-                this.setState({ smokingAllowed: value })
-              }
-              itemStyle={{ height: 44 }}
-            >
-              <Picker.Item value={true} label="yes" />
-              <Picker.Item value={false} label="no" />
-            </Picker>
-            <Text>Pets allowed: </Text>
-            <Picker
-              itemStyle={{ height: 44 }}
-              selectedValue={petsAllowed}
-              onValueChange={(value: boolean) =>
-                this.setState({ petsAllowed: value })
-              }
-            >
-              <Picker.Item value={true} label="yes" />
-              <Picker.Item value={false} label="no" />
-            </Picker>
-
-            <ImageUploader addImage={this.addImage} />
-            <Button
-              title="get me a house!"
-              onPress={() => this.handleHouse(userWithProperty)}
-            />
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              {image ? null : (
-                <Text
+        </View>
+      );
+    else
+      return (
+        // property form
+        <View style={styles.propertyFormContainer}>
+          <ScrollView>
+            <View style={styles.propertyForm}>
+              <Text style={styles.inputLabel}>Price per Month (£): </Text>
+              <TextInput
+                placeholder="price..."
+                style={styles.input}
+                value={String(price)}
+                onChangeText={(text: string) =>
+                  this.setState({ price: parseInt(text) ? parseInt(text) : 0 })
+                }
+              />
+              <Text style={styles.inputLabel}>Number of bedrooms: </Text>
+              <TextInput
+                placeholder="bedrooms..."
+                style={styles.input}
+                value={String(bedrooms)}
+                onChangeText={(text: string) =>
+                  this.setState({
+                    bedrooms: parseInt(text) ? parseInt(text) : 0
+                  })
+                }
+              />
+              <Text style={styles.inputLabel}>Description: </Text>
+              <TextInput
+                placeholder="description..."
+                style={styles.input}
+                value={String(description)}
+                onChangeText={(text: string) =>
+                  this.setState({ description: text })
+                }
+              />
+              <Text style={styles.inputLabel}>City: </Text>
+              <TextInput
+                placeholder="city"
+                style={styles.input}
+                value={city}
+                onChangeText={(text: string) => this.setState({ city: text })}
+              />
+              <Text style={styles.inputLabel}>Property Type: </Text>
+              <ButtonGroup
+                onPress={index =>
+                  this.setState({ propertyType: propertyTypes[index] })
+                }
+                buttons={propertyTypes}
+                selectedIndex={propertyTypes.indexOf(propertyType)}
+                containerBorderRadius={10}
+                containerStyle={{
+                  height: 50,
+                  backgroundColor: 'transparent',
+                  borderWidth: 0
+                }}
+                selectedButtonStyle={{ backgroundColor: '#502f4c' }}
+                innerBorderStyle={{ width: 0 }}
+                buttonStyle={{
+                  borderRadius: 10,
+                  margin: 5,
+                  backgroundColor: '#f9f4f6'
+                }}
+                textStyle={{ color: '#d1d1d1' }}
+              />
+              <ButtonGroup
+                onPress={this.updateSmoking}
+                selectedIndex={smokingAllowed ? 1 : 0}
+                buttons={['No Smoking', 'Smoking']}
+                containerBorderRadius={10}
+                containerStyle={{
+                  height: 50,
+                  backgroundColor: 'transparent',
+                  borderWidth: 0
+                }}
+                selectedButtonStyle={{ backgroundColor: '#502f4c' }}
+                innerBorderStyle={{ width: 0 }}
+                buttonStyle={{
+                  borderRadius: 10,
+                  margin: 3,
+                  backgroundColor: '#f9f4f5'
+                }}
+                textStyle={{ color: '#d1d1d1' }}
+              />
+              <ButtonGroup
+                onPress={this.updatePets}
+                selectedIndex={petsAllowed ? 1 : 0}
+                buttons={['No Pets', 'Pets']}
+                containerBorderRadius={10}
+                containerStyle={{
+                  height: 50,
+                  backgroundColor: 'transparent',
+                  borderWidth: 0
+                }}
+                selectedButtonStyle={{ backgroundColor: '#502f4c' }}
+                innerBorderStyle={{ width: 0 }}
+                buttonStyle={{
+                  borderRadius: 10,
+                  margin: 3,
+                  backgroundColor: '#f9f4f5'
+                }}
+                textStyle={{ color: '#d1d1d1' }}
+              />
+              {images && images.length < 6 && (
+                <ImageUploader addImage={this.addImage} />
+              )}
+              {images && (
+                <View
                   style={{
-                    fontSize: 20,
-                    marginBottom: 20,
-                    textAlign: 'center',
-                    marginHorizontal: 15
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyItems: 'center',
+                    flexWrap: 'wrap'
                   }}
                 >
-                  Upload ImagePicker result
-                </Text>
+                  {images.map((img: string) => (
+                    <Image
+                      key={img}
+                      source={{ uri: img }}
+                      style={{
+                        height: 100,
+                        width: 100,
+                        margin: 5,
+                        borderWidth: 3,
+                        borderRadius: 10,
+                        borderColor: '#f9f4f5'
+                      }}
+                    />
+                  ))}
+                </View>
               )}
-
-              <StatusBar barStyle="default" />
+              <TouchableOpacity
+                onPress={() => this.handleHouse(userWithProperty)}
+                style={{
+                  backgroundColor: '#502F4C',
+                  margin: 5,
+                  width: 200,
+                  padding: 15,
+                  borderRadius: 10
+                }}
+              >
+                <Text
+                  style={{
+                    color: 'white',
+                    fontWeight: 'bold',
+                    alignSelf: 'center',
+                    fontSize: 20
+                  }}
+                >
+                  Submit me Gaff
+                </Text>
+              </TouchableOpacity>
             </View>
-          </View>
-        )}
-      </ScrollView>
-    );
+          </ScrollView>
+        </View>
+      );
   }
 }
 const styles = StyleSheet.create({
@@ -291,7 +338,19 @@ const styles = StyleSheet.create({
     color: '#0B4F6C',
     backgroundColor: '#dcd1e8'
   },
-  inputs: {
+  propertyFormContainer: {
+    flex: 1,
+    backgroundColor: '#dcd1e8'
+  },
+  propertyForm: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    padding: 5,
+    margin: 0
+  },
+  input: {
     margin: 5,
     width: '90%',
     padding: 5,
@@ -317,5 +376,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 0,
     margin: 5
+  },
+  inputLabel: {
+    alignSelf: 'center'
   }
 });
