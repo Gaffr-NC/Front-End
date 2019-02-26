@@ -1,18 +1,34 @@
-import React, { Component } from 'react';
-import { Text, View, Dimensions, Image, ScrollView } from 'react-native';
-import { Divider } from 'react-native-elements';
-import Swiper from 'react-native-swiper';
-const { width } = Dimensions.get('window');
+import React, { Component } from "react";
+import { Text, View, Dimensions, Image, ScrollView } from "react-native";
+import { Divider } from "react-native-elements";
+import Swiper from "react-native-swiper";
+const { width } = Dimensions.get("window");
 import {
   FontAwesome,
   MaterialIcons,
   MaterialCommunityIcons,
   Ionicons
-} from '@expo/vector-icons';
+} from "@expo/vector-icons";
 
 export default class PropertyProfile extends Component {
   Capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  ConvertPets = (str: string) => {
+    if (str === "false") {
+      return "Pets not allowed";
+    } else {
+      return "Pets allowed";
+    }
+  };
+
+  ConvertSmoking = (str: string) => {
+    if (str === "false") {
+      return "No smoking";
+    } else {
+      return "Smoking allowed";
+    }
   };
 
   render() {
@@ -29,12 +45,12 @@ export default class PropertyProfile extends Component {
         <Swiper
           height={240}
           onMomentumScrollEnd={(e, state, context) =>
-            console.log('index:', state.index)
+            console.log("index:", state.index)
           }
           dot={
             <View
               style={{
-                backgroundColor: 'rgba(0,0,0,.2)',
+                backgroundColor: "rgba(0,0,0,.2)",
                 width: 5,
                 height: 5,
                 borderRadius: 4,
@@ -48,7 +64,7 @@ export default class PropertyProfile extends Component {
           activeDot={
             <View
               style={{
-                backgroundColor: '#000',
+                backgroundColor: "#000",
                 width: 8,
                 height: 8,
                 borderRadius: 4,
@@ -74,28 +90,31 @@ export default class PropertyProfile extends Component {
               {this.Capitalize(this.props.navigation.state.params.area)}
             </Text>
             <Divider />
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
               <Text style={styles.description}>
                 {this.props.navigation.state.params.description}
               </Text>
             </View>
             <Text style={styles.textStyle}>
-              <Ionicons name="ios-home" size={40} /> Property type:{' '}
-              {this.props.navigation.state.params.propertyType}
+              <Ionicons name="ios-home" size={40} />{" "}
+              {this.Capitalize(this.props.navigation.state.params.propertyType)}
             </Text>
             <Text style={styles.textStyle}>
-              <FontAwesome name="bed" size={30} /> Bedrooms:{' '}
+              <FontAwesome name="bed" size={30} />{" "}
               {this.props.navigation.state.params.bedrooms}
             </Text>
-            <Text style={styles.textStyle}>
-              {' '}
+            <Text style={styles.dog}>
+              {" "}
               <MaterialCommunityIcons name="dog-side" size={40} />
-              Pets Allowed:{' '}
-              {this.props.navigation.state.params.petsAllowed.toString()}
+              {this.ConvertPets(
+                this.props.navigation.state.params.petsAllowed.toString()
+              )}
             </Text>
-            <Text style={styles.textStyle}>
-              <MaterialIcons name="smoking-rooms" size={40} /> Smoking Allowed:{' '}
-              {this.props.navigation.state.params.smokingAllowed.toString()}
+            <Text style={styles.smoking}>
+              <MaterialIcons name="smoking-rooms" size={40} />
+              {this.ConvertSmoking(
+                this.props.navigation.state.params.smokingAllowed.toString()
+              )}
             </Text>
           </ScrollView>
         </Swiper>
@@ -115,20 +134,28 @@ const styles = {
   },
   description: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 10,
     marginBottom: 10
   },
   container: {
     flex: 1
   },
+  dog: {
+    marginLeft: 17,
+    fontSize: 20
+  },
+  smoking: {
+    marginLeft: 22,
 
+    fontSize: 20
+  },
   image: {
     width,
     flex: 1
   },
   textStyle: {
     marginLeft: 25,
-    fontSize: 15
+    fontSize: 20
   }
 };

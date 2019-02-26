@@ -13,8 +13,7 @@ import {
   ScrollView,
   AsyncStorage
 } from 'react-native';
-import uuid from 'uuid';
-import { ImagePicker, Permissions } from 'expo';
+import { Permissions } from 'expo';
 import { getUserById } from '../utils';
 import { NavigationScreenProp } from 'react-navigation';
 import { updateProperty } from '../utils';
@@ -113,6 +112,10 @@ export default class PropertyScreen extends Component<Props, States> {
   addImage = (image: string) => {
     const { images } = this.state;
     this.setState({ images: [...images, image] });
+  };
+
+  Capitalize = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   render() {
