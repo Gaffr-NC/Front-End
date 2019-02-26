@@ -97,7 +97,7 @@ const SwitchNav = createSwitchNavigator(
     },
     LandApp: LandAppStack
   },
-  { initialRouteName: 'TenantApp' }
+  { initialRouteName: 'Auth' }
 );
 
 const AppContainer = createAppContainer(SwitchNav);

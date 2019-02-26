@@ -113,7 +113,8 @@ export default class SwipeScreen extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f9f4f5',
-    color: '#f9f4f5'
+    color: '#f9f4f5',
+    borderRadius: 10
   },
   textBox: {
     flex: 0.5,
