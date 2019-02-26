@@ -93,11 +93,14 @@ const LandAppStack = createMaterialTopTabNavigator(
   }
 );
 
-const AuthStack = createStackNavigator({
-  logIn: Login,
-  signUp: SignUpScreen,
-  userType: UserType
-});
+const AuthStack = createStackNavigator(
+  {
+    logIn: Login,
+    signUp: SignUpScreen,
+    userType: UserType
+  },
+  { initialRouteName: 'logIn' }
+);
 const SwitchNav = createSwitchNavigator(
   {
     Loading: Loading,

@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  Image,
   ScrollView,
   AsyncStorage,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native';
 import { User } from '../utils/interfaces';
 import { getUserById } from '../utils';
+import { NavigationScreenProp } from 'react-navigation';
 
-export default class Profile extends Component {
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
+}
+export default class Profile extends Component<Props> {
   state = {
     user: null
   };
@@ -24,6 +28,12 @@ export default class Profile extends Component {
     const user = uid && userType ? await getUserById(uid, userType) : undefined;
     this.setState({ user });
   }
+
+  logout = () => {
+    AsyncStorage.removeItem('uid');
+    AsyncStorage.removeItem('userType');
+    this.props.navigation.navigate('logIn');
+  };
 
   render() {
     const { user } = this.state;
@@ -45,6 +55,14 @@ export default class Profile extends Component {
                 <Text>City: {thisUser.preferences.city}</Text>
               </View>
             )}
+            <TouchableOpacity
+              style={styles.logoutButton}
+              onPress={() => this.logout()}
+            >
+              <Text style={{ alignSelf: 'center', color: '#ffffff' }}>
+                LOG OUT
+              </Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       );
@@ -84,6 +102,13 @@ const styles = StyleSheet.create({
     width: '90%',
     padding: 5,
     backgroundColor: '#f9f4f5',
+    borderRadius: 10
+  },
+  logoutButton: {
+    backgroundColor: '#502F4C',
+    margin: 25,
+    width: '55%',
+    padding: 20,
     borderRadius: 10
   }
 });
