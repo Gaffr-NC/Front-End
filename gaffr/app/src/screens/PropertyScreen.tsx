@@ -10,7 +10,8 @@ import {
   StyleSheet,
   StatusBar,
   Image,
-  ScrollView
+  ScrollView,
+  AsyncStorage
 } from 'react-native';
 import uuid from 'uuid';
 import { ImagePicker, Permissions } from 'expo';
@@ -96,13 +97,15 @@ export default class PropertyScreen extends Component<Props, States> {
     this.setState({ user: { ...user, property } });
   }
   async componentDidMount() {
-    const uid = this.props.navigation.getParam('uid', 'ERROR');
-    const user: User | undefined = await getUserById(uid, 'landlords');
-    if (user && !user.property) {
-      await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      await Permissions.askAsync(Permissions.CAMERA);
+    const uid = await AsyncStorage.getItem('uid');
+    if (uid) {
+      const user: User | undefined = await getUserById(uid, 'landlords');
+      if (user && !user.property) {
+        await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        await Permissions.askAsync(Permissions.CAMERA);
+      }
+      this.setState({ user });
     }
-    this.setState({ user });
   }
 
   addImage = (image: string) => {
