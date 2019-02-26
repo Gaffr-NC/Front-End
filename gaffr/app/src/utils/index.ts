@@ -238,6 +238,22 @@ const liveListen = async (table: string, id: string, cb: Function) => {
     .onSnapshot(doc => cb(doc));
 };
 
+const liveListenMatchesTenant = async (
+  uid: string,
+  cb: Function
+): Promise<void> => {
+  db.collection('matches')
+    .where('tenantId', '==', uid)
+    .onSnapshot((doc: QuerySnapshot) => cb(doc));
+};
+const liveListenMatchesLandlord = async (
+  uid: string,
+  cb: Function
+): Promise<void> => {
+  db.collection('matches')
+    .where('landlordId', '==', uid)
+    .onSnapshot((doc: QuerySnapshot) => cb(doc));
+};
 const sendChatMessage = async (matchId: string, message: ChatMessage) => {
   const matchRef = await db.collection('matches').doc(matchId);
   matchRef.update({
@@ -263,6 +279,8 @@ export {
   blockMatch,
   deleteUserById,
   liveListen,
+  liveListenMatchesTenant,
+  liveListenMatchesLandlord,
   sendChatMessage,
   trimMessage
 };

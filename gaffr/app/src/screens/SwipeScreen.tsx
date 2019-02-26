@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, AsyncStorage } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { getUsers } from '../utils/index';
+import { getUsers, addMatch, liveListenMatchesTenant } from '../utils/index';
 import { NavigationScreenProp } from 'react-navigation';
+import { User, Match } from '../utils/interfaces';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -11,6 +12,7 @@ interface Props {
 
 export default class SwipeScreen extends Component<Props> {
   state = {
+    uid: '',
     cards: [],
     swipedAllCards: false,
     swipeDirection: '',
@@ -24,6 +26,8 @@ export default class SwipeScreen extends Component<Props> {
 
   componentDidMount = async () => {
     const landlords = await getUsers('landlords');
+    const uid = await AsyncStorage.getItem('uid');
+    this.setState({ uid });
     this.setState({ cards: landlords.filter(landlord => landlord.property) });
   };
 
@@ -73,7 +77,14 @@ export default class SwipeScreen extends Component<Props> {
       swipedAllCards: true
     });
   };
+  onSwipeRight = async (cardIndex: number) => {
+    const { uid, cards } = this.state;
 
+    const card: User = cards[cardIndex];
+    if (card.id && uid) {
+      addMatch(card.id, uid);
+    }
+  };
   Capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
@@ -90,6 +101,7 @@ export default class SwipeScreen extends Component<Props> {
           cardVerticalMargin={80}
           renderCard={this.renderCard}
           onSwipedAll={this.onSwipedAllCards}
+          onSwipedRight={this.onSwipeRight}
           showSecondCard={true}
           overlayLabels={{
             left: {

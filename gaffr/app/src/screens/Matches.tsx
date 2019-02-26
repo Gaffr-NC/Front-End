@@ -3,10 +3,18 @@ import { View, Text, AsyncStorage, ScrollView } from 'react-native';
 import {
   getMatchesByTenant,
   getMatchesByLandlord,
-  getUserById
+  getUserById,
+  liveListen,
+  liveListenMatchesTenant,
+  liveListenMatchesLandlord
 } from '../utils';
 import { Match } from '../utils/interfaces';
 import MatchItem from '../components/MatchItem';
+import {
+  CollectionReference,
+  QuerySnapshot,
+  DocumentData
+} from '@firebase/firestore-types';
 
 export default class Matches extends Component {
   state = {
@@ -26,6 +34,23 @@ export default class Matches extends Component {
         : await getMatchesByLandlord(uid)
       : [];
     this.setState({ matches, userType });
+    if (uid) {
+      if (userType === 'tenants') {
+        liveListenMatchesTenant(uid, (doc: QuerySnapshot) => {
+          const matches: DocumentData[] = [];
+          doc.forEach(match => matches.push({ ...match.data(), id: match.id }));
+          console.log(matches);
+          this.setState({ matches });
+        });
+      } else {
+        liveListenMatchesLandlord(uid, (doc: QuerySnapshot) => {
+          const matches: DocumentData[] = [];
+          doc.forEach(match => matches.push({ ...match.data(), id: match.id }));
+          console.log(matches);
+          this.setState({ matches });
+        });
+      }
+    }
   }
 
   render() {
