@@ -34,24 +34,27 @@ export default class SwipeScreen extends Component<Props> {
   renderCard = (cardData: any) => {
     return (
       cardData && (
-        <View style={styles.card}>
-          <Image
-            style={styles.image}
-            source={{
-              uri: cardData.property.images[0]
-            }}
-          />
-          <View style={styles.textBox}>
-            <Text style={styles.text}>
-              <FontAwesome name="home" size={50} />{' '}
-              {this.Capitalize(cardData.property.propertyType)}
-            </Text>
-            <Text style={styles.text}>
-              <FontAwesome name="bed" size={50} /> {cardData.property.bedrooms}
-            </Text>
-            <Text style={styles.text}>
-              <FontAwesome name="gbp" size={50} /> {cardData.property.price}
-            </Text>
+        <View style={styles.swiperContainer}>
+          <View style={styles.card}>
+            <Image
+              style={styles.image}
+              source={{
+                uri: cardData.property.images[0]
+              }}
+            />
+            <View style={styles.textBox}>
+              <Text style={styles.text}>
+                <FontAwesome name="home" size={50} />{' '}
+                {this.Capitalize(cardData.property.propertyType)}
+              </Text>
+              <Text style={styles.text}>
+                <FontAwesome name="bed" size={50} />{' '}
+                {cardData.property.bedrooms}
+              </Text>
+              <Text style={styles.text}>
+                <FontAwesome name="gbp" size={50} /> {cardData.property.price}
+              </Text>
+            </View>
           </View>
         </View>
       )
@@ -94,9 +97,8 @@ export default class SwipeScreen extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View>
         <Swiper
-          style={styles.swiper}
           stackSize={6}
           verticalSwipe={false}
           cards={this.state.cards}
@@ -108,12 +110,40 @@ export default class SwipeScreen extends Component<Props> {
           showSecondCard={true}
           overlayLabels={{
             left: {
-              title: 'NOPE',
-              backgroundOpacity: '0.75'
+              title: '✗',
+              style: {
+                label: {
+                  backgroundColor: 'red',
+                  borderColor: 'red',
+                  color: 'white',
+                  borderWidth: 1
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-start',
+                  marginTop: 30,
+                  marginLeft: -30
+                }
+              }
             },
             right: {
-              title: 'LIKE',
-              backgroundOpacity: '0.75'
+              title: '✓',
+              style: {
+                label: {
+                  backgroundColor: 'green',
+                  borderColor: 'green',
+                  color: 'white',
+                  borderWidth: 1
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  marginTop: 30,
+                  marginLeft: 30
+                }
+              }
             }
           }}
           animateOverlayLabelsOpacity
@@ -126,23 +156,24 @@ export default class SwipeScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#f9f4f5',
-    color: '#f9f4f5',
-    borderRadius: 10
+  swiperContainer: {
+    flex: 1
   },
   textBox: {
     flex: 0.5,
     justifyContent: 'flex-start',
     height: 50,
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    borderRadius: 10
   },
   card: {
     flex: 1,
-    borderRadius: 4,
-    borderWidth: 2,
+    backgroundColor: '#dcd1e8',
+    padding: 10,
+    color: '#000000',
     borderColor: '#000000',
-    backgroundColor: '#dcd1e8'
+    borderWidth: 3,
+    borderRadius: 10
   },
   text: {
     marginLeft: 20,
@@ -151,7 +182,7 @@ const styles = StyleSheet.create({
     color: '#000000'
   },
   image: {
-    flex: 1
-  },
-  swiper: {}
+    flex: 1,
+    borderRadius: 10
+  }
 });
