@@ -11,7 +11,7 @@ exports[`Tests Profile against snapshot 1`] = `
   }
 >
   <Text>
-    Profile!
+    Loading profile
   </Text>
 </View>
 `;

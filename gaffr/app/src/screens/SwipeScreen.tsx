@@ -3,16 +3,23 @@ import Swiper from 'react-native-deck-swiper';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { getUsers } from '../utils/index';
+import { NavigationScreenProp } from 'react-navigation';
 
-// const bedIcon = parseIconFromClassName('fas fa-bed');
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
+}
 
-export default class SwipeScreen extends Component {
+export default class SwipeScreen extends Component<Props> {
   state = {
     cards: [],
     swipedAllCards: false,
     swipeDirection: '',
     isSwipingBack: false,
     cardIndex: 0
+  };
+
+  static navigationOptions: {
+    header: { visible: false };
   };
 
   componentDidMount = async () => {
@@ -47,8 +54,18 @@ export default class SwipeScreen extends Component {
     );
   };
 
-  onClickCard = () => {
-    console.log('the card has been clicked');
+  onClickCard = (cardIndex: number) => {
+    const card = this.state.cards[cardIndex];
+    this.props.navigation.navigate('PropertyProfile', {
+      images: card.property.images,
+      area: card.property.city,
+      price: card.property.price,
+      propertyType: card.property.propertyType,
+      description: card.property.description,
+      bedrooms: card.property.bedrooms,
+      smokingAllowed: card.property.smokingAllowed,
+      petsAllowed: card.property.petsAllowed
+    });
   };
 
   onSwipedAllCards = () => {
@@ -86,7 +103,7 @@ export default class SwipeScreen extends Component {
           }}
           animateOverlayLabelsOpacity
           animateCardOpacity
-          onTapCard={() => this.onClickCard()}
+          onTapCard={(cardIndex: number) => this.onClickCard(cardIndex)}
         />
       </View>
     );
@@ -96,7 +113,8 @@ export default class SwipeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f9f4f5',
-    color: '#f9f4f5'
+    color: '#f9f4f5',
+    borderRadius: 10
   },
   textBox: {
     flex: 0.5,

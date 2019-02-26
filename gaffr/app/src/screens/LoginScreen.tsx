@@ -110,7 +110,6 @@ export default class Login extends Component<Props, States> {
               uid,
               "landlords"
             );
-            console.log(uid);
             if (landlord) {
               await AsyncStorage.setItem("uid", uid);
               await AsyncStorage.setItem("userType", "landlords");
