@@ -62,7 +62,7 @@ interface UpdatePreferences {
   price?: number;
   propertyType?: string;
   smokingAllowed?: boolean;
-  description: string;
+  description?: string;
   [key: string]: number | string | boolean | undefined | string[];
 }
 

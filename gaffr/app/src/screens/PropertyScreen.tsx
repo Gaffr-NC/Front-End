@@ -37,6 +37,7 @@ interface States {
   city: string;
   images: string[];
   currentImage: string;
+  description: string;
   price: number;
   propertyType: string;
   petsAllowed: boolean;
@@ -52,6 +53,7 @@ export default class PropertyScreen extends Component<Props, States> {
     images: [],
     currentImage: '',
     price: 350,
+    description: '',
     propertyType: 'house',
     petsAllowed: false,
     smokingAllowed: false
@@ -68,7 +70,8 @@ export default class PropertyScreen extends Component<Props, States> {
       price,
       propertyType,
       petsAllowed,
-      smokingAllowed
+      smokingAllowed,
+      description
     } = this.state;
     const array = Object.entries({
       city,
@@ -85,7 +88,8 @@ export default class PropertyScreen extends Component<Props, States> {
       price,
       propertyType,
       petsAllowed,
-      smokingAllowed
+      smokingAllowed,
+      description
     };
     const uid = this.props.navigation.getParam('uid', 'ERROR');
     updateProperty(uid, property);
@@ -118,15 +122,44 @@ export default class PropertyScreen extends Component<Props, States> {
       petsAllowed,
       price,
       propertyType,
+      description,
       currentImage
     } = this.state;
     const userWithProperty: UserWithProperty = user;
     return (
       <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center' }}>
-        <Text>Your property!</Text>
         {userWithProperty.property ? (
           // property profile
-          <Text>{`Hello, ${userWithProperty.name}`}</Text>
+          <ScrollView contentContainerStyle={styles.landlordProperty}>
+            <Text style={{ fontWeight: 'bold' }}>Your Gaff </Text>
+            <Text>City: {userWithProperty.property.city} </Text>
+            <Text>
+              Price: {`£${userWithProperty.property.price} per month`}{' '}
+            </Text>
+            <Text>Bedrooms: {userWithProperty.property.bedrooms} </Text>
+            <Text>Description: {userWithProperty.property.description} </Text>
+            <Text>Property type: {userWithProperty.property.propertyType}</Text>
+
+            <Text style={{ fontStyle: 'italic' }}>
+              {userWithProperty.property.petsAllowed
+                ? 'Pets allowed'
+                : 'Pets not allowed'}
+            </Text>
+            <Text style={{ fontStyle: 'italic' }}>
+              {userWithProperty.property.smokingAllowed
+                ? 'Smoking allowed'
+                : 'Smoking not allowed'}
+            </Text>
+            <View style={styles.imageContainer}>
+              {userWithProperty.property.images.map(img => (
+                <Image
+                  source={{ uri: img }}
+                  key={img}
+                  style={styles.propertyImages}
+                />
+              ))}
+            </View>
+          </ScrollView>
         ) : (
           // property form
           <View>
@@ -152,6 +185,14 @@ export default class PropertyScreen extends Component<Props, States> {
               value={String(bedrooms)}
               onChangeText={(text: string) =>
                 this.setState({ bedrooms: parseInt(text) ? parseInt(text) : 0 })
+              }
+            />
+            <TextInput
+              placeholder="description..."
+              style={styles.inputs}
+              value={String(description)}
+              onChangeText={(text: string) =>
+                this.setState({ description: text })
               }
             />
             <TextInput
@@ -248,5 +289,25 @@ const styles = StyleSheet.create({
     padding: 5,
     backgroundColor: '#f9f4f5',
     borderRadius: 10
+  },
+  landlordProperty: {
+    alignItems: 'center',
+    margin: 25,
+    width: '90%',
+    padding: 5,
+    backgroundColor: '#f9f4f5',
+    borderRadius: 10
+  },
+
+  imageContainer: {
+    margin: 10,
+    padding: 10
+  },
+  propertyImages: {
+    height: 275,
+    width: 275,
+    borderRadius: 10,
+    padding: 0,
+    margin: 5
   }
 });

@@ -3,6 +3,7 @@ interface Property {
   city: string;
   images: string[];
   price: number;
+  description: string;
   propertyType: string;
   petsAllowed: boolean;
   smokingAllowed: boolean;
