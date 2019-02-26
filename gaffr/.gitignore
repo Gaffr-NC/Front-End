@@ -6,4 +6,5 @@ npm-debug.*
 *.key
 *.mobileprovision
 .jest
+.expo
 app/src/config.ts
