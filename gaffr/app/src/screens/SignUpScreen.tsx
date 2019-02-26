@@ -4,7 +4,7 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Button,
+  TouchableOpacity,
   Alert,
   AsyncStorage
 } from "react-native";
@@ -39,47 +39,62 @@ export default class SignUpScreen extends Component<Props, States> {
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Sign up!</Text>
-        <TextInput
-          style={styles.inputs}
-          placeholder="email..."
-          value={this.state.email}
-          onChangeText={(text: String) => this.setState({ email: text })}
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.inputs}
-          placeholder="password..."
-          value={this.state.password}
-          onChangeText={(text: String) => this.setState({ password: text })}
-          autoCapitalize="none"
-          secureTextEntry
-        />
-        <TextInput
-          style={styles.inputs}
-          placeholder="confirm password..."
-          value={this.state.confirmPassword}
-          onChangeText={(text: String) =>
-            this.setState({ confirmPassword: text })
-          }
-          autoCapitalize="none"
-          secureTextEntry
-        />
-        <TextInput
-          style={styles.inputs}
-          placeholder="name..."
-          value={this.state.name}
-          onChangeText={(text: String) => this.setState({ name: text })}
-        />
-        <TextInput
-          style={styles.inputs}
-          placeholder="telephone number..."
-          value={this.state.phoneNo}
-          onChangeText={(text: String) => this.setState({ phoneNo: text })}
-        />
-        <Text>{this.props.navigation.getParam("userType", "ERROR")}</Text>
-        <Button title="SUBMIT" onPress={() => this.handleSignUpPress()} />
+      <View style={styles.signupContainer}>
+        <View style={styles.headerText}>
+          <Text>
+            You have selected a{" "}
+            {this.props.navigation.getParam("userType", "ERROR")} account.
+          </Text>
+          <Text>(To change account type, you can go back!)</Text>
+          <Text>Fill in your details below to sign up.</Text>
+        </View>
+        <View style={styles.signupForm}>
+          <TextInput
+            style={styles.input}
+            placeholder="Full Name"
+            value={this.state.name}
+            onChangeText={(text: String) => this.setState({ name: text })}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email Address"
+            value={this.state.email}
+            onChangeText={(text: String) => this.setState({ email: text })}
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            value={this.state.password}
+            onChangeText={(text: String) => this.setState({ password: text })}
+            autoCapitalize="none"
+            secureTextEntry
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Retype Password"
+            value={this.state.confirmPassword}
+            onChangeText={(text: String) =>
+              this.setState({ confirmPassword: text })
+            }
+            autoCapitalize="none"
+            secureTextEntry
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Phone Number"
+            value={this.state.phoneNo}
+            onChangeText={(text: String) => this.setState({ phoneNo: text })}
+          />
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={() => this.handleSignUpPress()}
+          >
+            <Text style={{ alignSelf: "center", color: "#ffffff" }}>
+              SUBMIT
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -97,7 +112,7 @@ export default class SignUpScreen extends Component<Props, States> {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(async (user: UserCredential) => {
-          const uid: string | null = user.user ? user.user.uid : "ERRROR";
+          const uid: string | null = user.user ? user.user.uid : "ERROR";
           const userType: string = this.props.navigation.getParam(
             "userType",
             "ERROR"
@@ -124,10 +139,43 @@ export default class SignUpScreen extends Component<Props, States> {
 }
 
 const styles = StyleSheet.create({
-  inputs: {
-    backgroundColor: "white",
-    margin: 10,
+  signupContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    margin: 0,
+    color: "#0B4F6C",
+    backgroundColor: "#dcd1e8"
+  },
+  headerText: {
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 0,
+    padding: 10,
+    alignSelf: "center"
+  },
+  signupForm: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    padding: 0,
+    margin: 0
+  },
+  input: {
+    margin: 5,
     width: "90%",
-    padding: 10
+    padding: 5,
+    backgroundColor: "#f9f4f5",
+    borderRadius: 10
+  },
+  submitButton: {
+    backgroundColor: "#502F4C",
+    color: "#ffffff",
+    margin: 5,
+    width: "90%",
+    padding: 5,
+    borderRadius: 10
   }
 });

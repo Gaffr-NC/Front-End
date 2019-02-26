@@ -122,7 +122,11 @@ export default class PropertyScreen extends Component<Props, States> {
     } = this.state;
     const userWithProperty: UserWithProperty = user;
     return (
+<<<<<<< HEAD
       <ScrollView contentContainerStyle={{ flex: 1, alignItems: 'center' }}>
+=======
+      <ScrollView style={styles.propertyContainer}>
+>>>>>>> dev
         <Text>Your property!</Text>
         {userWithProperty.property ? (
           // property profile
@@ -233,10 +237,20 @@ export default class PropertyScreen extends Component<Props, States> {
   }
 }
 const styles = StyleSheet.create({
+  propertyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    margin: 0,
+    color: '#0B4F6C',
+    backgroundColor: '#dcd1e8'
+  },
   inputs: {
-    backgroundColor: 'powderblue',
-    margin: 10,
-    width: 150,
-    padding: 10
+    margin: 5,
+    width: '90%',
+    padding: 5,
+    backgroundColor: '#f9f4f5',
+    borderRadius: 10
   }
 });
