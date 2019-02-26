@@ -7,7 +7,9 @@ import {
   Alert,
   AsyncStorage,
   TouchableOpacity,
-  Image
+  Image,
+  Keyboard,
+  TouchableWithoutFeedback
 } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { UserCredential } from '@firebase/auth-types';
@@ -34,57 +36,65 @@ export default class Login extends Component<Props, States> {
     title: 'Welcome'
   };
 
+  DismissKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
+
   render() {
     return (
-      <View style={styles.loginContainer}>
-        <View style={styles.headerContainer}>
-          <Image
-            style={styles.logo}
-            source={{ uri: 'https://i.imgur.com/NH0xhhe.png' }}
-          />
-          <Text style={styles.headerText}>
-            It's time to move forward, and it's time to move in...
-          </Text>
-        </View>
-
-        <View style={styles.formContainer}>
-          <TextInput
-            style={styles.loginForm}
-            placeholder="Email Address"
-            value={this.state.email}
-            onChangeText={(text: String) => this.setState({ email: text })}
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.loginForm}
-            placeholder="Password"
-            value={this.state.password}
-            onChangeText={(text: String) => this.setState({ password: text })}
-            autoCapitalize="none"
-            secureTextEntry
-          />
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={this.handleLogInPress}
-          >
-            <Text style={{ alignSelf: 'center', color: '#ffffff' }}>
-              LOG IN
+      <this.DismissKeyboard>
+        <View style={styles.loginContainer}>
+          <View style={styles.headerContainer}>
+            <Image
+              style={styles.logo}
+              source={{ uri: 'https://i.imgur.com/NH0xhhe.png' }}
+            />
+            <Text style={styles.headerText}>
+              It's time to move forward, and it's time to move in...
             </Text>
-          </TouchableOpacity>
-        </View>
+          </View>
 
-        <View style={styles.signupContainer}>
-          <Text>New user?</Text>
-          <TouchableOpacity
-            style={styles.signupButton}
-            onPress={() => this.props.navigation.navigate('userType')}
-          >
-            <Text style={{ alignSelf: 'center', color: '#ffffff' }}>
-              SIGN UP
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.formContainer}>
+            <TextInput
+              style={styles.loginForm}
+              placeholder="Email Address"
+              value={this.state.email}
+              onChangeText={(text: String) => this.setState({ email: text })}
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.loginForm}
+              placeholder="Password"
+              value={this.state.password}
+              onChangeText={(text: String) => this.setState({ password: text })}
+              autoCapitalize="none"
+              secureTextEntry
+            />
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={this.handleLogInPress}
+            >
+              <Text style={{ alignSelf: 'center', color: '#ffffff' }}>
+                LOG IN
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.signupContainer}>
+            <Text>New user?</Text>
+            <TouchableOpacity
+              style={styles.signupButton}
+              onPress={() => this.props.navigation.navigate('userType')}
+            >
+              <Text style={{ alignSelf: 'center', color: '#ffffff' }}>
+                SIGN UP
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </this.DismissKeyboard>
     );
   }
 
@@ -137,12 +147,11 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
     width: '100%',
-    padding: 20,
     margin: 0
   },
   logo: {
     alignItems: 'center',
-    height: 200,
+    height: 150,
     width: 200
   },
   headerText: {
