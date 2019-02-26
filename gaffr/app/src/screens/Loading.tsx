@@ -11,7 +11,6 @@ export default class Loading extends React.Component<Props> {
     const uid = await AsyncStorage.getItem('uid');
     const userType = await AsyncStorage.getItem('userType');
     if (uid && userType) {
-      console.log(uid, userType);
       this.props.navigation.navigate(
         userType === 'tenants' ? 'Swiper' : 'Properties'
       );

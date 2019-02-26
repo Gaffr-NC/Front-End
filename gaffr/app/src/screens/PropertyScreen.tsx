@@ -92,9 +92,11 @@ export default class PropertyScreen extends Component<Props, States> {
       smokingAllowed,
       description
     };
-    const uid = this.props.navigation.getParam('uid', 'ERROR');
-    updateProperty(uid, property);
-    this.setState({ user: { ...user, property } });
+    const uid = await AsyncStorage.getItem('uid');
+    if (uid) {
+      updateProperty(uid, property);
+      this.setState({ user: { ...user, property } });
+    }
   }
   async componentDidMount() {
     const uid = await AsyncStorage.getItem('uid');
