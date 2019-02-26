@@ -1,42 +1,43 @@
-import React, { Component } from "react";
-import { View, Text, AsyncStorage } from "react-native";
+import React, { Component } from 'react';
+import { View, Text, AsyncStorage, ScrollView } from 'react-native';
 import {
   getMatchesByTenant,
   getMatchesByLandlord,
   getUserById
-} from "../utils";
-import { Match } from "../utils/interfaces";
-import MatchItem from "../components/MatchItem";
+} from '../utils';
+import { Match } from '../utils/interfaces';
+import MatchItem from '../components/MatchItem';
 
 export default class Matches extends Component {
   state = {
     matches: [],
-    userType: ""
+    userType: ''
   };
   static navigationOptions = {
-    title: "Matches"
+    header: null
   };
 
   async componentDidMount() {
-    const uid = await AsyncStorage.getItem("uid");
-    const userType = await AsyncStorage.getItem("userType");
-    const matches =
-      uid &&
-      (userType === "tenants"
+    const uid = await AsyncStorage.getItem('uid');
+    const userType = await AsyncStorage.getItem('userType');
+    const matches = uid
+      ? userType === 'tenants'
         ? await getMatchesByTenant(uid)
-        : await getMatchesByLandlord(uid));
+        : await getMatchesByLandlord(uid)
+      : [];
     this.setState({ matches, userType });
   }
 
   render() {
     const { userType, matches } = this.state;
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <ScrollView style={{ flex: 1 }}>
         <Text>Matches!</Text>
-        {matches.map((match: Match) => (
-          <MatchItem userType={userType} match={match} />
-        ))}
-      </View>
+        {matches &&
+          matches.map((match: Match) => (
+            <MatchItem userType={userType} match={match} key={match.id} />
+          ))}
+      </ScrollView>
     );
   }
 }

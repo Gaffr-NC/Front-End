@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Tests Profile against snapshot 1`] = `
+exports[`Tests Loading against snapshot 1`] = `
 <View
   style={
     Object {
@@ -11,7 +11,13 @@ exports[`Tests Profile against snapshot 1`] = `
   }
 >
   <Text>
-    Profile!
+    Loading...
   </Text>
+  <ActivityIndicator
+    animating={true}
+    color="#999999"
+    hidesWhenStopped={true}
+    size="large"
+  />
 </View>
 `;
