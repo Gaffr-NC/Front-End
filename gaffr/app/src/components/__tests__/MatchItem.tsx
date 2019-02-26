@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 
 import { MatchItem } from '../MatchItem';
 
-it.only('renders correctly with defaults', () => {
+it('renders correctly with defaults', () => {
   const userType = 'tenants';
   const match = {
     landlordId: 'landlordTest',

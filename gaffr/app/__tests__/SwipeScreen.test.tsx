@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import SwipeScreen from '../src/screens/SwipeScreen.js';
+import SwipeScreen from '../src/screens/SwipeScreen';
 
 it('SwipeScreen renders without crashing', () => {
   const rendered = renderer.create(<SwipeScreen />).toJSON();
