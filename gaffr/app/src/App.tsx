@@ -12,9 +12,7 @@ import Matches from './screens/Matches';
 import Profile from './screens/Profile';
 import PropertyScreen from './screens/PropertyScreen';
 import Loading from './screens/Loading';
-
 import UserType from './screens/UserType';
-
 import SignUpScreen from './screens/SignUpScreen';
 import Chat from './screens/Chat';
 import PropertyProfile from './screens/PropertyProfile';
@@ -93,11 +91,14 @@ const LandAppStack = createMaterialTopTabNavigator(
   }
 );
 
-const AuthStack = createStackNavigator({
-  logIn: Login,
-  signUp: SignUpScreen,
-  userType: UserType
-});
+const AuthStack = createStackNavigator(
+  {
+    logIn: Login,
+    signUp: SignUpScreen,
+    userType: UserType
+  },
+  { initialRouteName: 'logIn' }
+);
 const SwitchNav = createSwitchNavigator(
   {
     Loading: Loading,
@@ -107,7 +108,7 @@ const SwitchNav = createSwitchNavigator(
     },
     LandApp: LandAppStack
   },
-  { initialRouteName: 'Auth' }
+  { initialRouteName: 'Loading' }
 );
 
 const AppContainer = createAppContainer(SwitchNav);

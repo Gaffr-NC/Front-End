@@ -39,14 +39,12 @@ export default class Matches extends Component {
         liveListenMatchesTenant(uid, (doc: QuerySnapshot) => {
           const matches: DocumentData[] = [];
           doc.forEach(match => matches.push({ ...match.data(), id: match.id }));
-          console.log(matches);
           this.setState({ matches });
         });
       } else {
         liveListenMatchesLandlord(uid, (doc: QuerySnapshot) => {
           const matches: DocumentData[] = [];
           doc.forEach(match => matches.push({ ...match.data(), id: match.id }));
-          console.log(matches);
           this.setState({ matches });
         });
       }

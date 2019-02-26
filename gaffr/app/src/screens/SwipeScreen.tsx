@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, Image, AsyncStorage } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { getUsers, addMatch, liveListenMatchesTenant } from '../utils/index';
 import { NavigationScreenProp } from 'react-navigation';
-import { User, Match } from '../utils/interfaces';
+import { User, Match, Property } from '../utils/interfaces';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -59,17 +59,20 @@ export default class SwipeScreen extends Component<Props> {
   };
 
   onClickCard = (cardIndex: number) => {
-    const card = this.state.cards[cardIndex];
-    this.props.navigation.navigate('PropertyProfile', {
-      images: card.property.images,
-      area: card.property.city,
-      price: card.property.price,
-      propertyType: card.property.propertyType,
-      description: card.property.description,
-      bedrooms: card.property.bedrooms,
-      smokingAllowed: card.property.smokingAllowed,
-      petsAllowed: card.property.petsAllowed
-    });
+    const card: User = this.state.cards[cardIndex];
+    const { property } = card;
+    if (property) {
+      this.props.navigation.navigate('PropertyProfile', {
+        images: property.images,
+        area: property.city,
+        price: property.price,
+        propertyType: property.propertyType,
+        description: property.description,
+        bedrooms: property.bedrooms,
+        smokingAllowed: property.smokingAllowed,
+        petsAllowed: property.petsAllowed
+      });
+    }
   };
 
   onSwipedAllCards = () => {
