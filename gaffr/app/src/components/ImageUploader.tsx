@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import uuid from 'uuid';
 import { ImagePicker } from 'expo';
-import { Alert, View, Button } from 'react-native';
+import { Alert, View, Button, TouchableOpacity, Text } from 'react-native';
 import * as firebase from 'firebase';
 
 interface Props {
@@ -73,12 +73,38 @@ class ImageUploader extends Component<Props> {
   render() {
     return (
       <View>
-        <Button
+        <Text style={{ alignSelf: 'center', fontWeight: '900' }}>
+          Upload pictures:{' '}
+        </Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#502F4C',
+            margin: 5,
+            width: 200,
+            padding: 5,
+            borderRadius: 10
+          }}
           onPress={this._pickImage}
-          title="Pick an image from camera roll"
-        />
+        >
+          <Text style={{ alignSelf: 'center', color: '#ffffff' }}>
+            Pick from gallery
+          </Text>
+        </TouchableOpacity>
 
-        <Button onPress={this._takePhoto} title="Take a photo" />
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#502F4C',
+            margin: 5,
+            width: 200,
+            padding: 5,
+            borderRadius: 10
+          }}
+          onPress={this._takePhoto}
+        >
+          <Text style={{ alignSelf: 'center', color: '#ffffff' }}>
+            Take a photo
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
