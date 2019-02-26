@@ -5,5 +5,5 @@ npm-debug.*
 *.p12
 *.key
 *.mobileprovision
-src/config.ts
 .jest
+app/src/config.ts
