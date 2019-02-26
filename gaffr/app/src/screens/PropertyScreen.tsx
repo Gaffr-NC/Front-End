@@ -46,7 +46,7 @@ export default class PropertyScreen extends Component<Props, States> {
     images: [],
     price: 350,
     description: '',
-    propertyType: 'house',
+    propertyType: 'House',
     petsAllowed: false,
     smokingAllowed: false
   };
@@ -132,11 +132,12 @@ export default class PropertyScreen extends Component<Props, States> {
       propertyType,
       description
     } = this.state;
+    const propertyTypes = ['House', 'Apartment', 'Bungalow', 'Flat'];
     const userWithProperty: UserWithProperty = user;
-    return (
-      <ScrollView contentContainerStyle={styles.propertyContainer}>
-        {userWithProperty.property ? (
-          // property profile
+    if (userWithProperty.property)
+      return (
+        // property profile
+        <View style={styles.propertyContainer}>
           <ScrollView contentContainerStyle={styles.landlordProperty}>
             <Text style={{ fontWeight: 'bold' }}>Your Gaff </Text>
             <Text>City: {userWithProperty.property.city} </Text>
@@ -167,139 +168,164 @@ export default class PropertyScreen extends Component<Props, States> {
               ))}
             </View>
           </ScrollView>
-        ) : (
-          // property form
-          <View style={styles.propertyForm}>
-            <TextInput
-              placeholder="price..."
-              style={styles.input}
-              value={String(price)}
-              onChangeText={(text: string) =>
-                this.setState({ price: parseInt(text) ? parseInt(text) : 0 })
-              }
-            />
-            <TextInput
-              placeholder="bedrooms..."
-              style={styles.input}
-              value={String(bedrooms)}
-              onChangeText={(text: string) =>
-                this.setState({ bedrooms: parseInt(text) ? parseInt(text) : 0 })
-              }
-            />
-            <TextInput
-              placeholder="description..."
-              style={styles.input}
-              value={String(description)}
-              onChangeText={(text: string) =>
-                this.setState({ description: text })
-              }
-            />
-            <TextInput
-              placeholder="city"
-              style={styles.input}
-              value={city}
-              onChangeText={(text: string) => this.setState({ city: text })}
-            />
-            <TextInput
-              placeholder="property type"
-              style={styles.input}
-              value={propertyType}
-              onChangeText={(text: string) =>
-                this.setState({ propertyType: text })
-              }
-            />
-            <ButtonGroup
-              onPress={this.updateSmoking}
-              selectedIndex={smokingAllowed ? 1 : 0}
-              buttons={['No Smoking', 'Smoking']}
-              containerBorderRadius={10}
-              containerStyle={{
-                height: 50,
-                backgroundColor: 'transparent',
-                borderWidth: 0
-              }}
-              selectedButtonStyle={{ backgroundColor: '#502f4c' }}
-              innerBorderStyle={{ width: 0 }}
-              buttonStyle={{
-                borderRadius: 10,
-                margin: 3,
-                backgroundColor: 'white'
-              }}
-              textStyle={{ color: '#d1d1d1' }}
-            />
-            <ButtonGroup
-              onPress={this.updatePets}
-              selectedIndex={petsAllowed ? 1 : 0}
-              buttons={['No Pets', 'Pets']}
-              containerBorderRadius={10}
-              containerStyle={{
-                height: 50,
-                backgroundColor: 'transparent',
-                borderWidth: 0
-              }}
-              selectedButtonStyle={{ backgroundColor: '#502f4c' }}
-              innerBorderStyle={{ width: 0 }}
-              buttonStyle={{
-                borderRadius: 10,
-                margin: 3,
-                backgroundColor: 'white'
-              }}
-              textStyle={{ color: '#d1d1d1' }}
-            />
-            {images && images.length < 6 && (
-              <ImageUploader addImage={this.addImage} />
-            )}
-            {images && (
-              <View
+        </View>
+      );
+    else
+      return (
+        // property form
+        <View style={styles.propertyFormContainer}>
+          <ScrollView>
+            <View style={styles.propertyForm}>
+              <Text style={styles.inputLabel}>Price per Month (£): </Text>
+              <TextInput
+                placeholder="price..."
+                style={styles.input}
+                value={String(price)}
+                onChangeText={(text: string) =>
+                  this.setState({ price: parseInt(text) ? parseInt(text) : 0 })
+                }
+              />
+              <Text style={styles.inputLabel}>Number of bedrooms: </Text>
+              <TextInput
+                placeholder="bedrooms..."
+                style={styles.input}
+                value={String(bedrooms)}
+                onChangeText={(text: string) =>
+                  this.setState({
+                    bedrooms: parseInt(text) ? parseInt(text) : 0
+                  })
+                }
+              />
+              <Text style={styles.inputLabel}>Description: </Text>
+              <TextInput
+                placeholder="description..."
+                style={styles.input}
+                value={String(description)}
+                onChangeText={(text: string) =>
+                  this.setState({ description: text })
+                }
+              />
+              <Text style={styles.inputLabel}>City: </Text>
+              <TextInput
+                placeholder="city"
+                style={styles.input}
+                value={city}
+                onChangeText={(text: string) => this.setState({ city: text })}
+              />
+              <Text style={styles.inputLabel}>Property Type: </Text>
+              <ButtonGroup
+                onPress={index =>
+                  this.setState({ propertyType: propertyTypes[index] })
+                }
+                buttons={propertyTypes}
+                selectedIndex={propertyTypes.indexOf(propertyType)}
+                containerBorderRadius={10}
+                containerStyle={{
+                  height: 50,
+                  backgroundColor: 'transparent',
+                  borderWidth: 0
+                }}
+                selectedButtonStyle={{ backgroundColor: '#502f4c' }}
+                innerBorderStyle={{ width: 0 }}
+                buttonStyle={{
+                  borderRadius: 10,
+                  margin: 5,
+                  backgroundColor: '#f9f4f6'
+                }}
+                textStyle={{ color: '#d1d1d1' }}
+              />
+              <ButtonGroup
+                onPress={this.updateSmoking}
+                selectedIndex={smokingAllowed ? 1 : 0}
+                buttons={['No Smoking', 'Smoking']}
+                containerBorderRadius={10}
+                containerStyle={{
+                  height: 50,
+                  backgroundColor: 'transparent',
+                  borderWidth: 0
+                }}
+                selectedButtonStyle={{ backgroundColor: '#502f4c' }}
+                innerBorderStyle={{ width: 0 }}
+                buttonStyle={{
+                  borderRadius: 10,
+                  margin: 3,
+                  backgroundColor: '#f9f4f5'
+                }}
+                textStyle={{ color: '#d1d1d1' }}
+              />
+              <ButtonGroup
+                onPress={this.updatePets}
+                selectedIndex={petsAllowed ? 1 : 0}
+                buttons={['No Pets', 'Pets']}
+                containerBorderRadius={10}
+                containerStyle={{
+                  height: 50,
+                  backgroundColor: 'transparent',
+                  borderWidth: 0
+                }}
+                selectedButtonStyle={{ backgroundColor: '#502f4c' }}
+                innerBorderStyle={{ width: 0 }}
+                buttonStyle={{
+                  borderRadius: 10,
+                  margin: 3,
+                  backgroundColor: '#f9f4f5'
+                }}
+                textStyle={{ color: '#d1d1d1' }}
+              />
+              {images && images.length < 6 && (
+                <ImageUploader addImage={this.addImage} />
+              )}
+              {images && (
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyItems: 'center',
+                    flexWrap: 'wrap'
+                  }}
+                >
+                  {images.map((img: string) => (
+                    <Image
+                      key={img}
+                      source={{ uri: img }}
+                      style={{
+                        height: 100,
+                        width: 100,
+                        margin: 5,
+                        borderWidth: 3,
+                        borderRadius: 10,
+                        borderColor: '#f9f4f5'
+                      }}
+                    />
+                  ))}
+                </View>
+              )}
+              <TouchableOpacity
+                onPress={() => this.handleHouse(userWithProperty)}
                 style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyItems: 'center',
-                  flexWrap: 'wrap'
+                  backgroundColor: '#502F4C',
+                  margin: 5,
+                  width: 200,
+                  padding: 15,
+                  borderRadius: 10
                 }}
               >
-                {images.map((img: string) => (
-                  <Image
-                    key={img}
-                    source={{ uri: img }}
-                    style={{
-                      height: 100,
-                      width: 100,
-                      margin: 5,
-                      borderWidth: 3,
-                      borderRadius: 10,
-                      borderColor: 'white'
-                    }}
-                  />
-                ))}
-              </View>
-            )}
-            <TouchableOpacity
-              onPress={() => this.handleHouse(userWithProperty)}
-              style={{
-                backgroundColor: '#502F4C',
-                margin: 5,
-                width: 200,
-                padding: 15,
-                borderRadius: 10
-              }}
-            >
-              <Text
-                style={{
-                  color: 'white',
-                  fontWeight: 'bold',
-                  alignSelf: 'center',
-                  fontSize: 20
-                }}
-              >
-                Submit me Gaff
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </ScrollView>
-    );
+                <Text
+                  style={{
+                    color: 'white',
+                    fontWeight: 'bold',
+                    alignSelf: 'center',
+                    fontSize: 20
+                  }}
+                >
+                  Submit me Gaff
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
+      );
   }
 }
 const styles = StyleSheet.create({
@@ -312,12 +338,16 @@ const styles = StyleSheet.create({
     color: '#0B4F6C',
     backgroundColor: '#dcd1e8'
   },
+  propertyFormContainer: {
+    flex: 1,
+    backgroundColor: '#dcd1e8'
+  },
   propertyForm: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    padding: 0,
+    padding: 5,
     margin: 0
   },
   input: {
@@ -346,5 +376,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 0,
     margin: 5
+  },
+  inputLabel: {
+    alignSelf: 'center'
   }
 });
