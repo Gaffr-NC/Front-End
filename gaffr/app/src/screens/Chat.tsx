@@ -5,9 +5,13 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+  SafeAreaView
 } from 'react-native';
-import { liveListen, sendChatMessage } from '../utils';
+import { getMatchById, liveListen, sendChatMessage } from '../utils';
 import { DocumentSnapshot } from '@firebase/firestore-types';
 import { ChatMessage, Match } from '../utils/interfaces';
 import { NavigationScreenProp, NavigationComponent } from 'react-navigation';
@@ -54,59 +58,73 @@ export default class Chat extends Component<Props> {
       this.setState({ message: '' });
     }
   };
+
+  DismissKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
+
   render() {
     const { message, chatHistory } = this.state;
     const userType = this.props.navigation.getParam('userType', 'ERROR');
     return (
-      <View style={{ flex: 1 }}>
-        {chatHistory[0] ? (
-          <ScrollView style={{ flex: 1 }}>
-            {chatHistory.map((message: ChatMessage) => (
-              <View
-                key={message.timestamp.toString()}
-                style={
-                  message.speaker === userType
-                    ? styles.userBubble
-                    : styles.partnerBubble
-                }
-              >
-                {/* <Text>{message.speaker}</Text> */}
-                <Text
+      <this.DismissKeyboard>
+        <View style={{ flex: 1 }}>
+          {chatHistory[0] ? (
+            <ScrollView style={{ flex: 1 }}>
+              {chatHistory.map((message: ChatMessage) => (
+                <View
+                  key={message.timestamp.toString()}
                   style={
-                    message.speaker === userType ? styles.user : styles.partner
+                    message.speaker === userType
+                      ? styles.userBubble
+                      : styles.partnerBubble
                   }
                 >
-                  {message.message}
-                </Text>
-              </View>
-            ))}
-          </ScrollView>
-        ) : (
-          <Text
-            style={{
-              flex: 1,
-              textAlign: 'center',
-              textAlignVertical: 'center'
-            }}
-          >
-            Begin the conversation!
-          </Text>
-        )}
-        <View style={styles.inputBar}>
-          <TextInput
-            placeholder="type your message..."
-            value={message}
-            onChangeText={(text: String) => this.setState({ message: text })}
-            style={styles.messageInput}
-          />
-          <TouchableOpacity
-            onPress={() => this.sendMessage()}
-            style={styles.sendButton}
-          >
-            <FontAwesome name="arrow-up" size={25} style={styles.arrow} />
-          </TouchableOpacity>
+                  <Text
+                    style={
+                      message.speaker === userType
+                        ? styles.user
+                        : styles.partner
+                    }
+                  >
+                    {message.message}
+                  </Text>
+                </View>
+              ))}
+            </ScrollView>
+          ) : (
+            <Text
+              style={{
+                flex: 1,
+                textAlign: 'center',
+                textAlignVertical: 'center'
+              }}
+            >
+              Begin the conversation!
+            </Text>
+          )}
+          <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+            <View style={styles.inputBar}>
+              <TextInput
+                placeholder="type your message..."
+                value={message}
+                onChangeText={(text: String) =>
+                  this.setState({ message: text })
+                }
+                style={styles.messageInput}
+              />
+              <TouchableOpacity
+                onPress={() => this.sendMessage()}
+                style={styles.sendButton}
+              >
+                <FontAwesome name="arrow-up" size={25} style={styles.arrow} />
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
         </View>
-      </View>
+      </this.DismissKeyboard>
     );
   }
 }
