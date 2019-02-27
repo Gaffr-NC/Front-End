@@ -8,7 +8,8 @@ import {
   Alert,
   AsyncStorage,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView
 } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import firebase from 'firebase';
@@ -49,61 +50,71 @@ export default class SignUpScreen extends Component<Props, States> {
     return (
       <this.DismissKeyboard>
         <View style={styles.signupContainer}>
-          <View style={styles.headerText}>
-            <Text>
-              You have selected a{' '}
-              {this.props.navigation.getParam('userType', 'ERROR')} account.
-            </Text>
-            <Text>(To change account type, you can go back!)</Text>
-            <Text>Fill in your details below to sign up.</Text>
-          </View>
-          <View style={styles.signupForm}>
-            <TextInput
-              style={styles.input}
-              placeholder="Full Name"
-              value={this.state.name}
-              onChangeText={(text: String) => this.setState({ name: text })}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Email Address"
-              value={this.state.email}
-              onChangeText={(text: String) => this.setState({ email: text })}
-              autoCapitalize="none"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              value={this.state.password}
-              onChangeText={(text: String) => this.setState({ password: text })}
-              autoCapitalize="none"
-              secureTextEntry
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Retype Password"
-              value={this.state.confirmPassword}
-              onChangeText={(text: String) =>
-                this.setState({ confirmPassword: text })
-              }
-              autoCapitalize="none"
-              secureTextEntry
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Phone Number"
-              value={this.state.phoneNo}
-              onChangeText={(text: String) => this.setState({ phoneNo: text })}
-            />
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={() => this.handleSignUpPress()}
-            >
-              <Text style={{ alignSelf: 'center', color: '#ffffff' }}>
-                SUBMIT
+          <KeyboardAvoidingView
+            style={styles.signupContainer}
+            behavior="padding"
+            enabled
+          >
+            <View style={styles.headerText}>
+              <Text>
+                You have selected a{' '}
+                {this.props.navigation.getParam('userType', 'ERROR')} account.
               </Text>
-            </TouchableOpacity>
-          </View>
+              <Text>(To change account type, you can go back!)</Text>
+              <Text>Fill in your details below to sign up.</Text>
+            </View>
+            <View style={styles.signupForm}>
+              <TextInput
+                style={styles.input}
+                placeholder="Full Name"
+                value={this.state.name}
+                onChangeText={(text: String) => this.setState({ name: text })}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Email Address"
+                value={this.state.email}
+                onChangeText={(text: String) => this.setState({ email: text })}
+                autoCapitalize="none"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                value={this.state.password}
+                onChangeText={(text: String) =>
+                  this.setState({ password: text })
+                }
+                autoCapitalize="none"
+                secureTextEntry
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Retype Password"
+                value={this.state.confirmPassword}
+                onChangeText={(text: String) =>
+                  this.setState({ confirmPassword: text })
+                }
+                autoCapitalize="none"
+                secureTextEntry
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Phone Number"
+                value={this.state.phoneNo}
+                onChangeText={(text: String) =>
+                  this.setState({ phoneNo: text })
+                }
+              />
+              <TouchableOpacity
+                style={styles.submitButton}
+                onPress={() => this.handleSignUpPress()}
+              >
+                <Text style={{ alignSelf: 'center', color: '#ffffff' }}>
+                  SUBMIT
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
         </View>
       </this.DismissKeyboard>
     );
@@ -153,7 +164,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
     margin: 0,
     color: '#0B4F6C',
     backgroundColor: '#dcd1e8'
@@ -169,7 +179,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: 200,
     padding: 0,
     margin: 0
   },
