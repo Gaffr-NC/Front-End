@@ -35,7 +35,7 @@ export default class Chat extends Component<Props> {
       title: navigation.getParam('name', 'error - no user')
     };
   };
-  async componentDidMount() {
+  async componentDidMount(): Promise<void> {
     const match = JSON.parse(this.props.navigation.getParam('match', 'ERROR'));
     liveListen('matches', match.id, (doc: DocumentSnapshot) => {
       const matchData = doc.data();
@@ -44,7 +44,7 @@ export default class Chat extends Component<Props> {
       });
     });
   }
-  sendMessage = async () => {
+  sendMessage = async (): Promise<void> => {
     const { message } = this.state;
     const match = JSON.parse(this.props.navigation.getParam('match', 'ERROR'));
     const userType = this.props.navigation.getParam('userType', 'ERROR');

@@ -40,7 +40,7 @@ export default class SignUpScreen extends Component<Props, States> {
     title: 'Sign Up'
   };
 
-  DismissKeyboard = ({ children }) => (
+  DismissKeyboard = ({ children }: any) => (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       {children}
     </TouchableWithoutFeedback>
