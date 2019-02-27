@@ -59,7 +59,7 @@ export default class Chat extends Component<Props> {
     }
   };
 
-  DismissKeyboard = ({ children }) => (
+  DismissKeyboard = ({ children }: any) => (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       {children}
     </TouchableWithoutFeedback>

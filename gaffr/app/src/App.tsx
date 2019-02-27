@@ -37,6 +37,7 @@ const SwiperStack = createStackNavigator(
     initialRouteName: 'SwipeScreen',
     headerMode: 'none',
     navigationOptions: {
+      header: null,
       tabBarLabel: () => <FontAwesome name="home" size={40} color={'white'} />
     }
   }
