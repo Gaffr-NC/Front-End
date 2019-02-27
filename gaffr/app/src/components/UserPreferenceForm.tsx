@@ -57,7 +57,6 @@ class userPreferenceForm extends Component<Props> {
     const {
       user: { id }
     } = this.props;
-    console.log(id, preferences);
     if (id) {
       updatePreferences(id, preferences);
       Alert.alert('Preferences updated');

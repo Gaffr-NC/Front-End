@@ -15,14 +15,12 @@ import {
   QuerySnapshot,
   DocumentData
 } from '@firebase/firestore-types';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default class Matches extends Component {
   state = {
     matches: [],
     userType: ''
-  };
-  static navigationOptions = {
-    header: null
   };
 
   async componentDidMount() {

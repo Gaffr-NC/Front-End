@@ -129,7 +129,6 @@ const getSuitableLandlords = async (
         landlord.property.bedrooms >= bedrooms &&
         !matches.find(match => match.landlordId === landlord.id)
     );
-    console.log(landlords);
     return landlords;
   } else {
     return landlords.filter(

@@ -35,12 +35,9 @@ export default class SwipeScreen extends Component<Props> {
     const uid = await AsyncStorage.getItem('uid');
     if (uid) {
       const user = await getUserById(uid, 'tenants');
-      console.log(user);
       const landlords = user.preferences
         ? await getSuitableLandlords(user.preferences, uid)
         : await getUsers('landlords');
-
-      console.log(landlords);
       this.setState({
         uid,
         cards: landlords.filter((landlord: User) => landlord.property)
