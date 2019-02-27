@@ -112,7 +112,6 @@ export default class PropertyScreen extends Component<Props, States> {
   };
   updatePets = (selectedIndex: number) => {
     this.setState({ petsAllowed: selectedIndex ? true : false });
-    console.log(this.state.petsAllowed);
   };
 
   render() {
@@ -192,7 +191,6 @@ export default class PropertyScreen extends Component<Props, States> {
                   })
                 }
               />
-              <Text style={styles.inputLabel}>Description: </Text>
               <TextInput
                 placeholder="description..."
                 style={styles.input}

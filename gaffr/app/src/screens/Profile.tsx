@@ -10,6 +10,7 @@ import {
 import { User } from '../utils/interfaces';
 import { getUserById } from '../utils';
 import { NavigationScreenProp } from 'react-navigation';
+import UserPreferenceForm from '../components/UserPreferenceForm';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -26,7 +27,7 @@ export default class Profile extends Component<Props> {
     const uid = await AsyncStorage.getItem('uid');
     const userType = await AsyncStorage.getItem('userType');
     const user = uid && userType ? await getUserById(uid, userType) : undefined;
-    this.setState({ user });
+    this.setState({ user: { ...user, id: uid } });
   }
 
   logout = () => {
@@ -40,7 +41,7 @@ export default class Profile extends Component<Props> {
     if (user) {
       const thisUser: User = user;
       return (
-        <ScrollView contentContainerStyle={{ flex: 1 }}>
+        <ScrollView style={{ backgroundColor: '#dcd1e8' }}>
           <View style={styles.profileContainer}>
             <View style={styles.userContainer}>
               <Text style={{ fontWeight: 'bold' }}>Your Profile</Text>
@@ -48,18 +49,18 @@ export default class Profile extends Component<Props> {
               <Text>Email: {thisUser.email}</Text>
               <Text>Telephone: {thisUser.phone}</Text>
             </View>
-            {thisUser.preferences && (
-              <View style={styles.tenantPreferences}>
-                <Text>My prefs...</Text>
-                <Text>Bedrooms: {thisUser.preferences.bedrooms}</Text>
-                <Text>City: {thisUser.preferences.city}</Text>
-              </View>
-            )}
+            <UserPreferenceForm user={user} />
             <TouchableOpacity
               style={styles.logoutButton}
               onPress={() => this.logout()}
             >
-              <Text style={{ alignSelf: 'center', color: '#ffffff' }}>
+              <Text
+                style={{
+                  alignSelf: 'center',
+                  color: '#ffffff',
+                  fontWeight: 'bold'
+                }}
+              >
                 LOG OUT
               </Text>
             </TouchableOpacity>
