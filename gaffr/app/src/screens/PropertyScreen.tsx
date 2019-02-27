@@ -54,7 +54,7 @@ export default class PropertyScreen extends Component<Props, States> {
   static navigationOptions = {
     title: 'Properties'
   };
-  async handleHouse(user: UserWithProperty) {
+  async handleHouse(user: UserWithProperty): Promise<void> {
     const {
       bedrooms,
       city,
@@ -101,13 +101,9 @@ export default class PropertyScreen extends Component<Props, States> {
     }
   }
 
-  addImage = (image: string) => {
+  addImage = (image: string): void => {
     const { images } = this.state;
     this.setState({ images: [...images, image] });
-  };
-
-  Capitalize = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   updateSmoking = (selectedIndex: number) => {

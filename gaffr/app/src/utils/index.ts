@@ -284,6 +284,10 @@ const sendChatMessage = async (
   });
 };
 
+const capitalise = (str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 const trimMessage = (message: string): string =>
   message.length > 40 ? `${message.slice(0, 40)}...` : message;
 
@@ -305,5 +309,6 @@ export {
   liveListenMatchesTenant,
   liveListenMatchesLandlord,
   sendChatMessage,
-  trimMessage
+  trimMessage,
+  capitalise
 };
