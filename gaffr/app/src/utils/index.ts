@@ -127,13 +127,13 @@ const getSuitableLandlords = async (
       (landlord: User) =>
         landlord.property &&
         landlord.property.bedrooms >= bedrooms &&
-        !matches.find(match => match.landlordId !== landlord.id)
+        !matches.find(match => match.landlordId === landlord.id)
     );
     return landlords;
   } else {
     return landlords.filter(
       (landlord: User) =>
-        !matches.find(match => match.landlordId !== landlord.id)
+        !matches.find(match => match.landlordId === landlord.id)
     );
   }
 };

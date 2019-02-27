@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper';
 import { StyleSheet, View, Text, Image, AsyncStorage } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { getUsers, addMatch, liveListenMatchesTenant } from '../utils/index';
+import {
+  getUsers,
+  addMatch,
+  liveListenMatchesTenant,
+  getUserById,
+  getSuitableLandlords,
+  capitalise
+} from '../utils/index';
 import { NavigationScreenProp } from 'react-navigation';
 import { User, Match, Property } from '../utils/interfaces';
 
@@ -25,10 +32,17 @@ export default class SwipeScreen extends Component<Props> {
   };
 
   componentDidMount = async () => {
-    const landlords = await getUsers('landlords');
     const uid = await AsyncStorage.getItem('uid');
-    this.setState({ uid });
-    this.setState({ cards: landlords.filter(landlord => landlord.property) });
+    if (uid) {
+      const user = await getUserById(uid, 'tenants');
+      const landlords = user.preferences
+        ? await getSuitableLandlords(user.preferences, uid)
+        : await getUsers('landlords');
+      this.setState({
+        uid,
+        cards: landlords.filter((landlord: User) => landlord.property)
+      });
+    }
   };
 
   renderCard = (cardData: any) => {
@@ -45,7 +59,7 @@ export default class SwipeScreen extends Component<Props> {
             <View style={styles.textBox}>
               <Text style={styles.text}>
                 <FontAwesome name="home" size={50} />{' '}
-                {this.Capitalize(cardData.property.propertyType)}
+                {capitalise(cardData.property.propertyType)}
               </Text>
               <Text style={styles.text}>
                 <FontAwesome name="bed" size={50} />{' '}
@@ -91,12 +105,10 @@ export default class SwipeScreen extends Component<Props> {
       addMatch(card.id, uid);
     }
   };
-  Capitalize = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
 
   render() {
-    return (
+    const { cards, swipedAllCards } = this.state;
+    return cards.length && !swipedAllCards ? (
       <View>
         <Swiper
           stackSize={6}
@@ -150,6 +162,14 @@ export default class SwipeScreen extends Component<Props> {
           animateCardOpacity
           onTapCard={(cardIndex: number) => this.onClickCard(cardIndex)}
         />
+      </View>
+    ) : (
+      <View
+        style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}
+      >
+        <Text style={{ textAlign: 'center' }}>
+          No more gaffs matching your criteria
+        </Text>
       </View>
     );
   }

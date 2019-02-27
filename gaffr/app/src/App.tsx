@@ -16,6 +16,7 @@ import UserType from './screens/UserType';
 import SignUpScreen from './screens/SignUpScreen';
 import Chat from './screens/Chat';
 import PropertyProfile from './screens/PropertyProfile';
+import { FontAwesome } from '@expo/vector-icons';
 
 interface User {
   id: String;
@@ -32,7 +33,13 @@ const SwiperStack = createStackNavigator(
     SwipeScreen: SwipeScreen,
     PropertyProfile: PropertyProfile
   },
-  { initialRouteName: 'SwipeScreen', headerMode: 'none' }
+  {
+    initialRouteName: 'SwipeScreen',
+    headerMode: 'none',
+    navigationOptions: {
+      tabBarLabel: () => <FontAwesome name="home" size={40} color={'white'} />
+    }
+  }
 );
 
 const MatchStack = createStackNavigator(
@@ -41,7 +48,12 @@ const MatchStack = createStackNavigator(
     Chat: Chat
   },
   {
-    initialRouteName: 'Matches'
+    initialRouteName: 'Matches',
+    navigationOptions: {
+      tabBarLabel: () => (
+        <FontAwesome name="comments" size={30} color={'white'} />
+      )
+    }
   }
 );
 

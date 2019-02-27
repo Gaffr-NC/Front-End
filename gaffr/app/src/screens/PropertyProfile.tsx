@@ -50,9 +50,6 @@ export default class PropertyProfile extends Component<Props> {
 
         <Swiper
           height={240}
-          onMomentumScrollEnd={(_: any, state: any) =>
-            console.log('index:', state.index)
-          }
           dot={
             <View
               style={{

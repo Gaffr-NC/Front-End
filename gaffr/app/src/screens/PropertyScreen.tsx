@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
 import {
   View,
   Text,
@@ -20,6 +19,7 @@ import { updateProperty } from '../utils';
 import { User, Property, UserWithProperty } from '../utils/interfaces';
 import ImageUploader from '../components/ImageUploader';
 import { ButtonGroup } from 'react-native-elements';
+import { FontAwesome } from '@expo/vector-icons';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -52,7 +52,9 @@ export default class PropertyScreen extends Component<Props, States> {
   };
 
   static navigationOptions = {
-    title: 'Properties'
+    // title: 'Spaghetti',
+    tabBarLabel: () => <FontAwesome name="home" size={40} color={'white'} />,
+    showIcon: true
   };
   async handleHouse(user: UserWithProperty): Promise<void> {
     const {
@@ -108,11 +110,9 @@ export default class PropertyScreen extends Component<Props, States> {
 
   updateSmoking = (selectedIndex: number) => {
     this.setState({ smokingAllowed: selectedIndex ? true : false });
-    console.log(this.state.smokingAllowed);
   };
   updatePets = (selectedIndex: number) => {
     this.setState({ petsAllowed: selectedIndex ? true : false });
-    console.log(this.state.petsAllowed);
   };
 
   render() {
@@ -192,7 +192,6 @@ export default class PropertyScreen extends Component<Props, States> {
                   })
                 }
               />
-              <Text style={styles.inputLabel}>Description: </Text>
               <TextInput
                 placeholder="description..."
                 style={styles.input}
