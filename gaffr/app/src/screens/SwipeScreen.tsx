@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Swiper from '../utils/react-native-deck-swiper/Swiper.js';
+import Swiper from 'react-native-deck-swiper';
 import { StyleSheet, View, Text, Image, AsyncStorage } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import {
