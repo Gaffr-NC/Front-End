@@ -84,8 +84,10 @@ const getMatchById = async (id: string) => {
   return match.data() as Match | undefined;
 };
 
-// TODO: THIS - filtering with multiple inequalities
-const getSuitableLandlords = async (preferences: Preferences) => {
+const getSuitableLandlords = async (
+  preferences: Preferences,
+  tenantId: string
+) => {
   const {
     smokingAllowed,
     petsAllowed,
@@ -95,7 +97,7 @@ const getSuitableLandlords = async (preferences: Preferences) => {
     bedrooms,
     propertyType
   } = preferences;
-
+  const matches = await getMatchesByTenant(tenantId);
   let landlords: any = await db.collection('landlords');
   if (smokingAllowed) {
     landlords = landlords.where('property.smokingAllowed', '==', true);
@@ -120,9 +122,12 @@ const getSuitableLandlords = async (preferences: Preferences) => {
     id: landlord.id
   }));
   if (bedrooms) {
+    // filters bedrooms to avoid multiple inequality clause in firestore queries, then removes already matched landlords
     landlords = landlords.filter(
       (landlord: User) =>
-        landlord.property && landlord.property.bedrooms >= bedrooms
+        landlord.property &&
+        landlord.property.bedrooms >= bedrooms &&
+        !matches.find(match => match.landlordId !== landlord.id)
     );
   }
   return landlords;

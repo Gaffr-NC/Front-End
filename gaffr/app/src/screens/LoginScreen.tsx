@@ -36,7 +36,7 @@ export default class Login extends Component<Props, States> {
     title: 'Welcome'
   };
 
-  DismissKeyboard = ({ children }) => (
+  DismissKeyboard = ({ children }: any) => (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       {children}
     </TouchableWithoutFeedback>
