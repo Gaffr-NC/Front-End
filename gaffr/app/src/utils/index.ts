@@ -129,8 +129,13 @@ const getSuitableLandlords = async (
         landlord.property.bedrooms >= bedrooms &&
         !matches.find(match => match.landlordId !== landlord.id)
     );
+    return landlords;
+  } else {
+    return landlords.filter(
+      (landlord: User) =>
+        !matches.find(match => match.landlordId !== landlord.id)
+    );
   }
-  return landlords;
 };
 
 const getMatchesByLandlord = async (landlordId: string): Promise<Match[]> => {
