@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
-import Swiper from 'react-native-deck-swiper';
+import Swiper from '../utils/react-native-deck-swiper/Swiper.js';
 import { StyleSheet, View, Text, Image, AsyncStorage } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import {
   getUsers,
   addMatch,
-  liveListenMatchesTenant,
   getUserById,
   getSuitableLandlords,
   capitalise
 } from '../utils/index';
 import { NavigationScreenProp } from 'react-navigation';
-import { User, Match, Property } from '../utils/interfaces';
+import { User } from '../utils/interfaces';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -28,7 +27,9 @@ export default class SwipeScreen extends Component<Props> {
   };
 
   static navigationOptions: {
-    header: { visible: false };
+    // header: { visible: false };
+    headerVisible: false;
+    header: null;
   };
 
   componentDidMount = async () => {
@@ -58,15 +59,15 @@ export default class SwipeScreen extends Component<Props> {
             />
             <View style={styles.textBox}>
               <Text style={styles.text}>
-                <FontAwesome name="home" size={50} />{' '}
+                <FontAwesome name="home" size={30} />{' '}
                 {capitalise(cardData.property.propertyType)}
               </Text>
               <Text style={styles.text}>
-                <FontAwesome name="bed" size={50} />{' '}
+                <FontAwesome name="bed" size={30} />{' '}
                 {cardData.property.bedrooms}
               </Text>
               <Text style={styles.text}>
-                <FontAwesome name="gbp" size={50} /> {cardData.property.price}
+                <FontAwesome name="gbp" size={30} /> {cardData.property.price}
               </Text>
             </View>
           </View>
@@ -109,13 +110,14 @@ export default class SwipeScreen extends Component<Props> {
   render() {
     const { cards, swipedAllCards } = this.state;
     return cards.length && !swipedAllCards ? (
-      <View>
+      <View style={{ flex: 1 }}>
         <Swiper
           stackSize={6}
+          backgroundColor={'#dcd1e8'}
           verticalSwipe={false}
           cards={this.state.cards}
           cardIndex={this.state.cardIndex}
-          cardVerticalMargin={80}
+          cardVerticalMargin={40}
           renderCard={this.renderCard}
           onSwipedAll={this.onSwipedAllCards}
           onSwipedRight={this.onSwipeRight}
@@ -162,6 +164,7 @@ export default class SwipeScreen extends Component<Props> {
           animateCardOpacity
           onTapCard={(cardIndex: number) => this.onClickCard(cardIndex)}
         />
+        <View style={{ height: 200 }} />
       </View>
     ) : (
       <View
@@ -188,16 +191,19 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    backgroundColor: '#dcd1e8',
+    backgroundColor: '#f9f4f5',
     padding: 10,
     color: '#000000',
     borderColor: '#000000',
     borderWidth: 3,
     borderRadius: 10
+    // justifyContent: 'flex-start',
+    // alignItems: 'center',
+    // marginBottom: 20
   },
   text: {
     marginLeft: 20,
-    fontSize: 30,
+    fontSize: 20,
     backgroundColor: 'transparent',
     color: '#000000'
   },
