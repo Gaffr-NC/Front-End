@@ -98,7 +98,7 @@ export default class Login extends Component<Props, States> {
     );
   }
 
-  handleLogInPress = () => {
+  handleLogInPress = (): void => {
     const { email, password } = this.state;
     firebase
       .auth()
