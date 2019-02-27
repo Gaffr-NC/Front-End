@@ -66,7 +66,7 @@ interface UpdatePreferences {
   [key: string]: number | string | boolean | undefined | string[];
 }
 
-const getUsers = async (table: string) => {
+const getUsers = async (table: string): Promise<User[]> => {
   const users: QuerySnapshot = await db.collection(table).get();
   return users.docs.map((user: DocumentSnapshot) => ({
     ...user.data(),
@@ -74,18 +74,20 @@ const getUsers = async (table: string) => {
   })) as User[];
 };
 
-const getUserById = async (id: string, table: string) => {
+const getUserById = async (id: string, table: string): Promise<User> => {
   const user: DocumentSnapshot = await db.doc(`${table}/${id}`).get();
-  return user.data() as User | undefined;
+  return user.data() as User;
 };
 
-const getMatchById = async (id: string) => {
+const getMatchById = async (id: string): Promise<Match> => {
   const match: DocumentSnapshot = await db.doc(`matches/${id}`).get();
-  return match.data() as Match | undefined;
+  return match.data() as Match;
 };
 
-// TODO: THIS - filtering with multiple inequalities
-const getSuitableLandlords = async (preferences: Preferences) => {
+const getSuitableLandlords = async (
+  preferences: Preferences,
+  tenantId: string
+): Promise<User[]> => {
   const {
     smokingAllowed,
     petsAllowed,
@@ -95,7 +97,7 @@ const getSuitableLandlords = async (preferences: Preferences) => {
     bedrooms,
     propertyType
   } = preferences;
-
+  const matches = await getMatchesByTenant(tenantId);
   let landlords: any = await db.collection('landlords');
   if (smokingAllowed) {
     landlords = landlords.where('property.smokingAllowed', '==', true);
@@ -120,15 +122,23 @@ const getSuitableLandlords = async (preferences: Preferences) => {
     id: landlord.id
   }));
   if (bedrooms) {
+    // filters bedrooms to avoid multiple inequality clause in firestore queries, then removes already matched landlords
     landlords = landlords.filter(
       (landlord: User) =>
-        landlord.property && landlord.property.bedrooms >= bedrooms
+        landlord.property &&
+        landlord.property.bedrooms >= bedrooms &&
+        !matches.find(match => match.landlordId !== landlord.id)
+    );
+    return landlords;
+  } else {
+    return landlords.filter(
+      (landlord: User) =>
+        !matches.find(match => match.landlordId !== landlord.id)
     );
   }
-  return landlords;
 };
 
-const getMatchesByLandlord = async (landlordId: string) => {
+const getMatchesByLandlord = async (landlordId: string): Promise<Match[]> => {
   const matches: QuerySnapshot = await db
     .collection('matches')
     .where('landlordId', '==', landlordId)
@@ -139,7 +149,7 @@ const getMatchesByLandlord = async (landlordId: string) => {
   })) as Match[];
 };
 
-const getMatchesByTenant = async (tenantId: string) => {
+const getMatchesByTenant = async (tenantId: string): Promise<Match[]> => {
   const matches: QuerySnapshot = await db
     .collection('matches')
     .where('tenantId', '==', tenantId)
@@ -150,33 +160,44 @@ const getMatchesByTenant = async (tenantId: string) => {
   })) as Match[];
 };
 
-const addUser = async (id: string, user: User, table: string) => {
-  const userRef: void = await db
+const addUser = async (
+  id: string,
+  user: User,
+  table: string
+): Promise<string> => {
+  await db
     .collection(table)
     .doc(id)
     .set(user);
-  return userRef;
+  return `Successfully added user with id ${id}`;
 };
 
-const addMatch = async (landlordId: string, tenantId: string) => {
-  await db
-    .collection('matches')
-    .add({
-      landlordId,
-      tenantId,
-      chatHistory: [],
-      blocked: false
-    })
-    .then((ref: DocumentReference) => {});
+const addMatch = async (
+  landlordId: string,
+  tenantId: string
+): Promise<void> => {
+  await db.collection('matches').add({
+    landlordId,
+    tenantId,
+    chatHistory: [],
+    blocked: false
+  });
 };
 
-const updateUserContact = async (id: string, user: User, table: string) => {
+const updateUserContact = async (
+  id: string,
+  user: User,
+  table: string
+): Promise<string> => {
   const userRef: DocumentReference = await db.collection(table).doc(id);
   await userRef.update(user);
   return userRef.id;
 };
 
-const updateProperty = async (id: string, property: Property) => {
+const updateProperty = async (
+  id: string,
+  property: Property
+): Promise<string> => {
   const keys: string[] = Object.keys(property).map(
     (key: string) => `property.${key}`
   );
@@ -200,7 +221,7 @@ const updateProperty = async (id: string, property: Property) => {
 const updatePreferences = async (
   id: string,
   preferences: UpdatePreferences
-) => {
+): Promise<string> => {
   const keys: string[] = Object.keys(preferences).map(
     key => `preferences.${key}`
   );
@@ -219,20 +240,24 @@ const updatePreferences = async (
   return tenantRef.id;
 };
 
-const blockMatch = async (matchId: string) => {
+const blockMatch = async (matchId: string): Promise<void> => {
   db.collection('matches')
     .doc(matchId)
     .update({ blocked: true });
 };
 
-const deleteUserById = async (id: string, table: string) => {
+const deleteUserById = async (id: string, table: string): Promise<void> => {
   await db
     .collection(table)
     .doc(id)
     .delete();
 };
 
-const liveListen = async (table: string, id: string, cb: Function) => {
+const liveListen = async (
+  table: string,
+  id: string,
+  cb: Function
+): Promise<void> => {
   db.collection(table)
     .doc(id)
     .onSnapshot(doc => cb(doc));
@@ -254,14 +279,21 @@ const liveListenMatchesLandlord = async (
     .where('landlordId', '==', uid)
     .onSnapshot((doc: QuerySnapshot) => cb(doc));
 };
-const sendChatMessage = async (matchId: string, message: ChatMessage) => {
+const sendChatMessage = async (
+  matchId: string,
+  message: ChatMessage
+): Promise<void> => {
   const matchRef = await db.collection('matches').doc(matchId);
   matchRef.update({
     chatHistory: firebase.firestore.FieldValue.arrayUnion(message)
   });
 };
 
-const trimMessage = (message: string) =>
+const capitalise = (str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+const trimMessage = (message: string): string =>
   message.length > 40 ? `${message.slice(0, 40)}...` : message;
 
 export {
@@ -282,5 +314,6 @@ export {
   liveListenMatchesTenant,
   liveListenMatchesLandlord,
   sendChatMessage,
-  trimMessage
+  trimMessage,
+  capitalise
 };

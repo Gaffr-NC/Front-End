@@ -1,33 +1,39 @@
-import React, { Component } from "react";
-import { Text, View, Dimensions, Image, ScrollView } from "react-native";
-import { Divider } from "react-native-elements";
-import Swiper from "react-native-swiper";
-const { width } = Dimensions.get("window");
+import React, { Component } from 'react';
+import { Text, View, Dimensions, Image, ScrollView } from 'react-native';
+import { Divider } from 'react-native-elements';
+import Swiper from 'react-native-swiper';
+const { width } = Dimensions.get('window');
 import {
   FontAwesome,
   MaterialIcons,
   MaterialCommunityIcons,
   Ionicons
-} from "@expo/vector-icons";
+} from '@expo/vector-icons';
+import { capitalise } from '../utils';
+import { NavigationScreenProp } from 'react-navigation';
 
-export default class PropertyProfile extends Component {
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
+}
+
+export default class PropertyProfile extends Component<Props> {
   Capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   ConvertPets = (str: string) => {
-    if (str === "false") {
-      return "Pets not allowed";
+    if (str === 'false') {
+      return 'Pets not allowed';
     } else {
-      return "Pets allowed";
+      return 'Pets allowed';
     }
   };
 
   ConvertSmoking = (str: string) => {
-    if (str === "false") {
-      return "No smoking";
+    if (str === 'false') {
+      return 'No smoking';
     } else {
-      return "Smoking allowed";
+      return 'Smoking allowed';
     }
   };
 
@@ -35,8 +41,8 @@ export default class PropertyProfile extends Component {
     return (
       <View style={styles.container}>
         <Swiper style={styles.wrapper} height={200} horizontal={true}>
-          {this.props.navigation.state.params.images.map(image => (
-            <View style={styles.image}>
+          {this.props.navigation.state.params.images.map((image: string) => (
+            <View key={image} style={styles.image}>
               <Image source={{ uri: image }} style={styles.image} />
             </View>
           ))}
@@ -44,13 +50,13 @@ export default class PropertyProfile extends Component {
 
         <Swiper
           height={240}
-          onMomentumScrollEnd={(e, state, context) =>
-            console.log("index:", state.index)
+          onMomentumScrollEnd={(_: any, state: any) =>
+            console.log('index:', state.index)
           }
           dot={
             <View
               style={{
-                backgroundColor: "rgba(0,0,0,.2)",
+                backgroundColor: 'rgba(0,0,0,.2)',
                 width: 5,
                 height: 5,
                 borderRadius: 4,
@@ -64,7 +70,7 @@ export default class PropertyProfile extends Component {
           activeDot={
             <View
               style={{
-                backgroundColor: "#000",
+                backgroundColor: '#000',
                 width: 8,
                 height: 8,
                 borderRadius: 4,
@@ -77,7 +83,6 @@ export default class PropertyProfile extends Component {
           }
           paginationStyle={{
             bottom: -23,
-            left: null,
             right: 10
           }}
           loop
@@ -87,24 +92,24 @@ export default class PropertyProfile extends Component {
               £{this.props.navigation.state.params.price}/month
             </Text>
             <Text style={styles.city}>
-              {this.Capitalize(this.props.navigation.state.params.area)}
+              {capitalise(this.props.navigation.state.params.area)}
             </Text>
             <Divider />
-            <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Text style={styles.description}>
                 {this.props.navigation.state.params.description}
               </Text>
             </View>
             <Text style={styles.textStyle}>
-              <Ionicons name="ios-home" size={40} />{" "}
+              <Ionicons name="ios-home" size={40} />{' '}
               {this.Capitalize(this.props.navigation.state.params.propertyType)}
             </Text>
             <Text style={styles.textStyle}>
-              <FontAwesome name="bed" size={30} />{" "}
+              <FontAwesome name="bed" size={30} />{' '}
               {this.props.navigation.state.params.bedrooms}
             </Text>
             <Text style={styles.dog}>
-              {" "}
+              {' '}
               <MaterialCommunityIcons name="dog-side" size={40} />
               {this.ConvertPets(
                 this.props.navigation.state.params.petsAllowed.toString()
@@ -134,9 +139,9 @@ const styles = {
   },
   description: {
     fontSize: 20,
-    fontWeight: "bold",
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    fontWeight: 'bold' as 'bold'
   },
   container: {
     flex: 1
@@ -157,5 +162,6 @@ const styles = {
   textStyle: {
     marginLeft: 25,
     fontSize: 20
-  }
+  },
+  wrapper: {}
 };

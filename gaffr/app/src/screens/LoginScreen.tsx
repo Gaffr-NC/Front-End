@@ -36,7 +36,7 @@ export default class Login extends Component<Props, States> {
     title: 'Welcome'
   };
 
-  DismissKeyboard = ({ children }) => (
+  DismissKeyboard = ({ children }: any) => (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       {children}
     </TouchableWithoutFeedback>
@@ -98,7 +98,7 @@ export default class Login extends Component<Props, States> {
     );
   }
 
-  handleLogInPress = () => {
+  handleLogInPress = (): void => {
     const { email, password } = this.state;
     firebase
       .auth()
@@ -155,6 +155,8 @@ const styles = StyleSheet.create({
     width: 200
   },
   headerText: {
+    textAlign: 'center',
+    marginBottom: 20,
     alignItems: 'center',
     fontSize: 12,
     padding: 0
@@ -193,7 +195,8 @@ const styles = StyleSheet.create({
   signupButton: {
     backgroundColor: '#502F4C',
     margin: 0,
-    width: '55%',
+    marginTop: 10,
+    width: '75%',
     padding: 20,
     borderRadius: 10
   }
