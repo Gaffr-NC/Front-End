@@ -127,10 +127,10 @@ export default class SwipeScreen extends Component<Props> {
               title: '✗',
               style: {
                 label: {
-                  backgroundColor: 'red',
-                  borderColor: 'red',
-                  color: 'white',
-                  borderWidth: 1
+                  backgroundColor: 'transparent',
+                  borderColor: '#f44242',
+                  color: '#f44242',
+                  borderWidth: 7
                 },
                 wrapper: {
                   flexDirection: 'column',
@@ -145,10 +145,10 @@ export default class SwipeScreen extends Component<Props> {
               title: '✓',
               style: {
                 label: {
-                  backgroundColor: 'green',
-                  borderColor: 'green',
-                  color: 'white',
-                  borderWidth: 1
+                  backgroundColor: 'transparent',
+                  borderColor: '#2fc47c',
+                  color: '#2fc47c',
+                  borderWidth: 7
                 },
                 wrapper: {
                   flexDirection: 'column',
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f4f5',
     padding: 10,
     color: '#000000',
-    borderColor: '#000000',
+    borderColor: '#502f4c',
     borderWidth: 3,
     borderRadius: 10
     // justifyContent: 'flex-start',

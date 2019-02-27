@@ -128,7 +128,7 @@ export default class PropertyProfile extends Component<Props> {
 const styles = {
   price: {
     marginLeft: 20,
-    fontSize: 50
+    fontSize: 40
   },
   city: {
     marginLeft: 20,
