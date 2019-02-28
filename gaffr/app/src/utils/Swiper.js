@@ -89,6 +89,7 @@ class Swiper extends Component {
     this._mounted = false;
     this.state.pan.x.removeAllListeners();
     this.state.pan.y.removeAllListeners();
+    Dimensions.removeEventListener('change', this.onDimensionsChange);
   };
 
   getCardStyle = () => {
@@ -113,10 +114,7 @@ class Swiper extends Component {
   };
 
   initializeCardStyle = () => {
-    this.forceUpdate();
-    Dimensions.addEventListener('change', () => {
-      this.forceUpdate();
-    });
+    Dimensions.addEventListener('change', this.onDimensionsChange);
   };
 
   initializePanResponder = () => {
@@ -150,6 +148,10 @@ class Swiper extends Component {
     const dx = horizontalSwipe ? x : 0;
     const dy = verticalSwipe ? y : 0;
     return { dx, dy };
+  };
+
+  onDimensionsChange = () => {
+    this.forceUpdate();
   };
 
   onPanResponderMove = (event, gestureState) => {
