@@ -243,7 +243,6 @@ const updatePreferences = async (
 };
 
 const blockMatch = async (matchId: string): Promise<void> => {
-  console.log('called with ', matchId);
   db.collection('matches')
     .doc(matchId)
     .update({ blocked: true });

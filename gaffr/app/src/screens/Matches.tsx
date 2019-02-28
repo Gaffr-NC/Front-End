@@ -44,8 +44,8 @@ export default class Matches extends Component {
           const matches: DocumentData[] = [];
           doc.forEach(match => {
             if (!match.data().blocked) {
-            matches.push({ ...match.data(), id: match.id })
-          }
+              matches.push({ ...match.data(), id: match.id });
+            }
           });
           this.setState({ matches });
         });
@@ -54,9 +54,10 @@ export default class Matches extends Component {
           const matches: DocumentData[] = [];
           doc.forEach(match => {
             if (!match.data().blocked) {
-              matches.push({ ...match.data(), id: match.id 
-              })}
-          this.setState({ matches });
+              matches.push({ ...match.data(), id: match.id });
+            }
+            this.setState({ matches });
+          });
         });
       }
     }
@@ -66,14 +67,24 @@ export default class Matches extends Component {
   };
   render() {
     const { userType, matches } = this.state;
-    return (matches.length ? <ScrollView style={{ flex: 1, backgroundColor: '#dcd1e8' }}>
-      <View>
-        {matches.map((match: Match) => (
-          <MatchItem userType={userType} match={match} key={match.id} />
-        ))}
+    return matches.length ? (
+      <ScrollView style={{ flex: 1, backgroundColor: '#dcd1e8' }}>
+        <View>
+          {matches.map((match: Match) => (
+            <MatchItem userType={userType} match={match} key={match.id} />
+          ))}
+        </View>
+      </ScrollView>
+    ) : (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          backgroundColor: '#dcd1e8'
+        }}
+      >
+        <Text style={{ textAlign: 'center' }}>You have no matches yet!</Text>
       </View>
-    </ScrollView> : <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#dcd1e8' }}><Text style={{ textAlign: 'center' }}>You have no matches yet!</Text></View>
-
     );
   }
 }

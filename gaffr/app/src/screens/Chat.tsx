@@ -94,7 +94,6 @@ export default class Chat extends Component<Props> {
           { text: 'No, cancel', style: 'cancel' }
         ]
       );
-      console.log(match.id);
     } else {
       Alert.alert('Error blocking this user');
     }
