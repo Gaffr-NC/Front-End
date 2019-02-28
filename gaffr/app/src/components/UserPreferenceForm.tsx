@@ -72,7 +72,8 @@ class userPreferenceForm extends Component<Props> {
       smokingAllowed,
       petsAllowed
     } = this.state.preferences;
-    const propertyTypes = ['House', 'Apartment', 'Bungalow', 'Flat'];
+    const propertyTypes = ['House', 'Apartment', 'Bungalow'];
+    const cities = ['Manchester', 'London', 'Leeds'];
     return (
       <View style={styles.propertyForm}>
         <Text style={styles.inputLabel}>Minimum Price (pcm):</Text>
@@ -128,18 +129,31 @@ class userPreferenceForm extends Component<Props> {
           }
         />
         <Text style={styles.inputLabel}>City: </Text>
-        <TextInput
-          placeholder="city"
-          style={styles.input}
-          value={city}
-          onChangeText={(text: string) =>
+        <ButtonGroup
+          onPress={index =>
             this.setState({
               preferences: {
                 ...this.state.preferences,
-                city: text
+                city: cities[index]
               }
             })
           }
+          buttons={cities}
+          selectedIndex={cities.indexOf(city)}
+          containerBorderRadius={10}
+          containerStyle={{
+            height: 50,
+            backgroundColor: 'transparent',
+            borderWidth: 0
+          }}
+          selectedButtonStyle={{ backgroundColor: '#502f4c' }}
+          innerBorderStyle={{ width: 0 }}
+          buttonStyle={{
+            borderRadius: 10,
+            margin: 5,
+            backgroundColor: '#f9f4f6'
+          }}
+          textStyle={{ color: '#d1d1d1' }}
         />
         <Text style={styles.inputLabel}>Property Type: </Text>
         <ButtonGroup
