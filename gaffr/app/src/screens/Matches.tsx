@@ -1,27 +1,14 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  AsyncStorage,
-  ScrollView,
-  RefreshControl
-} from 'react-native';
+import { View, Text, AsyncStorage, ScrollView } from 'react-native';
 import {
   getMatchesByTenant,
   getMatchesByLandlord,
-  getUserById,
-  liveListen,
   liveListenMatchesTenant,
   liveListenMatchesLandlord
 } from '../utils';
 import { Match } from '../utils/interfaces';
 import MatchItem from '../components/MatchItem';
-import {
-  CollectionReference,
-  QuerySnapshot,
-  DocumentData
-} from '@firebase/firestore-types';
-import { FontAwesome } from '@expo/vector-icons';
+import { QuerySnapshot, DocumentData } from '@firebase/firestore-types';
 
 export default class Matches extends Component {
   state = {

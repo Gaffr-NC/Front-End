@@ -9,8 +9,6 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
-  SafeAreaView,
-  Button,
   Alert
 } from 'react-native';
 import { blockMatch, liveListen, sendChatMessage } from '../utils';

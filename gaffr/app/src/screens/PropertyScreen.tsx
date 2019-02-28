@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  Button,
   TextInput,
   Alert,
   StyleSheet,
-  StatusBar,
   Image,
   ScrollView,
   AsyncStorage,
