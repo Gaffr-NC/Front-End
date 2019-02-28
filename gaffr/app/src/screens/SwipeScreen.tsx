@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper';
-import { StyleSheet, View, Text, Image, AsyncStorage } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  AsyncStorage,
+  RefreshControl,
+  ScrollView
+} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import {
   getUsers,
@@ -23,7 +31,8 @@ export default class SwipeScreen extends Component<Props> {
     swipedAllCards: false,
     swipeDirection: '',
     isSwipingBack: false,
-    cardIndex: 0
+    cardIndex: 0,
+    refreshing: false
   };
 
   static navigationOptions: {
@@ -34,6 +43,11 @@ export default class SwipeScreen extends Component<Props> {
 
   componentDidMount = async () => {
     const uid = await AsyncStorage.getItem('uid');
+    await this.setState({ uid });
+    this.fetchData();
+  };
+  fetchData = async () => {
+    const { uid } = this.state;
     if (uid) {
       const user = await getUserById(uid, 'tenants');
       const landlords = user.preferences
@@ -41,9 +55,18 @@ export default class SwipeScreen extends Component<Props> {
         : await getUsers('landlords');
       this.setState({
         uid,
-        cards: landlords.filter((landlord: User) => landlord.property)
+        cards: landlords.filter((landlord: User) => landlord.property),
+        cardIndex: 0,
+        swipedAllCards: false
       });
     }
+  };
+
+  onRefresh = async () => {
+    this.setState({ refreshing: true });
+    await this.fetchData().then(() => {
+      this.setState({ refreshing: false });
+    });
   };
 
   renderCard = (cardData: any) => {
@@ -100,7 +123,6 @@ export default class SwipeScreen extends Component<Props> {
   };
   onSwipeRight = async (cardIndex: number) => {
     const { uid, cards } = this.state;
-
     const card: User = cards[cardIndex];
     if (card.id && uid) {
       addMatch(card.id, uid);
@@ -108,72 +130,92 @@ export default class SwipeScreen extends Component<Props> {
   };
 
   render() {
-    const { cards, swipedAllCards } = this.state;
+    const { cards, swipedAllCards, refreshing } = this.state;
     return cards.length && !swipedAllCards ? (
-      <View style={{ flex: 1 }}>
-        <Swiper
-          stackSize={6}
-          backgroundColor={'#dcd1e8'}
-          verticalSwipe={false}
-          cards={this.state.cards}
-          cardIndex={this.state.cardIndex}
-          cardVerticalMargin={40}
-          renderCard={this.renderCard}
-          onSwipedAll={this.onSwipedAllCards}
-          onSwipedRight={this.onSwipeRight}
-          showSecondCard={true}
-          overlayLabels={{
-            left: {
-              title: '✗',
-              style: {
-                label: {
-                  backgroundColor: 'transparent',
-                  borderColor: '#f44242',
-                  color: '#f44242',
-                  borderWidth: 7
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'flex-end',
-                  justifyContent: 'flex-start',
-                  marginTop: 30,
-                  marginLeft: -30
+      <ScrollView
+        contentContainerStyle={{ flex: 1 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh}
+          />
+        }
+      >
+        {!refreshing && (
+          <Swiper
+            stackSize={6}
+            backgroundColor={'#dcd1e8'}
+            verticalSwipe={false}
+            cards={this.state.cards}
+            cardIndex={this.state.cardIndex}
+            cardVerticalMargin={40}
+            renderCard={this.renderCard}
+            onSwipedAll={this.onSwipedAllCards}
+            onSwipedRight={this.onSwipeRight}
+            showSecondCard={true}
+            overlayLabels={{
+              left: {
+                title: '✗',
+                style: {
+                  label: {
+                    backgroundColor: 'transparent',
+                    borderColor: '#f44242',
+                    color: '#f44242',
+                    borderWidth: 7
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                    justifyContent: 'flex-start',
+                    marginTop: 30,
+                    marginLeft: -30
+                  }
+                }
+              },
+              right: {
+                title: '✓',
+                style: {
+                  label: {
+                    backgroundColor: 'transparent',
+                    borderColor: '#2fc47c',
+                    color: '#2fc47c',
+                    borderWidth: 7
+                  },
+                  wrapper: {
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    marginTop: 30,
+                    marginLeft: 30
+                  }
                 }
               }
-            },
-            right: {
-              title: '✓',
-              style: {
-                label: {
-                  backgroundColor: 'transparent',
-                  borderColor: '#2fc47c',
-                  color: '#2fc47c',
-                  borderWidth: 7
-                },
-                wrapper: {
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  justifyContent: 'flex-start',
-                  marginTop: 30,
-                  marginLeft: 30
-                }
-              }
-            }
-          }}
-          animateOverlayLabelsOpacity
-          animateCardOpacity
-          onTapCard={(cardIndex: number) => this.onClickCard(cardIndex)}
-        />
-        <View style={{ height: 200 }} />
-      </View>
+            }}
+            animateOverlayLabelsOpacity
+            animateCardOpacity
+            onTapCard={(cardIndex: number) => this.onClickCard(cardIndex)}
+          />
+        )}
+      </ScrollView>
     ) : (
-      <View
-        style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+          justifyContent: 'center',
+          alignContent: 'center',
+          backgroundColor: '#dcd1e8'
+        }}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh}
+          />
+        }
       >
         <Text style={{ textAlign: 'center' }}>
-          No more gaffs matching your criteria
+          No more gaffs matching your criteria: pull down to refresh?
         </Text>
-      </View>
+      </ScrollView>
     );
   }
 }
