@@ -108,7 +108,7 @@ export default class Chat extends Component<Props> {
           <KeyboardAvoidingView
             // style={{ flex: 1 }}
             behavior="position"
-            keyboardVerticalOffset={150}
+            keyboardVerticalOffset={142}
           >
             <View style={styles.inputBar}>
               <TextInput
@@ -165,7 +165,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    width: '100%'
+    width: '100%',
+    backgroundColor: '#f9f4f5'
   },
   messageInput: {
     width: '80%',

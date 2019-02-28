@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { NavigationScreenProp } from "react-navigation";
+import React, { Component } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { NavigationScreenProp } from 'react-navigation';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -8,30 +8,28 @@ interface Props {
 
 export default class UserTypeScreen extends Component<Props> {
   static navigationOptions = {
-    title: "Select Account Type"
+    title: 'Select Account Type'
   };
 
   render() {
     return (
       <View style={styles.buttonContainer}>
-        <Text>Which type of profile would you like?</Text>
+        <Text style={{ ...styles.text, color: 'black' }}>I am a...</Text>
         <TouchableOpacity
           style={styles.tenantButton}
           onPress={() =>
-            this.props.navigation.navigate("signUp", { userType: "tenants" })
+            this.props.navigation.navigate('signUp', { userType: 'tenants' })
           }
         >
-          <Text style={{ alignSelf: "center", color: "#ffffff" }}>TENANT</Text>
+          <Text style={styles.text}>tenant</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.landlordButton}
           onPress={() =>
-            this.props.navigation.navigate("signUp", { userType: "landlords" })
+            this.props.navigation.navigate('signUp', { userType: 'landlords' })
           }
         >
-          <Text style={{ alignSelf: "center", color: "#ffffff" }}>
-            LANDLORD
-          </Text>
+          <Text style={styles.text}>landlord</Text>
         </TouchableOpacity>
       </View>
     );
@@ -41,25 +39,31 @@ export default class UserTypeScreen extends Component<Props> {
 const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
     margin: 0,
-    color: "#0B4F6C",
-    backgroundColor: "#dcd1e8"
+    color: '#0B4F6C',
+    backgroundColor: '#dcd1e8'
   },
   tenantButton: {
-    backgroundColor: "#502F4C",
+    backgroundColor: '#502F4C',
     margin: 10,
-    width: "55%",
+    width: '55%',
     padding: 20,
     borderRadius: 10
   },
   landlordButton: {
-    backgroundColor: "#502F4C",
+    backgroundColor: '#502F4C',
     margin: 10,
-    width: "55%",
+    width: '55%',
     padding: 20,
     borderRadius: 10
+  },
+  text: {
+    fontWeight: '700',
+    fontSize: 20,
+    alignSelf: 'center',
+    color: '#ffffff'
   }
 });
