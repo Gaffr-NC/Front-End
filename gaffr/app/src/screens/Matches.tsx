@@ -59,15 +59,14 @@ export default class Matches extends Component {
   };
   render() {
     const { userType, matches } = this.state;
-    return (
-      <ScrollView style={{ flex: 1, backgroundColor: '#dcd1e8' }}>
-        <View>
-          {matches &&
-            matches.map((match: Match) => (
-              <MatchItem userType={userType} match={match} key={match.id} />
-            ))}
-        </View>
-      </ScrollView>
+    return (matches.length ? <ScrollView style={{ flex: 1, backgroundColor: '#dcd1e8' }}>
+      <View>
+        {matches.map((match: Match) => (
+          <MatchItem userType={userType} match={match} key={match.id} />
+        ))}
+      </View>
+    </ScrollView> : <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#dcd1e8' }}><Text style={{ textAlign: 'center' }}>You have no matches yet!</Text></View>
+
     );
   }
 }

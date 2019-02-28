@@ -115,7 +115,7 @@ class userPreferenceForm extends Component<Props> {
           style={{ width: 300 }}
         />
         <Text style={styles.inputLabel}>Number of bedrooms: </Text>
-        <Text style={styles.inputLabel}>{bedrooms} </Text>
+        <Text style={styles.inputLabel}>{bedrooms}</Text>
         <Slider
           minimumValue={1}
           maximumValue={5}
