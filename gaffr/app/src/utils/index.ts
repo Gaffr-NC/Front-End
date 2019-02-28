@@ -329,6 +329,7 @@ export {
   updatePreferences,
   blockMatch,
   deleteUserById,
+  removeProperty,
   liveListen,
   liveListenMatchesTenant,
   liveListenMatchesLandlord,

@@ -13,7 +13,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { Permissions } from 'expo';
-import { getUserById } from '../utils';
+import { getUserById, removeProperty } from '../utils';
 import { NavigationScreenProp } from 'react-navigation';
 import { updateProperty } from '../utils';
 import { User, Property, UserWithProperty } from '../utils/interfaces';
@@ -27,7 +27,7 @@ interface Props {
 
 interface States {
   uploading?: boolean;
-  user: User | undefined;
+  user: User | null;
   bedrooms: number;
   city: string;
   images: string[];
@@ -40,7 +40,7 @@ interface States {
 
 export default class PropertyScreen extends Component<Props, States> {
   public state = {
-    user: undefined,
+    user: null,
     bedrooms: 2,
     city: 'Manchester',
     images: [],
@@ -92,7 +92,7 @@ export default class PropertyScreen extends Component<Props, States> {
   async componentDidMount() {
     const uid = await AsyncStorage.getItem('uid');
     if (uid) {
-      const user: User | undefined = await getUserById(uid, 'landlords');
+      const user: User = await getUserById(uid, 'landlords');
       if (user && !user.property) {
         await Permissions.askAsync(Permissions.CAMERA_ROLL);
         await Permissions.askAsync(Permissions.CAMERA);
@@ -111,6 +111,27 @@ export default class PropertyScreen extends Component<Props, States> {
   };
   updatePets = (selectedIndex: number) => {
     this.setState({ petsAllowed: selectedIndex ? true : false });
+  };
+  deleteProperty = async (user: UserWithProperty) => {
+    const uid = await AsyncStorage.getItem('uid');
+    if (uid && user) {
+      Alert.alert(
+        'Are you sure you want to delete this property?',
+        'This cannot be undone',
+        [
+          {
+            text: "Yes, I'm sure!",
+            onPress: () => {
+              removeProperty(uid);
+              this.setState({ user: { ...user, property: undefined } });
+            }
+          },
+          { text: 'Cancel', style: 'cancel' }
+        ]
+      );
+    } else {
+      Alert.alert('Error deleting this property');
+    }
   };
 
   render() {
@@ -137,7 +158,7 @@ export default class PropertyScreen extends Component<Props, States> {
             <Text style={{ fontWeight: 'bold' }}>Your Gaff </Text>
             <Text>City: {userWithProperty.property.city} </Text>
             <Text>
-              Price: {`£${userWithProperty.property.price} per month`}{' '}
+              Price: {`£${userWithProperty.property.price} per month`}
             </Text>
             <Text>Bedrooms: {userWithProperty.property.bedrooms} </Text>
             <Text>Description: {userWithProperty.property.description} </Text>
@@ -153,6 +174,27 @@ export default class PropertyScreen extends Component<Props, States> {
                 ? 'Smoking allowed'
                 : 'Smoking not allowed'}
             </Text>
+            <TouchableOpacity
+              onPress={() => this.deleteProperty(userWithProperty)}
+              style={{
+                backgroundColor: '#502F4C',
+                margin: 5,
+                width: 200,
+                padding: 15,
+                borderRadius: 10
+              }}
+            >
+              <Text
+                style={{
+                  color: 'white',
+                  fontWeight: 'bold',
+                  alignSelf: 'center',
+                  fontSize: 16
+                }}
+              >
+                Delete property
+              </Text>
+            </TouchableOpacity>
             <View style={styles.imageContainer}>
               {userWithProperty.property.images.map(img => (
                 <Image
@@ -374,7 +416,7 @@ const styles = StyleSheet.create({
   landlordProperty: {
     justifyItems: 'center',
     alignItems: 'center',
-    margin: 25,
+    margin: 10,
     width: '90%',
     padding: 5,
     backgroundColor: '#f9f4f5',
