@@ -255,6 +255,15 @@ const deleteUserById = async (id: string, table: string): Promise<void> => {
     .delete();
 };
 
+const removeProperty = async (landlordId: string): Promise<void> => {
+  await db
+    .collection('landlords')
+    .doc(landlordId)
+    .update({
+      property: firebase.firestore.FieldValue.delete()
+    });
+};
+
 const liveListen = async (
   table: string,
   id: string,
