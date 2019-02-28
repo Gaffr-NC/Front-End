@@ -262,13 +262,14 @@ const removeProperty = async (landlordId: string): Promise<void> => {
     .update({
       property: firebase.firestore.FieldValue.delete()
     })
-    .then(() => {
-      db.collection('matches')
+    .then(async () => {
+      const ref = await db
+        .collection('matches')
         .where('landlordId', '==', landlordId)
-        .get()
-        .then(querysnapshot =>
-          querysnapshot.forEach(matchDoc => matchDoc.ref.delete())
-        );
+        .get();
+      const batch = db.batch();
+      ref.forEach(matchDoc => matchDoc.ref.delete());
+      return batch.commit();
     });
 };
 
