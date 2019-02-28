@@ -18,7 +18,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { updateProperty } from '../utils';
 import { User, Property, UserWithProperty } from '../utils/interfaces';
 import ImageUploader from '../components/ImageUploader';
-import { ButtonGroup } from 'react-native-elements';
+import { ButtonGroup, Slider } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 
 interface Props {
@@ -41,18 +41,16 @@ interface States {
 export default class PropertyScreen extends Component<Props, States> {
   public state = {
     user: undefined,
-    bedrooms: 1,
-    city: 'the moon',
+    bedrooms: 2,
+    city: 'Manchester',
     images: [],
-    price: 350,
+    price: 550,
     description: '',
     propertyType: 'House',
     petsAllowed: false,
     smokingAllowed: false
   };
-
   static navigationOptions = {
-    // title: 'Spaghetti',
     tabBarLabel: () => <FontAwesome name="home" size={40} color={'white'} />,
     showIcon: true
   };
@@ -128,7 +126,8 @@ export default class PropertyScreen extends Component<Props, States> {
       propertyType,
       description
     } = this.state;
-    const propertyTypes = ['House', 'Apartment', 'Bungalow', 'Flat'];
+    const propertyTypes = ['House', 'Apartment', 'Bungalow'];
+    const cities = ['Manchester', 'London', 'Leeds'];
     const userWithProperty: UserWithProperty = user;
     if (userWithProperty.property)
       return (
@@ -182,15 +181,19 @@ export default class PropertyScreen extends Component<Props, States> {
                 }
               />
               <Text style={styles.inputLabel}>Number of bedrooms: </Text>
-              <TextInput
-                placeholder="bedrooms..."
-                style={styles.input}
-                value={String(bedrooms)}
-                onChangeText={(text: string) =>
+              <Text style={styles.inputLabel}>{bedrooms}</Text>
+              <Slider
+                minimumValue={1}
+                maximumValue={5}
+                step={1}
+                value={bedrooms}
+                thumbTintColor={'#502f4c'}
+                onValueChange={(bedrooms: number) =>
                   this.setState({
-                    bedrooms: parseInt(text) ? parseInt(text) : 0
+                    bedrooms
                   })
                 }
+                style={{ width: 300 }}
               />
               <TextInput
                 placeholder="description..."
@@ -201,11 +204,28 @@ export default class PropertyScreen extends Component<Props, States> {
                 }
               />
               <Text style={styles.inputLabel}>City: </Text>
-              <TextInput
-                placeholder="city"
-                style={styles.input}
-                value={city}
-                onChangeText={(text: string) => this.setState({ city: text })}
+              <ButtonGroup
+                onPress={(index: number) =>
+                  this.setState({
+                    city: cities[index]
+                  })
+                }
+                buttons={cities}
+                selectedIndex={cities.indexOf(city)}
+                containerBorderRadius={10}
+                containerStyle={{
+                  height: 50,
+                  backgroundColor: 'transparent',
+                  borderWidth: 0
+                }}
+                selectedButtonStyle={{ backgroundColor: '#502f4c' }}
+                innerBorderStyle={{ width: 0 }}
+                buttonStyle={{
+                  borderRadius: 10,
+                  margin: 5,
+                  backgroundColor: '#f9f4f6'
+                }}
+                textStyle={{ color: '#d1d1d1' }}
               />
               <Text style={styles.inputLabel}>Property Type: </Text>
               <ButtonGroup
@@ -328,7 +348,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
     margin: 0,
     color: '#0B4F6C',
     backgroundColor: '#dcd1e8'
@@ -353,6 +372,7 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   landlordProperty: {
+    justifyItems: 'center',
     alignItems: 'center',
     margin: 25,
     width: '90%',
@@ -366,8 +386,8 @@ const styles = StyleSheet.create({
     padding: 10
   },
   propertyImages: {
-    height: 275,
-    width: 275,
+    height: 200,
+    width: 200,
     borderRadius: 10,
     padding: 0,
     margin: 5
