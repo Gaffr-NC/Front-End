@@ -115,22 +115,26 @@ class userPreferenceForm extends Component<Props> {
           style={{ width: 300 }}
         />
         <Text style={styles.inputLabel}>Number of bedrooms: </Text>
-        <TextInput
-          placeholder="bedrooms..."
-          style={styles.input}
-          value={String(bedrooms)}
-          onChangeText={(text: string) =>
+        <Text style={styles.inputLabel}>{bedrooms} </Text>
+        <Slider
+          minimumValue={1}
+          maximumValue={5}
+          step={1}
+          value={bedrooms}
+          thumbTintColor={'#502f4c'}
+          onValueChange={(bedrooms: number) =>
             this.setState({
               preferences: {
                 ...this.state.preferences,
-                bedrooms: parseInt(text) ? parseInt(text) : 0
+                bedrooms,
               }
             })
           }
+          style={{ width: 300 }}
         />
         <Text style={styles.inputLabel}>City: </Text>
         <ButtonGroup
-          onPress={index =>
+          onPress={(index: number) =>
             this.setState({
               preferences: {
                 ...this.state.preferences,
@@ -157,7 +161,7 @@ class userPreferenceForm extends Component<Props> {
         />
         <Text style={styles.inputLabel}>Property Type: </Text>
         <ButtonGroup
-          onPress={index =>
+          onPress={(index: number) =>
             this.setState({
               preferences: {
                 ...this.state.preferences,
