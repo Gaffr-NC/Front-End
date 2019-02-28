@@ -213,7 +213,7 @@ export default class SwipeScreen extends Component<Props> {
         }
       >
         <Text style={{ textAlign: 'center' }}>
-          No more gaffs matching your criteria: pull down to refresh?
+          {`No more gaffs matching your criteria!\nPull down to refresh.`}
         </Text>
       </ScrollView>
     );

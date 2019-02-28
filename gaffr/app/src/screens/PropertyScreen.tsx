@@ -209,7 +209,7 @@ export default class PropertyScreen extends Component<Props, States> {
               />
               <Text style={styles.inputLabel}>Property Type: </Text>
               <ButtonGroup
-                onPress={index =>
+                onPress={(index: number) =>
                   this.setState({ propertyType: propertyTypes[index] })
                 }
                 buttons={propertyTypes}
