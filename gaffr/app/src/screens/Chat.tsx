@@ -9,9 +9,11 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
-  SafeAreaView
+  SafeAreaView,
+  Button,
+  Alert
 } from 'react-native';
-import { getMatchById, liveListen, sendChatMessage } from '../utils';
+import { blockMatch, liveListen, sendChatMessage } from '../utils';
 import { DocumentSnapshot } from '@firebase/firestore-types';
 import { ChatMessage, Match } from '../utils/interfaces';
 import { NavigationScreenProp, NavigationComponent } from 'react-navigation';
@@ -32,10 +34,26 @@ export default class Chat extends Component<Props> {
 
   static navigationOptions = ({ navigation }: NavigationComponent) => {
     return {
-      title: navigation.getParam('name', 'error - no user')
+      title: navigation.getParam('name', 'error - no user'),
+      headerRight: (
+        <TouchableOpacity onPress={navigation.getParam('block')}>
+          <FontAwesome
+            name="ban"
+            style={{
+              color: 'red',
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              fontSize: 40,
+              marginRight: 10
+            }}
+          />
+        </TouchableOpacity>
+      )
     };
   };
+
   async componentDidMount(): Promise<void> {
+    this.props.navigation.setParams({ block: this.block });
     const match = JSON.parse(this.props.navigation.getParam('match', 'ERROR'));
     liveListen('matches', match.id, (doc: DocumentSnapshot) => {
       const matchData = doc.data();
@@ -59,6 +77,28 @@ export default class Chat extends Component<Props> {
     }
   };
 
+  block = (): void => {
+    const match = JSON.parse(this.props.navigation.getParam('match', 'ERROR'));
+    if (match.id) {
+      Alert.alert(
+        'Are you sure you want to block this user?',
+        "The user will not be able to see you anymore, and you won't see the user in-app any more.",
+        [
+          {
+            text: 'Yes, block them!',
+            onPress: () => {
+              blockMatch(match.id);
+              this.props.navigation.goBack();
+            }
+          },
+          { text: 'No, cancel', style: 'cancel' }
+        ]
+      );
+      console.log(match.id);
+    } else {
+      Alert.alert('Error blocking this user');
+    }
+  };
   DismissKeyboard = ({ children }: any) => (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       {children}

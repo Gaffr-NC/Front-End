@@ -142,6 +142,7 @@ const getMatchesByLandlord = async (landlordId: string): Promise<Match[]> => {
   const matches: QuerySnapshot = await db
     .collection('matches')
     .where('landlordId', '==', landlordId)
+    .where('blocked', '==', false)
     .get();
   return matches.docs.map((match: DocumentSnapshot) => ({
     ...match.data(),
@@ -153,6 +154,7 @@ const getMatchesByTenant = async (tenantId: string): Promise<Match[]> => {
   const matches: QuerySnapshot = await db
     .collection('matches')
     .where('tenantId', '==', tenantId)
+    .where('blocked', '==', false)
     .get();
   return matches.docs.map((match: DocumentSnapshot) => ({
     ...match.data(),
@@ -241,6 +243,7 @@ const updatePreferences = async (
 };
 
 const blockMatch = async (matchId: string): Promise<void> => {
+  console.log('called with ', matchId);
   db.collection('matches')
     .doc(matchId)
     .update({ blocked: true });

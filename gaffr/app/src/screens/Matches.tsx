@@ -42,13 +42,20 @@ export default class Matches extends Component {
       if (userType === 'tenants') {
         liveListenMatchesTenant(uid, (doc: QuerySnapshot) => {
           const matches: DocumentData[] = [];
-          doc.forEach(match => matches.push({ ...match.data(), id: match.id }));
+          doc.forEach(match => {
+            if (!match.data().blocked) {
+            matches.push({ ...match.data(), id: match.id })
+          }
+          });
           this.setState({ matches });
         });
       } else {
         liveListenMatchesLandlord(uid, (doc: QuerySnapshot) => {
           const matches: DocumentData[] = [];
-          doc.forEach(match => matches.push({ ...match.data(), id: match.id }));
+          doc.forEach(match => {
+            if (!match.data().blocked) {
+              matches.push({ ...match.data(), id: match.id 
+              })}
           this.setState({ matches });
         });
       }
