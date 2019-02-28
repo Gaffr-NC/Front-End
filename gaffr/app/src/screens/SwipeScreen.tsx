@@ -239,18 +239,17 @@ const styles = StyleSheet.create({
     borderColor: '#502f4c',
     borderWidth: 3,
     borderRadius: 10
-    // justifyContent: 'flex-start',
-    // alignItems: 'center',
-    // marginBottom: 20
   },
   text: {
     marginLeft: 20,
+    marginBottom: 20,
     fontSize: 20,
     backgroundColor: 'transparent',
     color: '#000000'
   },
   image: {
     flex: 1,
-    borderRadius: 10
+    borderRadius: 10,
+    marginBottom: 10
   }
 });
