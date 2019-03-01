@@ -336,7 +336,7 @@ export default class PropertyScreen extends Component<Props, States> {
                     flex: 1,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    justifyItems: 'center',
+                    justifyContent: 'center',
                     flexWrap: 'wrap'
                   }}
                 >
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   landlordProperty: {
-    justifyItems: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
     margin: 10,
     width: '90%',
