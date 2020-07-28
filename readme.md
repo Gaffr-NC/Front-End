@@ -10,4 +10,4 @@ As a team we have produced an app called “Gaffr” which allows tenants and la
 [Alex Keeley](https://github.com/AlexKMan)
 [Natalie Eleftheriou](https://github.com/nataliaelef)
 [Tom Edwards](https://github.com/tcje91)
-[Amanda Cashin](https://github.com/mandsolo)
+[Mand Cashin](https://github.com/mandsolo)
